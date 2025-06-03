@@ -1,14 +1,11 @@
-# 指定CMake的最低版本
+﻿# 指定CMake的最低版本
 cmake_minimum_required(VERSION 3.10)
 
 # 设置项目名称
 project(MuCustomUiWidget)
 
 # 设置目标名称
-set(TARGET_NAME MuCustomUiWidget)
-
-# 设置启动项目
-set_property(DIRECTORY ${CMAKE_CURRENT_SOURCE_DIR} PROPERTY VS_STARTUP_PROJECT MuCustomUiWidget)
+set(PROJECT_NAME MuCustomUiWidget)
 
 # 设置使用到的Qt模块 ------------------------------------------------------------------
 set(QT_MODULES Core Gui Widgets)
@@ -66,8 +63,6 @@ endmacro(source_group_by_dir)
 set(CMAKE_RUNTIME_OUTPUT_DIRECTORY ${CMAKE_CURRENT_SOURCE_DIR}/${PLATFORM_CPU})
 set(CMAKE_LIBRARY_OUTPUT_DIRECTORY ${CMAKE_CURRENT_SOURCE_DIR}/${PLATFORM_CPU})
 set(CMAKE_ARCHIVE_OUTPUT_DIRECTORY ${CMAKE_CURRENT_SOURCE_DIR}/${PLATFORM_CPU})
-# 设置生成 GUI 应用程序（不显示控制台窗口）
-set(CMAKE_EXE_LINKER_FLAGS "${CMAKE_EXE_LINKER_FLAGS} /SUBSYSTEM:WINDOWS /ENTRY:mainCRTStartup")
 
 # 所有源文件
 file(GLOB_RECURSE SRC_FILE "*.cpp" "*.cxx" "*.cc" "*.C" "*.c++" "*.h" "*.hpp" "*.H" "*.hxx" "*.ui" "*.qrc" "*.ts")
@@ -78,14 +73,15 @@ foreach(file ${SRC_FILE})
 endforeach(file ${SRC_FILE})
 list(FILTER TARGET_SRC EXCLUDE REGEX "moc_|qrc_|ui_")
 list(FILTER TARGET_SRC EXCLUDE REGEX "build/*")
+list(FILTER TARGET_SRC EXCLUDE REGEX "TestWidget/*")
 
 # 添加VS过滤器
 source_group_by_dir(TARGET_SRC)
-
-add_library(${TARGET_NAME} SHARED ${TARGET_SRC})
-
+add_library(${PROJECT_NAME} SHARED ${TARGET_SRC})
 # 包含目录
-target_include_directories(${TARGET_NAME} PUBLIC ${CMAKE_SOURCE_DIR}/include)
+add_subdirectory(TestWidget)
+target_include_directories(${PROJECT_NAME} PUBLIC ${CMAKE_SOURCE_DIR}/CommonDefine)
+target_include_directories(${PROJECT_NAME} PUBLIC ${CMAKE_SOURCE_DIR}/UIModule)
 
 # 链接 Qt 库
 target_link_libraries(${PROJECT_NAME} 
