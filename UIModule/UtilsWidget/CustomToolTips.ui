@@ -68,7 +68,7 @@
       <item>
        <layout class="QHBoxLayout" name="horizontalLayout">
         <item>
-         <widget class="QLabel" name="label">
+         <widget class="CustomLabel" name="label">
           <property name="minimumSize">
            <size>
             <width>0</width>
@@ -104,7 +104,7 @@
       <item>
        <layout class="QHBoxLayout" name="horizontalLayout_2">
         <item>
-         <widget class="QLabel" name="label_2">
+         <widget class="CustomLabel" name="label_2">
           <property name="minimumSize">
            <size>
             <width>0</width>
@@ -142,6 +142,13 @@
    </item>
   </layout>
  </widget>
+ <customwidgets>
+  <customwidget>
+   <class>CustomLabel</class>
+   <extends>QLabel</extends>
+   <header>CoreWidget/CustomLabel.h</header>
+  </customwidget>
+ </customwidgets>
  <layoutdefault spacing="6" margin="11"/>
  <resources/>
  <connections/>

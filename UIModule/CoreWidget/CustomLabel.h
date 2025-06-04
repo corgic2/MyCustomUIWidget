@@ -49,6 +49,16 @@ public:
         BackgroundType_Solid,        /// 纯色背景
         BackgroundType_Gradient      /// 渐变背景
     };
+    /// <summary>
+    /// 图片缩放模式枚举
+    /// </summary>
+    enum EM_ImageScaleMode
+    {
+        NoScale,            /// 不缩放
+        ScaleToFit,        /// 适应大小
+        ScaleToFill,       /// 填充
+        ScaleKeepAspect    /// 保持比例
+    };
 
 public:
     /// <summary>
@@ -137,6 +147,20 @@ public:
     /// <param name="shadowColor">阴影颜色</param>
     void EnableShadow(bool enable = true, const UIColorDefine::ST_ColorRgba& shadowColor = UIColorDefine::shadow_color::Default);
 
+    /// <summary>
+    /// 设置图片
+    /// </summary>
+    /// <param name="imagePath">图片路径</param>
+    /// <param name="scaleMode">缩放模式</param>
+    void SetImage(const QString& imagePath, EM_ImageScaleMode scaleMode = ScaleToFit);
+
+    /// <summary>
+    /// 设置图片
+    /// </summary>
+    /// <param name="pixmap">图片对象</param>
+    /// <param name="scaleMode">缩放模式</param>
+    void SetImage(const QPixmap& pixmap, EM_ImageScaleMode scaleMode = ScaleToFit);
+
 protected:
     /// <summary>
     /// 重写大小改变事件
@@ -176,5 +200,7 @@ private:
     UIColorDefine::ST_ColorRgb m_borderColor;     /// 边框颜色
     int m_borderWidth;                            /// 边框宽度
     bool m_enableElide;                           /// 是否启用省略
+    QPixmap m_pixmap;                  /// 图片对象
+    EM_ImageScaleMode m_imageScaleMode;/// 图片缩放模式
 };
 

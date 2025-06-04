@@ -28,10 +28,11 @@ void FilePathIconListWidgetItem::InitializeUI()
 
     // 配置图标标签
     m_ui->label_icon->setFixedSize(24, 24);
-    m_ui->label_icon->setScaledContents(true);
+    m_ui->label_icon->EnableElide(false);  // 图标不需要省略
     m_ui->label_icon->installEventFilter(this);
 
     // 配置内容标签
+    m_ui->label_content->EnableElide(true); // 内容需要省略
     m_ui->label_content->setTextFormat(Qt::PlainText);
     m_ui->label_content->installEventFilter(this);
 
@@ -57,16 +58,11 @@ void FilePathIconListWidgetItem::SetItemNodeText(const ST_NodeInfo& nodeInfo)
     // 设置图标
     if (!m_info.iconFilePath.isEmpty())
     {
-        QPixmap pixmap(m_info.iconFilePath);
-        if (!pixmap.isNull())
-        {
-            m_ui->label_icon->setPixmap(pixmap);
-        }
+        m_ui->label_icon->SetImage(m_info.iconFilePath, CustomLabel::ScaleToFit);
     }
     
     // 设置内容
-    m_ui->label_content->setText(m_info.content);
-    
+    m_ui->label_content->SetText(m_info.content);
     // 设置提示信息
     m_tipsWidget->SetToolTips(m_info.toolTipsContent);
     if (!m_info.toolTipsContentEx.isEmpty())

@@ -186,12 +186,46 @@ void CustomLabel::EnableBorder(bool enable, const UIColorDefine::ST_ColorRgb& co
 void CustomLabel::resizeEvent(QResizeEvent* event)
 {
     QLabel::resizeEvent(event);
+    if (!m_pixmap.isNull())
+    {
+        SetImage(m_pixmap, m_imageScaleMode);
+    }
     if (m_enableElide && !text().isEmpty())
     {
-        SetText(text());  // 重新应用省略
+        SetText(text());
     }
 }
 
 void CustomLabel::OnStyleChanged()
 {
+}
+void CustomLabel::SetImage(const QString& imagePath, EM_ImageScaleMode scaleMode)
+{
+    QPixmap pixmap(imagePath);
+    if (!pixmap.isNull())
+    {
+        SetImage(pixmap, scaleMode);
+    }
+}
+
+void CustomLabel::SetImage(const QPixmap& pixmap, EM_ImageScaleMode scaleMode)
+{
+    m_pixmap = pixmap;
+    m_imageScaleMode = scaleMode;
+
+    switch (scaleMode)
+    {
+        case NoScale:
+            setPixmap(m_pixmap);
+            break;
+        case ScaleToFit:
+            setPixmap(m_pixmap.scaled(size(), Qt::IgnoreAspectRatio, Qt::SmoothTransformation));
+            break;
+        case ScaleToFill:
+            setPixmap(m_pixmap.scaled(size(), Qt::KeepAspectRatio, Qt::SmoothTransformation));
+            break;
+        case ScaleKeepAspect:
+            setPixmap(m_pixmap.scaled(size(), Qt::KeepAspectRatioByExpanding, Qt::SmoothTransformation));
+            break;
+    }
 }

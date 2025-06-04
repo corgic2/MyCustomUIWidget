@@ -82,6 +82,7 @@ add_library(${PROJECT_NAME} SHARED ${TARGET_SRC})
 add_subdirectory(TestWidget)
 target_include_directories(${PROJECT_NAME} PUBLIC ${CMAKE_SOURCE_DIR}/CommonDefine)
 target_include_directories(${PROJECT_NAME} PUBLIC ${CMAKE_SOURCE_DIR}/UIModule)
+target_include_directories(${PROJECT_NAME} PUBLIC ${CMAKE_SOURCE_DIR})
 
 # 链接 Qt 库
 target_link_libraries(${PROJECT_NAME} 
