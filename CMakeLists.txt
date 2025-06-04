@@ -72,8 +72,8 @@ foreach(file ${SRC_FILE})
     list(APPEND TARGET_SRC ${file})
 endforeach(file ${SRC_FILE})
 list(FILTER TARGET_SRC EXCLUDE REGEX "moc_|qrc_|ui_")
-list(FILTER TARGET_SRC EXCLUDE REGEX "build/*")
-list(FILTER TARGET_SRC EXCLUDE REGEX "TestWidget/*")
+list(FILTER TARGET_SRC EXCLUDE REGEX "build/.*")
+list(FILTER TARGET_SRC EXCLUDE REGEX "TestWidget/.*")
 
 # 添加VS过滤器
 source_group_by_dir(TARGET_SRC)
