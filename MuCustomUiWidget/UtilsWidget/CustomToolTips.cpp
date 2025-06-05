@@ -50,9 +50,8 @@ void CustomToolTips::InitializeUI()
     setAttribute(Qt::WA_TranslucentBackground);
     setAttribute(Qt::WA_DeleteOnClose, false);
 
-    // 修正：使用正确的颜色定义
-    m_backgroundColor = UIColorDefine::background_color::ToolTipsNormal;
-    m_textColor = UIColorDefine::font_color::Primary;
+    m_backgroundColor = UIColorDefine::background_color::ToolTipsInfo;
+    m_textColor = UIColorDefine::font_color::Secondary;
 
     m_hideTimer->setSingleShot(true);
     connect(m_hideTimer, &QTimer::timeout, this, &CustomToolTips::HideTips);

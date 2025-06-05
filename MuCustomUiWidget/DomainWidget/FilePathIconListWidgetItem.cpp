@@ -22,8 +22,9 @@ void FilePathIconListWidgetItem::InitializeUI()
     
     // 设置默认样式
     m_backgroundColor = UIColorDefine::background_color::Transparent;
-    m_hoverColor = UIColorDefine::background_color::Light;
-    m_selectedColor = {230, 244, 255, 255}; // 浅蓝色选中背景
+    m_hoverColor = UIColorDefine::background_color::ToolTipsInfo;
+    m_selectedColor = UIColorDefine::ST_ColorRgba(UIColorDefine::font_color::Info); // 浅蓝色选中背景
+    m_selectedColor.a = 128;
     m_textColor = UIColorDefine::font_color::Primary;
 
     // 配置图标标签

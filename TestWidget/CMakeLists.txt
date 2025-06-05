@@ -4,31 +4,52 @@ cmake_minimum_required(VERSION 3.10)
 # 设置项目名称
 project(TestWidget)
 
-# 设置目标名称
-set(TARGET_NAME TestWidget)
+# 收集源文件
+file(GLOB_RECURSE TEST_SRC 
+    "*.cpp"
+    "*.h"
+)
 
-# 设置生成文件的输出目录
-set(CMAKE_AUTOMOC_OUTPUT_DIR "${CMAKE_BINARY_DIR}/moc")
+# 收集UI文件
+file(GLOB_RECURSE TEST_UI
+    "*.ui"
+)
 
-# 设置输出路径
-set(CMAKE_RUNTIME_OUTPUT_DIRECTORY ${CMAKE_CURRENT_SOURCE_DIR}/${PLATFORM_CPU})
-set(CMAKE_LIBRARY_OUTPUT_DIRECTORY ${CMAKE_CURRENT_SOURCE_DIR}/${PLATFORM_CPU})
-set(CMAKE_ARCHIVE_OUTPUT_DIRECTORY ${CMAKE_CURRENT_SOURCE_DIR}/${PLATFORM_CPU})
-# 设置GUI项目
-set(CMAKE_EXE_LINKER_FLAGS "${CMAKE_EXE_LINKER_FLAGS} /SUBSYSTEM:WINDOWS /ENTRY:mainCRTStartup")
-# 所有源文件
-file(GLOB_RECURSE SRC_FILE "*.cpp" "*.cxx" "*.cc" "*.C" "*.c++" "*.h" "*.hpp" "*.H" "*.hxx" "*.ui" "*.qrc" "*.ts")
+# 为UI文件生成头文件
+qt5_wrap_ui(TEST_UI_HEADERS ${TEST_UI})
 
-# 排除生成的moc、qrc和ui文件
-foreach(file ${SRC_FILE})
-    list(APPEND TARGET_SRC ${file})
-endforeach(file ${SRC_FILE})
-list(FILTER TARGET_SRC EXCLUDE REGEX "moc_|qrc_|ui_")
-list(FILTER TARGET_SRC EXCLUDE REGEX "build/.*")
-# 添加VS过滤器
-source_group_by_dir(TARGET_SRC)
+# 创建可执行文件
+add_executable(${PROJECT_NAME}
+    ${TEST_SRC}
+    ${TEST_UI}
+    ${TEST_UI_HEADERS}
+)
 
-add_executable(${TARGET_NAME} ${TARGET_SRC})
+# 包含目录
+target_include_directories(${PROJECT_NAME} PUBLIC
+    ${CMAKE_CURRENT_SOURCE_DIR}
+    ${CMAKE_SOURCE_DIR}/MuCustomUiWidget
+    ${CMAKE_SOURCE_DIR}/MuCustomUiWidget/CommonDefine
+    ${CMAKE_BINARY_DIR}
+    ${CMAKE_CURRENT_BINARY_DIR}
+)
 
-# 链接主目录
-target_link_libraries(${TARGET_NAME} PRIVATE MuCustomUiWidget)
+# 链接库
+target_link_libraries(${PROJECT_NAME} PRIVATE
+    Qt5::Core
+    Qt5::Gui
+    Qt5::Widgets
+    MuCustomUiWidget
+)
+
+# VS过滤器
+source_group_by_dir(TEST_SRC)
+source_group("Generated Files" FILES ${TEST_UI_HEADERS})
+source_group("Form Files" FILES ${TEST_UI})
+
+# 复制依赖DLL到输出目录
+add_custom_command(TARGET ${PROJECT_NAME} POST_BUILD
+    COMMAND ${CMAKE_COMMAND} -E copy_if_different
+        $<TARGET_FILE:MuCustomUiWidget>
+        $<TARGET_FILE_DIR:${PROJECT_NAME}>
+)

@@ -2,8 +2,9 @@
 
 #include <QLabel>
 #include <QWidget>
-#include "ui_CustomLabel.h"
 #include "UIWidgetColorDefine.h"
+#include "UIWidgetGlobal.h"
+#include "ui_CustomLabel.h"
 
 QT_BEGIN_NAMESPACE
 namespace Ui { class CustomLabelClass; };
@@ -12,7 +13,7 @@ QT_END_NAMESPACE
 /// <summary>
 /// 自定义标签控件类，提供丰富的样式和特效设置
 /// </summary>
-class CustomLabel : public QLabel
+class CustomUIGlobal_API CustomLabel : public QLabel
 {
     Q_OBJECT
 

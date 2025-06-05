@@ -47,6 +47,15 @@ namespace UIColorDefine
             return QString("rgba(%1, %2, %3, %4)")
                    .arg(r).arg(g).arg(b).arg(static_cast<float>(a) / 255.0);
         }
+        ST_ColorRgba() = default;
+        ST_ColorRgba(int r, int g, int b, int a) :r(r), g(g), b(b), a(a){}
+        ST_ColorRgba(const ST_ColorRgb rgb)
+        {
+            r = rgb.r;
+            g = rgb.g;
+            b = rgb.b;
+            a = 255;
+        }
     };
 
     /// <summary>
@@ -99,7 +108,6 @@ namespace UIColorDefine
         const ST_ColorRgba White = {255, 255, 255, 255};      /// 白色背景
         const ST_ColorRgba Light = {248, 249, 250, 255};      /// 浅色背景
         const ST_ColorRgba Dark = {52, 58, 64, 255};          /// 深色背景
-
         /// <summary>
         /// 状态背景色定义
         /// </summary>
