@@ -69,11 +69,6 @@ void FilePathIconListWidgetItem::SetText(const QString& text)
     m_ui->label_content->setText(text);
 }
 
-QString FilePathIconListWidgetItem::text() const
-{
-    return m_ui->label_content->text();
-}
-
 void FilePathIconListWidgetItem::SetIconPath(const QString& path)
 {
     m_iconPath = path;
@@ -84,41 +79,16 @@ void FilePathIconListWidgetItem::SetIconPath(const QString& path)
     }
 }
 
-QString FilePathIconListWidgetItem::iconPath() const
-{
-    return m_iconPath;
-}
-
 void FilePathIconListWidgetItem::SetTextColor(const QColor& color)
 {
     m_textColor = color;
     UpdateStyle();
 }
 
-QColor FilePathIconListWidgetItem::textColor() const
-{
-    return m_textColor;
-}
-
 void FilePathIconListWidgetItem::SetBackgroundColor(const QColor& color)
 {
     m_backgroundColor = color;
     UpdateStyle();
-}
-
-QColor FilePathIconListWidgetItem::hoverColor() const
-{
-    return m_hoverColor;
-}
-
-QColor FilePathIconListWidgetItem::backgroundColor() const
-{
-    return m_backgroundColor;
-}
-
-QColor FilePathIconListWidgetItem::selectedColor() const
-{
-    return m_selectedColor;
 }
 
 void FilePathIconListWidgetItem::SetSelectedColor(const QColor& color)
@@ -140,11 +110,6 @@ void FilePathIconListWidgetItem::SetSelected(bool selected)
         m_isSelected = selected;
         UpdateStyle();
     }
-}
-
-bool FilePathIconListWidgetItem::isSelected() const
-{
-    return m_isSelected;
 }
 
 void FilePathIconListWidgetItem::EnableHoverEffect(bool enable)
@@ -244,18 +209,16 @@ void FilePathIconListWidgetItem::OnStyleChanged()
 void FilePathIconListWidgetItem::UpdateStyle()
 {
     QString frameStyle = QString(
-        "QFrame#frame {"
-        "   background-color: %1;"
-        "   border: none;"
-        "   border-radius: 4px;"
-        "}"
-        "QLabel {"
-        "   color: %2;"
-        "}")
-        .arg(m_isSelected ? UIColorDefine::color_convert::ToCssString(m_selectedColor) :
-             m_isHovered ? UIColorDefine::color_convert::ToCssString(m_hoverColor) :
-             UIColorDefine::color_convert::ToCssString(m_backgroundColor))
-        .arg(UIColorDefine::color_convert::ToCssString(m_textColor));
+                                 "QFrame#frame {"
+                                 "   background-color: %1;"
+                                 "   border: none;"
+                                 "   border-radius: 4px;"
+                                 "}"
+                                 "QLabel {"
+                                 "   color: %2;"
+                                 "}")
+                         .arg(m_isSelected ? UIColorDefine::color_convert::ToCssString(m_selectedColor) : m_isHovered ? UIColorDefine::color_convert::ToCssString(m_hoverColor) : UIColorDefine::color_convert::ToCssString(m_backgroundColor))
+                         .arg(UIColorDefine::color_convert::ToCssString(m_textColor));
 
     m_ui->frame->setStyleSheet(frameStyle);
 }

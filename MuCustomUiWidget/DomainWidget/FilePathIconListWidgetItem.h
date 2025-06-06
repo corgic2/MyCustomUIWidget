@@ -18,12 +18,6 @@ QT_END_NAMESPACE
 class CustomUIGlobal_API FilePathIconListWidgetItem : public QFrame
 {
     Q_OBJECT
-    Q_PROPERTY(QString text READ text WRITE SetText)
-    Q_PROPERTY(QString iconPath READ iconPath WRITE SetIconPath)
-    Q_PROPERTY(QColor textColor READ textColor WRITE SetTextColor)
-    Q_PROPERTY(QColor backgroundColor READ backgroundColor WRITE SetBackgroundColor)
-    Q_PROPERTY(QColor selectedColor READ selectedColor WRITE SetSelectedColor)
-    Q_PROPERTY(QColor hoverColor READ hoverColor WRITE SetHoverColor)
 
 public:
     /// <summary>
@@ -73,82 +67,38 @@ public:
     /// 设置文本
     /// </summary>
     void SetText(const QString& text);
-
-    /// <summary>
-    /// 获取文本
-    /// </summary>
-    QString text() const;
-
     /// <summary>
     /// 设置图标路径
     /// </summary>
     void SetIconPath(const QString& path);
-
-    /// <summary>
-    /// 获取图标路径
-    /// </summary>
-    QString iconPath() const;
-
     /// <summary>
     /// 设置文本颜色
     /// </summary>
     void SetTextColor(const QColor& color);
-
-    /// <summary>
-    /// 获取文本颜色
-    /// </summary>
-    QColor textColor() const;
-
     /// <summary>
     /// 设置背景颜色
     /// </summary>
     void SetBackgroundColor(const QColor& color);
-
-    /// <summary>
-    /// 获取背景颜色
-    /// </summary>
-    QColor backgroundColor() const;
-
     /// <summary>
     /// 设置选中颜色
     /// </summary>
     void SetSelectedColor(const QColor& color);
-
-    /// <summary>
-    /// 获取选中颜色
-    /// </summary>
-    QColor selectedColor() const;
-
     /// <summary>
     /// 设置悬停颜色
     /// </summary>
     void SetHoverColor(const QColor& color);
-
-    /// <summary>
-    /// 获取悬停颜色
-    /// </summary>
-    QColor hoverColor() const;
-
     /// <summary>
     /// 设置选中状态
     /// </summary>
     void SetSelected(bool selected);
-
-    /// <summary>
-    /// 获取选中状态
-    /// </summary>
-    bool isSelected() const;
-
     /// <summary>
     /// 启用悬停效果
     /// </summary>
     void EnableHoverEffect(bool enable = true);
-
     /// <summary>
     /// 启用选中效果
     /// </summary>
     void EnableSelectedEffect(bool enable = true);
-
     /// <summary>
     /// 获取节点信息
     /// </summary>
