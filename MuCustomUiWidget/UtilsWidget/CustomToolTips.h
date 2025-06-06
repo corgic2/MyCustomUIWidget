@@ -24,7 +24,6 @@ QT_END_NAMESPACE
 class CustomUIGlobal_API CustomToolTips : public QWidget
 {
     Q_OBJECT
-    Q_PROPERTY(qreal opacity READ opacity WRITE setOpacity)
 
 public:
     /// <summary>
@@ -41,6 +40,7 @@ public:
         Bottom,      /// 目标正下方
         BottomRight  /// 目标右下方
     };
+    Q_ENUM(EM_TipsPosition)
 
     /// <summary>
     /// Tips类型枚举，定义不同类型的提示框样式
@@ -53,6 +53,7 @@ public:
         Error,    /// 错误提示
         Success   /// 成功提示
     };
+    Q_ENUM(EM_TipsType)
 
 public:
     /// <summary>
@@ -85,34 +86,24 @@ public:
     void SetTipsType(EM_TipsType type);
 
     /// <summary>
-    /// 设置显示位置
-    /// </summary>
-    /// <param name="position">显示位置枚举值</param>
-    void SetPosition(EM_TipsPosition position);
-
-    /// <summary>
-    /// 设置显示持续时间
-    /// </summary>
-    /// <param name="msecs">持续时间(毫秒)</param>
-    void SetShowDuration(int msecs);
-
-    /// <summary>
-    /// 设置动画持续时间
-    /// </summary>
-    /// <param name="msecs">动画时间(毫秒)</param>
-    void SetAnimationDuration(int msecs);
-
-    /// <summary>
     /// 设置背景颜色
     /// </summary>
-    /// <param name="color">RGBA颜色值</param>
-    void SetBackgroundColor(const UIColorDefine::ST_ColorRgba& color);
+    void SetBackgroundColor(const QColor& color);
 
     /// <summary>
     /// 设置文本颜色
     /// </summary>
-    /// <param name="color">RGB颜色值</param>
-    void SetTextColor(const UIColorDefine::ST_ColorRgb& color);
+    void SetTextColor(const QColor& color);
+
+    /// <summary>
+    /// 设置边框颜色
+    /// </summary>
+    void SetBorderColor(const QColor& color);
+
+    /// <summary>
+    /// 设置阴影颜色
+    /// </summary>
+    void SetShadowColor(const QColor& color);
 
     /// <summary>
     /// 设置字体大小
@@ -125,12 +116,40 @@ public:
     /// </summary>
     /// <param name="radius">圆角半径值</param>
     void SetRadius(int radius);
+    /// <summary>
+    /// 显示时间
+    /// </summary>
+    /// <param name="msecs"></param>
+    void SetShowDuration(int msecs);
+    /// <summary>
+    /// 动画持续时间
+    /// </summary>
+    /// <param name="msecs"></param>
+    void SetAnimationDuration(int msecs);
 
     /// <summary>
     /// 启用阴影效果
     /// </summary>
     /// <param name="enable">是否启用</param>
     void EnableShadow(bool enable = true);
+
+    /// <summary>
+    /// 设置边框宽度
+    /// </summary>
+    /// <param name="width">边框宽度值</param>
+    void SetBorderWidth(int width);
+
+    /// <summary>
+    /// 设置阴影半径
+    /// </summary>
+    /// <param name="radius">阴影半径值</param>
+    void SetShadowRadius(int radius);
+
+    /// <summary>
+    /// 设置阴影偏移
+    /// </summary>
+    /// <param name="offset">阴影偏移值</param>
+    void SetShadowOffset(const QPoint& offset);
 
     /// <summary>
     /// 显示提示框
@@ -159,7 +178,7 @@ private:
     /// <summary>
     /// 初始化UI
     /// </summary>
-    void InitializeUI();
+    void InitializeWidget();
 
     /// <summary>
     /// 更新样式
@@ -170,19 +189,6 @@ private:
     /// 设置动画
     /// </summary>
     void SetupAnimation();
-
-    /// <summary>
-    /// 计算显示位置
-    /// </summary>
-    /// <param name="targetPos">目标位置</param>
-    /// <param name="targetSize">目标大小</param>
-    /// <returns>计算后的显示位置</returns>
-    QPoint CalculatePosition(const QPoint& targetPos, const QSize& targetSize);
-
-    /// <summary>
-    /// 获取当前透明度
-    /// </summary>
-    qreal opacity() const { return m_opacity; }
 
     /// <summary>
     /// 设置透明度
@@ -198,46 +204,24 @@ public slots:
 signals:
     void ToolTipsHidden();  /// 提示框隐藏信号
     void ToolTipsShown();   /// 提示框显示信号
-
 private:
     Ui::CustomToolTipsClass* m_ui;              /// UI对象指针
     bool m_isAnimating;                         /// 是否正在动画中
     QPoint m_targetPosition;                    /// 目标位置
     QTimer* m_hideTimer;                        /// 隐藏定时器
     QPropertyAnimation* m_opacityAnimation;     /// 透明度动画
-    EM_TipsPosition m_position;                 /// 显示位置
-    EM_TipsType m_tipsType;                    /// 提示框类型
-
-    UIColorDefine::ST_ColorRgba m_backgroundColor;  /// 背景颜色
-    UIColorDefine::ST_ColorRgb m_textColor;        /// 文本颜色
-    int m_fontSize;                                 /// 字体大小
-    int m_radius;                                  /// 圆角半径
-    bool m_hasShadow;                              /// 是否有阴影
-    qreal m_opacity;                               /// 透明度值
-
-    int m_showDuration;                            /// 显示持续时间
-    int m_animationDuration;                       /// 动画持续时间
-};
-
-/// <summary>
-/// 全局提示框管理器
-/// </summary>
-class CustomToolTipsManager
-{
-public:
-    /// <summary>
-    /// 获取全局实例
-    /// </summary>
-    static CustomToolTips* GetInstance();
-
-    /// <summary>
-    /// 显示提示框
-    /// </summary>
-    /// <param name="text">提示文本</param>
-    /// <param name="widget">目标控件</param>
-    /// <param name="type">提示框类型</param>
-    static void ShowTips(const QString& text, QWidget* widget,
-                        CustomToolTips::EM_TipsType type = CustomToolTips::Normal);
-private:
-    static CustomToolTips* s_instance;  /// 全局单例指针
+    QColor m_backgroundColor; /// 背景颜色
+    QColor m_textColor; /// 文本颜色
+    QColor m_borderColor; /// 边框颜色
+    QColor m_shadowColor; /// 阴影颜色
+    int m_fontSize; /// 字体大小
+    int m_radius; /// 圆角半径
+    bool m_hasShadow; /// 是否有阴影
+    qreal m_opacity; /// 透明度值
+    EM_TipsType m_tipsType; // 提示类别
+    int m_showDuration; /// 显示持续时间
+    int m_animationDuration; /// 动画持续时间
+    int m_borderWidth; /// 边框宽度
+    int m_shadowRadius; /// 阴影半径
+    QPoint m_shadowOffset; /// 阴影偏移
 };

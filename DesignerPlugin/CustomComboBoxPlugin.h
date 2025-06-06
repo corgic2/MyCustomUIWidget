@@ -1,12 +1,12 @@
 ﻿#pragma once
 
 #include "CustomWidgetPlugin.h"
-#include "UtilsWidget/CustomToolTips.h"
+#include "CoreWidget/CustomComboBox.h"
 
 /// <summary>
-/// CustomToolTips设计器插件类
+/// CustomComboBox设计器插件类
 /// </summary>
-class CUSTOMWIDGETPLUGIN_EXPORT CustomToolTipsPlugin : public CustomWidgetPlugin
+class CUSTOMWIDGETPLUGIN_EXPORT CustomComboBoxPlugin : public CustomWidgetPlugin
 {
     Q_OBJECT
 
@@ -15,7 +15,7 @@ public:
     /// 构造函数
     /// </summary>
     /// <param name="parent">父对象指针</param>
-    explicit CustomToolTipsPlugin(QObject* parent = nullptr);
+    explicit CustomComboBoxPlugin(QObject* parent = nullptr);
 
     /// <summary>
     /// 创建控件实例
@@ -41,4 +41,8 @@ public:
     /// 获取包含文件名
     /// </summary>
     QString includeFile() const override;
+    /// <summary>
+    /// 获取控件的XML描述
+    /// </summary>
+    QString domXml() const override;
 }; 

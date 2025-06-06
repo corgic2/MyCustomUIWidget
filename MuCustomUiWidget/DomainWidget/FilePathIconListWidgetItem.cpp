@@ -1,45 +1,56 @@
 ﻿#include "FilePathIconListWidgetItem.h"
-#include <QStyle>
+#include "ui_FilePathIconListWidgetItem.h"
+#include <QEvent>
+#include <QMouseEvent>
 
 FilePathIconListWidgetItem::FilePathIconListWidgetItem(QWidget* parent)
-    : QWidget(parent)
-    , m_ui(new Ui::FilePathIconListWidgetItemClass())
-    , m_tipsWidget(new CustomToolTips(this))
-
+    : QFrame(parent)
+    , m_ui(new Ui::FilePathIconListWidgetItemClass)
+    , m_tipsWidget(nullptr)
+    , m_delay(700)
+    , m_isSelected(false)
+    , m_isHovered(false)
+    , m_enableHover(true)
+    , m_enableSelected(true)
 {
-    InitializeUI();
+    m_ui->setupUi(this);
+    InitializeWidget();
     SetupConnections();
 }
 
 FilePathIconListWidgetItem::~FilePathIconListWidgetItem()
 {
-    SAFE_DELETE_POINTER_VALUE(m_ui);
+    delete m_ui;
+    if (m_tipsWidget)
+    {
+        delete m_tipsWidget;
+    }
 }
 
-void FilePathIconListWidgetItem::InitializeUI()
+void FilePathIconListWidgetItem::InitializeWidget()
 {
     m_ui->setupUi(this);
-    
+
     // 设置默认样式
     m_backgroundColor = UIColorDefine::background_color::Transparent;
     m_hoverColor = UIColorDefine::background_color::ToolTipsInfo;
-    m_selectedColor = UIColorDefine::ST_ColorRgba(UIColorDefine::font_color::Info); // 浅蓝色选中背景
-    m_selectedColor.a = 128;
+    m_selectedColor = UIColorDefine::font_color::Info; // 浅蓝色选中背景
+    m_selectedColor.setAlpha(128);
     m_textColor = UIColorDefine::font_color::Primary;
 
     // 配置图标标签
     m_ui->label_icon->setFixedSize(24, 24);
-    m_ui->label_icon->EnableElide(false);  // 图标不需要省略
+    m_ui->label_icon->SetEnableElide(false); // 图标不需要省略
     m_ui->label_icon->installEventFilter(this);
 
     // 配置内容标签
-    m_ui->label_content->EnableElide(true); // 内容需要省略
+    m_ui->label_content->SetEnableElide(true); // 内容需要省略
     m_ui->label_content->setTextFormat(Qt::PlainText);
     m_ui->label_content->installEventFilter(this);
 
     // 设置定时器
     m_timer.setSingleShot(true);
-    
+
     // 设置Tips样式
     m_tipsWidget->SetRadius(6);
     m_tipsWidget->EnableShadow(true);
@@ -49,85 +60,97 @@ void FilePathIconListWidgetItem::InitializeUI()
 
 void FilePathIconListWidgetItem::SetupConnections()
 {
+    m_timer.setSingleShot(true);
     connect(&m_timer, &QTimer::timeout, this, &FilePathIconListWidgetItem::ShowToolTip);
 }
 
-void FilePathIconListWidgetItem::SetItemNodeText(const ST_NodeInfo& nodeInfo)
+void FilePathIconListWidgetItem::SetText(const QString& text)
 {
-    m_info = nodeInfo;
-    
-    // 设置图标
-    if (!m_info.iconFilePath.isEmpty())
-    {
-        m_ui->label_icon->SetImage(m_info.iconFilePath, CustomLabel::ScaleToFit);
-    }
-    
-    // 设置内容
-    m_ui->label_content->SetText(m_info.content);
-    // 设置提示信息
-    m_tipsWidget->SetToolTips(m_info.toolTipsContent);
-    if (!m_info.toolTipsContentEx.isEmpty())
-    {
-        m_tipsWidget->SetToolTipsEx(m_info.toolTipsContentEx);
-    }
-
-    // 根据节点类型设置样式
-    switch (m_info.nodeType)
-    {
-        case Warning:
-            m_tipsWidget->SetTipsType(CustomToolTips::Warning);
-            break;
-        case Error:
-            m_tipsWidget->SetTipsType(CustomToolTips::Error);
-            break;
-        case Folder:
-            m_ui->label_content->setProperty("type", "folder");
-            break;
-        case File:
-            m_ui->label_content->setProperty("type", "file");
-            break;
-        default:
-            m_tipsWidget->SetTipsType(CustomToolTips::Normal);
-            break;
-    }
-
-    UpdateStyle();
+    m_ui->label_content->setText(text);
 }
 
-void FilePathIconListWidgetItem::SetBackgroundColor(const UIColorDefine::ST_ColorRgba& color)
+QString FilePathIconListWidgetItem::text() const
 {
-    m_backgroundColor = color;
-    UpdateStyle();
+    return m_ui->label_content->text();
 }
 
-void FilePathIconListWidgetItem::SetHoverColor(const UIColorDefine::ST_ColorRgba& color)
+void FilePathIconListWidgetItem::SetIconPath(const QString& path)
 {
-    m_hoverColor = color;
-    if (m_isHovered)
+    m_iconPath = path;
+    QPixmap pixmap(path);
+    if (!pixmap.isNull())
     {
-        UpdateStyle();
+        m_ui->label_icon->setPixmap(pixmap.scaled(16, 16, Qt::KeepAspectRatio, Qt::SmoothTransformation));
     }
 }
 
-void FilePathIconListWidgetItem::SetSelectedColor(const UIColorDefine::ST_ColorRgba& color)
+QString FilePathIconListWidgetItem::iconPath() const
 {
-    m_selectedColor = color;
-    if (m_isSelected)
-    {
-        UpdateStyle();
-    }
+    return m_iconPath;
 }
 
-void FilePathIconListWidgetItem::SetTextColor(const UIColorDefine::ST_ColorRgb& color)
+void FilePathIconListWidgetItem::SetTextColor(const QColor& color)
 {
     m_textColor = color;
     UpdateStyle();
 }
 
+QColor FilePathIconListWidgetItem::textColor() const
+{
+    return m_textColor;
+}
+
+void FilePathIconListWidgetItem::SetBackgroundColor(const QColor& color)
+{
+    m_backgroundColor = color;
+    UpdateStyle();
+}
+
+QColor FilePathIconListWidgetItem::hoverColor() const
+{
+    return m_hoverColor;
+}
+
+QColor FilePathIconListWidgetItem::backgroundColor() const
+{
+    return m_backgroundColor;
+}
+
+QColor FilePathIconListWidgetItem::selectedColor() const
+{
+    return m_selectedColor;
+}
+
+void FilePathIconListWidgetItem::SetSelectedColor(const QColor& color)
+{
+    m_selectedColor = color;
+    UpdateStyle();
+}
+
+void FilePathIconListWidgetItem::SetHoverColor(const QColor& color)
+{
+    m_hoverColor = color;
+    UpdateStyle();
+}
+
+void FilePathIconListWidgetItem::SetSelected(bool selected)
+{
+    if (m_enableSelected && m_isSelected != selected)
+    {
+        m_isSelected = selected;
+        UpdateStyle();
+    }
+}
+
+bool FilePathIconListWidgetItem::isSelected() const
+{
+    return m_isSelected;
+}
+
 void FilePathIconListWidgetItem::EnableHoverEffect(bool enable)
 {
     m_enableHover = enable;
-    if (!enable && m_isHovered)
+    if (!enable)
     {
         m_isHovered = false;
         UpdateStyle();
@@ -137,11 +160,85 @@ void FilePathIconListWidgetItem::EnableHoverEffect(bool enable)
 void FilePathIconListWidgetItem::EnableSelectedEffect(bool enable)
 {
     m_enableSelected = enable;
-    if (!enable && m_isSelected)
+    if (!enable)
     {
         m_isSelected = false;
         UpdateStyle();
     }
+}
+
+const FilePathIconListWidgetItem::ST_NodeInfo& FilePathIconListWidgetItem::GetNodeInfo() const
+{
+    return m_info;
+}
+
+void FilePathIconListWidgetItem::SetItemNodeText(const ST_NodeInfo& nodeInfo)
+{
+    m_info = nodeInfo;
+    SetText(nodeInfo.content);
+    SetIconPath(nodeInfo.iconFilePath);
+
+    // 创建提示框
+    if (!m_tipsWidget)
+    {
+        m_tipsWidget = new CustomToolTips(this);
+    }
+    m_tipsWidget->SetToolTips(nodeInfo.toolTipsContent);
+    m_tipsWidget->SetToolTipsEx(nodeInfo.toolTipsContentEx);
+}
+
+bool FilePathIconListWidgetItem::eventFilter(QObject* watched, QEvent* event)
+{
+    return QFrame::eventFilter(watched, event);
+}
+
+void FilePathIconListWidgetItem::enterEvent(QEvent* event)
+{
+    QFrame::enterEvent(event);
+    if (m_enableHover)
+    {
+        m_isHovered = true;
+        UpdateStyle();
+        m_timer.start(m_delay);
+    }
+}
+
+void FilePathIconListWidgetItem::leaveEvent(QEvent* event)
+{
+    QFrame::leaveEvent(event);
+    if (m_enableHover)
+    {
+        m_isHovered = false;
+        UpdateStyle();
+        m_timer.stop();
+        if (m_tipsWidget)
+        {
+            m_tipsWidget->HideTips();
+        }
+    }
+}
+
+void FilePathIconListWidgetItem::mousePressEvent(QMouseEvent* event)
+{
+    QFrame::mousePressEvent(event);
+    if (m_enableSelected && event->button() == Qt::LeftButton)
+    {
+        SetSelected(!m_isSelected);
+    }
+}
+
+void FilePathIconListWidgetItem::ShowToolTip()
+{
+    if (m_tipsWidget && !m_info.toolTipsContent.isEmpty())
+    {
+        QPoint pos = mapToGlobal(QPoint(0, height()));
+        m_tipsWidget->ShowTips(pos);
+    }
+}
+
+void FilePathIconListWidgetItem::OnStyleChanged()
+{
+    UpdateStyle();
 }
 
 void FilePathIconListWidgetItem::UpdateStyle()
@@ -155,78 +252,10 @@ void FilePathIconListWidgetItem::UpdateStyle()
         "QLabel {"
         "   color: %2;"
         "}")
-        .arg(m_isSelected ? m_selectedColor.ToQString() :
-             m_isHovered ? m_hoverColor.ToQString() :
-             m_backgroundColor.ToQString())
-        .arg(m_textColor.ToQString());
+        .arg(m_isSelected ? UIColorDefine::color_convert::ToCssString(m_selectedColor) :
+             m_isHovered ? UIColorDefine::color_convert::ToCssString(m_hoverColor) :
+             UIColorDefine::color_convert::ToCssString(m_backgroundColor))
+        .arg(UIColorDefine::color_convert::ToCssString(m_textColor));
 
     m_ui->frame->setStyleSheet(frameStyle);
-}
-
-bool FilePathIconListWidgetItem::eventFilter(QObject* watched, QEvent* event)
-{
-    if (watched == m_ui->label_icon || watched == m_ui->label_content)
-    {
-        switch (event->type())
-        {
-            case QEvent::Enter:
-                if (m_enableHover)
-                {
-                    m_timer.start(m_delay);
-                }
-                break;
-            case QEvent::Leave:
-            case QEvent::MouseButtonPress:
-                m_timer.stop();
-                m_tipsWidget->hide();
-                break;
-            default:
-                break;
-        }
-    }
-    return QWidget::eventFilter(watched, event);
-}
-
-void FilePathIconListWidgetItem::enterEvent(QEvent* event)
-{
-    QWidget::enterEvent(event);
-    if (m_enableHover)
-    {
-        m_isHovered = true;
-        UpdateStyle();
-    }
-}
-
-void FilePathIconListWidgetItem::leaveEvent(QEvent* event)
-{
-    QWidget::leaveEvent(event);
-    if (m_enableHover)
-    {
-        m_isHovered = false;
-        UpdateStyle();
-    }
-}
-
-void FilePathIconListWidgetItem::mousePressEvent(QMouseEvent* event)
-{
-    QWidget::mousePressEvent(event);
-    if (m_enableSelected)
-    {
-        m_isSelected = !m_isSelected;
-        UpdateStyle();
-    }
-}
-
-void FilePathIconListWidgetItem::ShowToolTip()
-{
-    if (!m_info.toolTipsContent.isEmpty())
-    {
-        QPoint globalPos = QCursor::pos();
-        m_tipsWidget->move(globalPos.x() + 10, globalPos.y() + 4);
-        m_tipsWidget->show();
-    }
-}
-
-void FilePathIconListWidgetItem::OnStyleChanged()
-{
 }

@@ -104,7 +104,7 @@
       <item>
        <layout class="QHBoxLayout" name="horizontalLayout_2">
         <item>
-         <widget class="CustomLabel" name="label_2">
+         <widget class="CustomLabel" name="labelEx">
           <property name="minimumSize">
            <size>
             <width>0</width>
@@ -142,6 +142,7 @@
    </item>
   </layout>
  </widget>
+ <layoutdefault spacing="6" margin="11"/>
  <customwidgets>
   <customwidget>
    <class>CustomLabel</class>
@@ -149,7 +150,6 @@
    <header>CoreWidget/CustomLabel.h</header>
   </customwidget>
  </customwidgets>
- <layoutdefault spacing="6" margin="11"/>
  <resources/>
  <connections/>
 </ui>

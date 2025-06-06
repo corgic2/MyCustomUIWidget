@@ -5,6 +5,8 @@
 #include "ui_FilePathIconListWidgetItem.h"
 #include <QWidget>
 #include <QTimer>
+#include <QFrame>
+#include <QColor>
 
 QT_BEGIN_NAMESPACE
 namespace Ui { class FilePathIconListWidgetItemClass; };
@@ -13,9 +15,15 @@ QT_END_NAMESPACE
 /// <summary>
 /// 文件路径图标列表项控件类，用于显示带图标和提示的文件路径项
 /// </summary>
-class CustomUIGlobal_API FilePathIconListWidgetItem : public QWidget
+class CustomUIGlobal_API FilePathIconListWidgetItem : public QFrame
 {
     Q_OBJECT
+    Q_PROPERTY(QString text READ text WRITE SetText)
+    Q_PROPERTY(QString iconPath READ iconPath WRITE SetIconPath)
+    Q_PROPERTY(QColor textColor READ textColor WRITE SetTextColor)
+    Q_PROPERTY(QColor backgroundColor READ backgroundColor WRITE SetBackgroundColor)
+    Q_PROPERTY(QColor selectedColor READ selectedColor WRITE SetSelectedColor)
+    Q_PROPERTY(QColor hoverColor READ hoverColor WRITE SetHoverColor)
 
 public:
     /// <summary>
@@ -29,6 +37,7 @@ public:
         Warning,    /// 警告节点
         Error       /// 错误节点
     };
+    Q_ENUM(EM_NodeType)
 
     /// <summary>
     /// 节点信息结构体，包含列表项的完整显示信息
@@ -48,7 +57,7 @@ public:
     /// 构造函数
     /// </summary>
     /// <param name="parent">父窗口指针</param>
-    FilePathIconListWidgetItem(QWidget *parent = nullptr);
+    FilePathIconListWidgetItem(QWidget* parent = nullptr);
 
     /// <summary>
     /// 析构函数
@@ -58,50 +67,92 @@ public:
     /// <summary>
     /// 设置节点文本信息
     /// </summary>
-    /// <param name="nodeInfo">节点信息结构体</param>
     void SetItemNodeText(const ST_NodeInfo& nodeInfo);
     
     /// <summary>
-    /// 设置背景颜色
+    /// 设置文本
     /// </summary>
-    /// <param name="color">RGBA颜色值</param>
-    void SetBackgroundColor(const UIColorDefine::ST_ColorRgba& color);
+    void SetText(const QString& text);
 
     /// <summary>
-    /// 设置悬停颜色
+    /// 获取文本
     /// </summary>
-    /// <param name="color">RGBA颜色值</param>
-    void SetHoverColor(const UIColorDefine::ST_ColorRgba& color);
+    QString text() const;
 
     /// <summary>
-    /// 设置选中颜色
+    /// 设置图标路径
     /// </summary>
-    /// <param name="color">RGBA颜色值</param>
-    void SetSelectedColor(const UIColorDefine::ST_ColorRgba& color);
+    void SetIconPath(const QString& path);
+
+    /// <summary>
+    /// 获取图标路径
+    /// </summary>
+    QString iconPath() const;
 
     /// <summary>
     /// 设置文本颜色
     /// </summary>
-    /// <param name="color">RGB颜色值</param>
-    void SetTextColor(const UIColorDefine::ST_ColorRgb& color);
+    void SetTextColor(const QColor& color);
+
+    /// <summary>
+    /// 获取文本颜色
+    /// </summary>
+    QColor textColor() const;
+
+    /// <summary>
+    /// 设置背景颜色
+    /// </summary>
+    void SetBackgroundColor(const QColor& color);
+
+    /// <summary>
+    /// 获取背景颜色
+    /// </summary>
+    QColor backgroundColor() const;
+
+    /// <summary>
+    /// 设置选中颜色
+    /// </summary>
+    void SetSelectedColor(const QColor& color);
+
+    /// <summary>
+    /// 获取选中颜色
+    /// </summary>
+    QColor selectedColor() const;
+
+    /// <summary>
+    /// 设置悬停颜色
+    /// </summary>
+    void SetHoverColor(const QColor& color);
+
+    /// <summary>
+    /// 获取悬停颜色
+    /// </summary>
+    QColor hoverColor() const;
+
+    /// <summary>
+    /// 设置选中状态
+    /// </summary>
+    void SetSelected(bool selected);
+
+    /// <summary>
+    /// 获取选中状态
+    /// </summary>
+    bool isSelected() const;
 
     /// <summary>
     /// 启用悬停效果
     /// </summary>
-    /// <param name="enable">是否启用</param>
     void EnableHoverEffect(bool enable = true);
 
     /// <summary>
     /// 启用选中效果
     /// </summary>
-    /// <param name="enable">是否启用</param>
     void EnableSelectedEffect(bool enable = true);
 
     /// <summary>
     /// 获取节点信息
     /// </summary>
-    /// <returns>节点信息结构体的常量引用</returns>
-    const ST_NodeInfo& GetNodeInfo() const { return m_info; }
+    const ST_NodeInfo& GetNodeInfo() const;
 
 protected:
     /// <summary>
@@ -139,7 +190,7 @@ private:
     /// <summary>
     /// 初始化UI
     /// </summary>
-    void InitializeUI();
+    void InitializeWidget();
 
     /// <summary>
     /// 更新样式
@@ -155,16 +206,17 @@ private:
     Ui::FilePathIconListWidgetItemClass* m_ui;  /// UI对象指针
     ST_NodeInfo m_info;                         /// 节点信息
     QTimer m_timer;                             /// 提示显示定时器
-    CustomToolTips* m_tipsWidget = nullptr;               /// 提示框控件
-    int m_delay = 700;                                /// 提示显示延时
+    CustomToolTips* m_tipsWidget;               /// 提示框控件
+    QString m_iconPath;                         /// 图标路径
+    int m_delay;                                /// 提示显示延时
 
-    UIColorDefine::ST_ColorRgba m_backgroundColor;  /// 背景颜色
-    UIColorDefine::ST_ColorRgba m_hoverColor;      /// 悬停颜色
-    UIColorDefine::ST_ColorRgba m_selectedColor;   /// 选中颜色
-    UIColorDefine::ST_ColorRgb m_textColor;        /// 文本颜色
-    bool m_isHovered;                              /// 是否处于悬停状态
-    bool m_isSelected = false;                             /// 是否处于选中状态
-    bool m_enableHover = true;                            /// 是否启用悬停效果
-    bool m_enableSelected = true;                         /// 是否启用选中效果    , m_isHovered(false)
+    QColor m_textColor;        /// 文本颜色
+    QColor m_backgroundColor;  /// 背景颜色
+    QColor m_hoverColor;       /// 悬停颜色
+    QColor m_selectedColor;    /// 选中颜色
+    bool m_isHovered;           /// 是否处于悬停状态
+    bool m_isSelected;          /// 是否处于选中状态
+    bool m_enableHover;         /// 是否启用悬停效果
+    bool m_enableSelected;      /// 是否启用选中效果
 };
 

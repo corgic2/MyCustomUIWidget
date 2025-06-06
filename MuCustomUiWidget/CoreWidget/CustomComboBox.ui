@@ -1,17 +1,17 @@
 <?xml version="1.0" encoding="UTF-8"?>
 <ui version="4.0">
- <class>CustomLabelClass</class>
- <widget class="QWidget" name="CustomLabelClass">
+ <class>CustomComboBoxClass</class>
+ <widget class="QWidget" name="CustomComboBoxClass">
   <property name="geometry">
    <rect>
     <x>0</x>
     <y>0</y>
-    <width>348</width>
-    <height>25</height>
+    <width>200</width>
+    <height>30</height>
    </rect>
   </property>
   <property name="windowTitle">
-   <string>CustomLabel</string>
+   <string>CustomComboBox</string>
   </property>
   <layout class="QVBoxLayout" name="verticalLayout">
    <property name="spacing">
@@ -30,15 +30,18 @@
     <number>0</number>
    </property>
    <item>
-    <widget class="QLabel" name="label">
-     <property name="text">
-      <string>TextLabel</string>
-     </property>
-    </widget>
+    <widget class="QComboBox" name="comboBox"/>
    </item>
   </layout>
  </widget>
  <layoutdefault spacing="6" margin="11"/>
+ <customwidgets>
+  <customwidget>
+   <class>CustomComboBox</class>
+   <extends>QComboBox</extends>
+   <header>CoreWidget/CustomComboBox.h</header>
+  </customwidget>
+ </customwidgets>
  <resources/>
  <connections/>
-</ui>
+</ui> 

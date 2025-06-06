@@ -61,9 +61,9 @@ public:
     QString includeFile() const override;
 
     /// <summary>
-    /// 获取域名
+    /// 获取控件的XML描述
     /// </summary>
-    QString domXml() const override;
+    virtual QString domXml() const override = 0;
 
 protected:
     bool m_initialized;  /// 初始化标志

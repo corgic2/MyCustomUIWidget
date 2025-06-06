@@ -1,12 +1,12 @@
 ﻿#pragma once
 
 #include "CustomWidgetPlugin.h"
-#include "DomainWidget/FilePathIconListWidgetItem.h"
+#include "CoreWidget/CustomToolButton.h"
 
 /// <summary>
-/// FilePathIconListWidgetItem设计器插件类
+/// CustomToolButton设计器插件类
 /// </summary>
-class CUSTOMWIDGETPLUGIN_EXPORT FilePathIconListWidgetItemPlugin : public CustomWidgetPlugin
+class CUSTOMWIDGETPLUGIN_EXPORT CustomToolButtonPlugin : public CustomWidgetPlugin
 {
     Q_OBJECT
 
@@ -15,7 +15,7 @@ public:
     /// 构造函数
     /// </summary>
     /// <param name="parent">父对象指针</param>
-    explicit FilePathIconListWidgetItemPlugin(QObject* parent = nullptr);
+    explicit CustomToolButtonPlugin(QObject* parent = nullptr);
 
     /// <summary>
     /// 创建控件实例
@@ -45,4 +45,4 @@ public:
     /// 获取控件的XML描述
     /// </summary>
     QString domXml() const override;
-}; 
+};

@@ -41,4 +41,8 @@ public:
     /// 获取包含文件名
     /// </summary>
     QString includeFile() const override;
-}; 
+    /// <summary>
+    /// 获取控件的XML描述
+    /// </summary>
+    QString domXml() const override;
+};

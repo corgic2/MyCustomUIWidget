@@ -28,4 +28,9 @@ QString FilePathIconListWidgetItemPlugin::whatsThis() const
 QString FilePathIconListWidgetItemPlugin::includeFile() const
 {
     return QStringLiteral("DomainWidget/FilePathIconListWidgetItem.h");
+}
+
+QString FilePathIconListWidgetItemPlugin::domXml() const
+{
+    return QString();
 } 
