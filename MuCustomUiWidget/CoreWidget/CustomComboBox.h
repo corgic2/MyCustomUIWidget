@@ -2,8 +2,8 @@
 
 #include <QComboBox>
 #include <QListView>
-#include "UIWidgetColorDefine.h"
-#include "UIWidgetGlobal.h"
+#include "../CommonDefine/UIWidgetColorDefine.h"
+#include "../CommonDefine/UIWidgetGlobal.h"
 
 /// <summary>
 /// 自定义组合框控件类，提供丰富的样式设置

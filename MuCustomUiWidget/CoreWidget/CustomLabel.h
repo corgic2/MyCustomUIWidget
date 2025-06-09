@@ -3,8 +3,8 @@
 #include <QLabel>
 #include <QPainter>
 #include <QWidget>
-#include "UIWidgetColorDefine.h"
-#include "UIWidgetGlobal.h"
+#include "../CommonDefine/UIWidgetColorDefine.h"
+#include "../CommonDefine/UIWidgetGlobal.h"
 /// <summary>
 /// 自定义标签控件类，提供丰富的样式和特效设置
 /// </summary>

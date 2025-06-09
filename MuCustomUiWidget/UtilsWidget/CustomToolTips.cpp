@@ -247,6 +247,16 @@ void CustomToolTips::ShowTips(const QPoint& pos)
     m_opacityAnimation->setStartValue(0.0);
     m_opacityAnimation->setEndValue(1.0);
     m_opacityAnimation->start();
+    if (m_ui->labelEx->text().isEmpty())
+    {
+        m_ui->labelEx->hide();
+        setFixedSize(this->size().width(), this->size().height() - m_ui->labelEx->height());
+    }
+    else
+    {
+        m_ui->labelEx->show();
+        setFixedSize(this->size().width(), this->size().height() + m_ui->labelEx->height());
+    }
     show();
 
     // 设置自动隐藏定时器

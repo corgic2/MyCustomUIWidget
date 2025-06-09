@@ -1,5 +1,5 @@
 ﻿#pragma once
-#include "UIWidgetGlobal.h"
+#include "../CommonDefine/UIWidgetGlobal.h"
 #include "../CoreWidget/CustomLabel.h"
 #include "../UtilsWidget/CustomToolTips.h"
 #include "ui_FilePathIconListWidgetItem.h"

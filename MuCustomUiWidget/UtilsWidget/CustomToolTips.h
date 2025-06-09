@@ -7,8 +7,8 @@
 #include <QWidget>
 #include <QScreen>
 #include <QGuiApplication>
-#include "UIWidgetColorDefine.h"
-#include "UIWidgetGlobal.h"
+#include "../CommonDefine/UIWidgetColorDefine.h"
+#include "../CommonDefine/UIWidgetGlobal.h"
 #include "ui_CustomToolTips.h"
 
 QT_BEGIN_NAMESPACE

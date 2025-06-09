@@ -5,7 +5,7 @@
 #if defined(CUSTOMUIGLOBAL_LIBRARY)
 #  define CustomUIGlobal_API Q_DECL_EXPORT
 #else
-#  define CustomUIGlobal_API Q_DECL_IMPORT
+#  define CustomUIGlobal_API 
 #endif
 
 // 定义一些通用的宏

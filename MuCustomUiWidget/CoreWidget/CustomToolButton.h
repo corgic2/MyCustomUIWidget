@@ -1,8 +1,8 @@
 ﻿#pragma once
 
 #include <QtWidgets/QToolButton>
-#include "UIWidgetColorDefine.h"
-#include "UIWidgetGlobal.h"
+#include "../CommonDefine/UIWidgetColorDefine.h"
+#include "../CommonDefine/UIWidgetGlobal.h"
 #include "../UtilsWidget/CustomToolTips.h"
 
 /// <summary>
@@ -151,11 +151,6 @@ public:
     /// 获取背景颜色
     /// </summary>
     QColor backgroundColor() const;
-
-    /// <summary>
-    /// 设置背景颜色（QColor版本）
-    /// </summary>
-    void SetBackgroundQColor(const QColor& color) { SetBackgroundColor(color); }
 
     /// <summary>
     /// 设置背景类型
