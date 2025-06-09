@@ -262,6 +262,15 @@ public:
     /// </summary>
     void SetImageScaleMode(EM_ImageScaleMode mode);
 
+    /// <summary>
+    /// 设置边距
+    /// </summary>
+    /// <param name="left">左边距</param>
+    /// <param name="top">上边距</param>
+    /// <param name="right">右边距</param>
+    /// <param name="bottom">下边距</param>
+    void SetMargins(int left, int top, int right, int bottom);
+
 protected:
     /// <summary>
     /// 重写大小改变事件

@@ -2,6 +2,8 @@
 
 #include <QToolBar>
 #include <QAction>
+#include <QColor>
+#include <QPainter>
 #include "../CommonDefine/UIWidgetColorDefine.h"
 #include "../CommonDefine/UIWidgetGlobal.h"
 
@@ -12,15 +14,15 @@ class CustomUIGlobal_API CustomToolBar : public QToolBar
 {
     Q_OBJECT
 
-    Q_PROPERTY(int iconSize READ GetIconSize WRITE SetIconSize)
-    Q_PROPERTY(int spacing READ GetSpacing WRITE SetSpacing)
-    Q_PROPERTY(QColor backgroundColor READ GetBackgroundColor WRITE SetBackgroundColor)
-    Q_PROPERTY(QColor borderColor READ GetBorderColor WRITE SetBorderColor)
-    Q_PROPERTY(QColor hoverColor READ GetHoverColor WRITE SetHoverColor)
-    Q_PROPERTY(QColor pressedColor READ GetPressedColor WRITE SetPressedColor)
-    Q_PROPERTY(bool hasShadow READ GetHasShadow WRITE SetHasShadow)
-    Q_PROPERTY(int shadowSize READ GetShadowSize WRITE SetShadowSize)
-    Q_PROPERTY(QColor shadowColor READ GetShadowColor WRITE SetShadowColor)
+        Q_PROPERTY(int iconSize READ GetIconSize WRITE SetIconSize)
+        Q_PROPERTY(int spacing READ GetSpacing WRITE SetSpacing)
+        Q_PROPERTY(QColor backgroundColor READ GetBackgroundColor WRITE SetBackgroundColor)
+        Q_PROPERTY(QColor borderColor READ GetBorderColor WRITE SetBorderColor)
+        Q_PROPERTY(QColor hoverColor READ GetHoverColor WRITE SetHoverColor)
+        Q_PROPERTY(QColor pressedColor READ GetPressedColor WRITE SetPressedColor)
+        Q_PROPERTY(bool hasShadow READ GetHasShadow WRITE SetHasShadow)
+        Q_PROPERTY(int shadowSize READ GetShadowSize WRITE SetShadowSize)
+        Q_PROPERTY(QColor shadowColor READ GetShadowColor WRITE SetShadowColor)
 
 public:
     /// <summary>
@@ -32,7 +34,7 @@ public:
     /// <summary>
     /// 析构函数
     /// </summary>
-    ~CustomToolBar();
+    ~CustomToolBar() override;
 
     /// <summary>
     /// 添加自定义动作
@@ -43,7 +45,6 @@ public:
     /// <returns>创建的动作指针</returns>
     QAction* AddCustomAction(const QString& text, const QIcon& icon, const QString& tip = "");
 
-    // Getters
     int GetIconSize() const { return m_iconSize; }
 
     int GetSpacing() const { return m_spacing; }

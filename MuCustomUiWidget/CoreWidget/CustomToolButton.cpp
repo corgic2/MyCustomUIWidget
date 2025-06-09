@@ -1,10 +1,16 @@
 ﻿#include "CustomToolButton.h"
 #include <QEvent>
+#include <QPainter>
+#include <QPen>
 
 CustomToolButton::CustomToolButton(QWidget* parent)
     : QToolButton(parent)
+    , m_borderWidth(0)
+    , m_borderColor(Qt::transparent)
 {
     InitializeButton();
+    // 初始化默认边距
+    setContentsMargins(0, 0, 0, 0);
 }
 
 CustomToolButton::~CustomToolButton()
@@ -93,6 +99,24 @@ void CustomToolButton::SetPadding(int padding)
 {
     m_padding = padding;
     UpdateStyle();
+}
+
+void CustomToolButton::SetMargins(int left, int top, int right, int bottom)
+{
+    setContentsMargins(left, top, right, bottom);
+    update();
+}
+
+void CustomToolButton::SetBorderWidth(int width)
+{
+    m_borderWidth = width;
+    update();
+}
+
+void CustomToolButton::SetBorderColor(const QColor& color)
+{
+    m_borderColor = color;
+    update();
 }
 
 void CustomToolButton::UpdateStyle()
@@ -209,4 +233,17 @@ CustomToolButton::EM_BackgroundType CustomToolButton::backgroundType() const
 int CustomToolButton::padding() const
 {
     return m_padding;
+}
+
+void CustomToolButton::paintEvent(QPaintEvent* event)
+{
+    QToolButton::paintEvent(event);
+    
+    if (m_borderWidth > 0)
+    {
+        QPainter painter(this);
+        painter.setPen(QPen(m_borderColor, m_borderWidth));
+        painter.drawRect(rect().adjusted(m_borderWidth/2, m_borderWidth/2, 
+                                       -m_borderWidth/2, -m_borderWidth/2));
+    }
 }

@@ -13,8 +13,12 @@ CustomComboBox::CustomComboBox(QWidget* parent)
     , m_itemBackgroundColor(UIColorDefine::background_color::White)
     , m_itemSpacing(2)
     , m_itemHeight(24)
+    , m_borderWidth(0)
+    , m_borderColor(Qt::transparent)
 {
     InitializeComboBox();
+    // 初始化默认边距
+    setContentsMargins(0, 0, 0, 0);
 }
 
 CustomComboBox::~CustomComboBox()
@@ -144,4 +148,35 @@ void CustomComboBox::UpdateStyle()
     style += "} ";
 
     setStyleSheet(style);
+}
+
+void CustomComboBox::SetMargins(int left, int top, int right, int bottom)
+{
+    setContentsMargins(left, top, right, bottom);
+    update();
+}
+
+void CustomComboBox::SetBorderWidth(int width)
+{
+    m_borderWidth = width;
+    update();
+}
+
+void CustomComboBox::SetBorderColor(const QColor& color)
+{
+    m_borderColor = color;
+    update();
+}
+
+void CustomComboBox::paintEvent(QPaintEvent* event)
+{
+    QComboBox::paintEvent(event);
+    
+    if (m_borderWidth > 0)
+    {
+        QPainter painter(this);
+        painter.setPen(QPen(m_borderColor, m_borderWidth));
+        painter.drawRect(rect().adjusted(m_borderWidth/2, m_borderWidth/2, 
+                                       -m_borderWidth/2, -m_borderWidth/2));
+    }
 }

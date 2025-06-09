@@ -181,6 +181,27 @@ public:
     /// </summary>
     int padding() const;
 
+    /// <summary>
+    /// 设置边距
+    /// </summary>
+    /// <param name="left">左边距</param>
+    /// <param name="top">上边距</param>
+    /// <param name="right">右边距</param>
+    /// <param name="bottom">下边距</param>
+    void SetMargins(int left, int top, int right, int bottom);
+
+    /// <summary>
+    /// 设置边框宽度
+    /// </summary>
+    /// <param name="width">边框宽度</param>
+    void SetBorderWidth(int width);
+
+    /// <summary>
+    /// 设置边框颜色
+    /// </summary>
+    /// <param name="color">边框颜色</param>
+    void SetBorderColor(const QColor& color);
+
 protected:
     /// <summary>
     /// 进入事件
@@ -192,6 +213,7 @@ protected:
     /// </summary>
     void leaveEvent(QEvent* event) override;
 
+    void paintEvent(QPaintEvent* event) override;
 private slots:
     /// <summary>
     /// 样式变化槽函数
@@ -223,5 +245,7 @@ private:
     QColor m_gradientEndColor; /// 渐变结束颜色
     int m_padding; /// 内边距
     CustomToolTips* m_tips = nullptr; // tips
+    int m_borderWidth;         /// 边框宽度
+    QColor m_borderColor;      /// 边框颜色
 };
 
