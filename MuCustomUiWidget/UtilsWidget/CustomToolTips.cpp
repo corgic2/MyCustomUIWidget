@@ -13,15 +13,12 @@ CustomToolTips::CustomToolTips(QWidget* parent)
     , m_tipsType(Normal)
     , m_fontSize(UIColorDefine::size::TipsFontSize)
     , m_radius(UIColorDefine::size::TipsRadius)
-    , m_hasShadow(false)
     , m_opacity(1.0)
     , m_showDuration(UIColorDefine::size::TipsShowDuration)
     , m_animationDuration(UIColorDefine::size::TipsAnimationDuration)
     , m_isAnimating(false)
     , m_targetPosition(QPoint())
     , m_borderWidth(1)
-    , m_shadowRadius(10)
-    , m_shadowOffset(QPoint(0, 2))
 {
     m_ui->setupUi(this);
     InitializeWidget();
@@ -48,7 +45,6 @@ void CustomToolTips::InitializeWidget()
 {
     // 设置窗口属性
     setWindowFlags(Qt::ToolTip | Qt::FramelessWindowHint);
-    setAttribute(Qt::WA_TranslucentBackground);
 
     // 初始化默认值
     m_tipsType = Normal;
@@ -57,10 +53,12 @@ void CustomToolTips::InitializeWidget()
     m_borderColor = UIColorDefine::border_color::Default;
     m_borderWidth = UIColorDefine::size::DefaultBorderWidth;
     m_radius = UIColorDefine::size::TipsRadius;
-    m_hasShadow = false;
-    m_shadowColor = UIColorDefine::shadow_color::Default;
-    m_shadowOffset = QPoint(0, 2);
-    m_shadowRadius = UIColorDefine::size::DefaultShadowRadius;
+
+    // 设置标签属性
+    m_ui->label->setWordWrap(true);
+    m_ui->labelEx->setWordWrap(true);
+    m_ui->label->setMinimumHeight(30);
+    m_ui->labelEx->setMinimumHeight(30);
 
     m_hideTimer->setSingleShot(true);
     connect(m_hideTimer, &QTimer::timeout, this, &CustomToolTips::HideTips);
@@ -155,97 +153,101 @@ void CustomToolTips::SetAnimationDuration(int msecs)
     }
 }
 
-void CustomToolTips::EnableShadow(bool enable)
-{
-    m_hasShadow = enable;
-
-    if (m_hasShadow)
-    {
-        auto shadow = new QGraphicsDropShadowEffect(this);
-        shadow->setBlurRadius(m_shadowRadius);
-        shadow->setColor(m_shadowColor);
-        shadow->setOffset(m_shadowOffset.x(), m_shadowOffset.y());
-        setGraphicsEffect(shadow);
-    }
-    else
-    {
-        setGraphicsEffect(nullptr);
-    }
-
-    UpdateStyle();
-}
-
-void CustomToolTips::SetShadowColor(const QColor& color)
-{
-    m_shadowColor = color;
-    if (m_hasShadow)
-    {
-        auto shadow = qobject_cast<QGraphicsDropShadowEffect*>(graphicsEffect());
-        if (shadow)
-        {
-            shadow->setColor(m_shadowColor);
-        }
-    }
-}
-
-void CustomToolTips::SetShadowOffset(const QPoint& offset)
-{
-    m_shadowOffset = offset;
-    if (m_hasShadow)
-    {
-        auto shadow = qobject_cast<QGraphicsDropShadowEffect*>(graphicsEffect());
-        if (shadow)
-        {
-            shadow->setOffset(m_shadowOffset.x(), m_shadowOffset.y());
-        }
-    }
-}
-
-void CustomToolTips::SetShadowRadius(int radius)
-{
-    m_shadowRadius = radius;
-    if (m_hasShadow)
-    {
-        auto shadow = qobject_cast<QGraphicsDropShadowEffect*>(graphicsEffect());
-        if (shadow)
-        {
-            shadow->setBlurRadius(m_shadowRadius);
-        }
-    }
-}
 
 void CustomToolTips::UpdateStyle()
 {
-    QString style = QString(
-        "QWidget#CustomToolTipsClass {"
-        "   background-color: %1;"
-        "   color: %2;"
-        "   border: %3px solid %4;"
-        "   border-radius: %5px;"
-        "}")
-                    .arg(UIColorDefine::color_convert::ToCssString(m_backgroundColor))
-                    .arg(UIColorDefine::color_convert::ToCssString(m_textColor))
-        .arg(m_borderWidth)
-                    .arg(UIColorDefine::color_convert::ToCssString(m_borderColor))
-        .arg(m_radius);
+    // 主窗口样式
+    QString mainStyle = QString(
+                                "QWidget#CustomToolTipsClass {"
+                                "   background-color: %1;"
+                                "   border: %2px solid %3;"
+                                "   border-radius: %4px;"
+                                "   padding: 8px;"
+                                "}")
+                        .arg(UIColorDefine::color_convert::ToCssString(m_backgroundColor))
+                        .arg(m_borderWidth)
+                        .arg(UIColorDefine::color_convert::ToCssString(m_borderColor))
+                        .arg(m_radius);
 
+    // 内部frame样式
+    auto frameStyle = QString(
+                              "QFrame#frame {"
+                              "   border: none;"
+                              "   margin: 0px;"
+                              "}");
+
+    // 标签样式
+    QString labelStyle = QString(
+                                 "CustomLabel {"
+                                 "   color: %1;"
+                                 "   font-size: %2px;"
+                                 "   padding: 2px 4px;"
+                                 "   margin: 0px;"
+                                 "}")
+                         .arg(UIColorDefine::color_convert::ToCssString(m_textColor))
+                         .arg(m_fontSize);
+
+    // 合并样式
+    QString style = mainStyle + frameStyle + labelStyle;
     setStyleSheet(style);
+
+    update();
 }
 
 void CustomToolTips::ShowTips(const QPoint& pos)
 {
     m_targetPosition = pos;
+    
     // 停止任何正在进行的动画
     if (m_opacityAnimation->state() == QAbstractAnimation::Running)
     {
         m_opacityAnimation->stop();
     }
 
+    // 设置窗口位置
+    QSize size = sizeHint();
+    QPoint targetPos = pos;
+
+    // 确保提示框完全显示在屏幕内
+    QScreen* screen = QGuiApplication::screenAt(pos);
+    if (screen)
+    {
+        QRect screenGeometry = screen->geometry();
+
+        // 检查右边界
+        if (targetPos.x() + size.width() > screenGeometry.right())
+        {
+            targetPos.setX(screenGeometry.right() - size.width());
+        }
+
+        // 检查下边界
+        if (targetPos.y() + size.height() > screenGeometry.bottom())
+        {
+            targetPos.setY(pos.y() - size.height());
+        }
+
+        // 检查左边界
+        if (targetPos.x() < screenGeometry.left())
+        {
+            targetPos.setX(screenGeometry.left());
+        }
+
+        // 检查上边界
+        if (targetPos.y() < screenGeometry.top())
+        {
+            targetPos.setY(screenGeometry.top());
+        }
+    }
+
+    // 移动到目标位置
+    move(targetPos);
+
+    // 开始显示动画
     m_isAnimating = true;
     m_opacityAnimation->setStartValue(0.0);
     m_opacityAnimation->setEndValue(1.0);
-    show();
     m_opacityAnimation->start();
+    show();
 
     // 设置自动隐藏定时器
     m_hideTimer->start(m_showDuration);

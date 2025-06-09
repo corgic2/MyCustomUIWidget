@@ -220,11 +220,7 @@ public:
     /// <summary>
     /// 设置阴影颜色
     /// </summary>
-    void SetShadowColor(const QColor& color)
-    {
-        m_shadowColor = color;
-        UpdateStyle();
-    }
+    void SetShadowColor(const QColor& color);
 
     /// <summary>
     /// 获取是否有边框
@@ -239,11 +235,7 @@ public:
     /// <summary>
     /// 设置边框颜色
     /// </summary>
-    void SetBorderColor(const QColor& color)
-    {
-        m_borderColor = color;
-        UpdateStyle();
-    }
+    void SetBorderColor(const QColor& color);
 
     /// <summary>
     /// 获取边框宽度
@@ -253,11 +245,7 @@ public:
     /// <summary>
     /// 设置边框宽度
     /// </summary>
-    void SetBorderWidth(int width)
-    {
-        m_borderWidth = width;
-        UpdateStyle();
-    }
+    void SetBorderWidth(int width);
 
     /// <summary>
     /// 获取是否启用省略

@@ -5,6 +5,8 @@
 #include <QTimer>
 #include <QToolTip>
 #include <QWidget>
+#include <QScreen>
+#include <QGuiApplication>
 #include "UIWidgetColorDefine.h"
 #include "UIWidgetGlobal.h"
 #include "ui_CustomToolTips.h"
@@ -24,6 +26,7 @@ QT_END_NAMESPACE
 class CustomUIGlobal_API CustomToolTips : public QWidget
 {
     Q_OBJECT
+    Q_PROPERTY(qreal opacity READ windowOpacity WRITE setOpacity)
 
 public:
     /// <summary>
@@ -101,11 +104,6 @@ public:
     void SetBorderColor(const QColor& color);
 
     /// <summary>
-    /// 设置阴影颜色
-    /// </summary>
-    void SetShadowColor(const QColor& color);
-
-    /// <summary>
     /// 设置字体大小
     /// </summary>
     /// <param name="size">字体大小</param>
@@ -126,30 +124,6 @@ public:
     /// </summary>
     /// <param name="msecs"></param>
     void SetAnimationDuration(int msecs);
-
-    /// <summary>
-    /// 启用阴影效果
-    /// </summary>
-    /// <param name="enable">是否启用</param>
-    void EnableShadow(bool enable = true);
-
-    /// <summary>
-    /// 设置边框宽度
-    /// </summary>
-    /// <param name="width">边框宽度值</param>
-    void SetBorderWidth(int width);
-
-    /// <summary>
-    /// 设置阴影半径
-    /// </summary>
-    /// <param name="radius">阴影半径值</param>
-    void SetShadowRadius(int radius);
-
-    /// <summary>
-    /// 设置阴影偏移
-    /// </summary>
-    /// <param name="offset">阴影偏移值</param>
-    void SetShadowOffset(const QPoint& offset);
 
     /// <summary>
     /// 显示提示框
@@ -213,15 +187,11 @@ private:
     QColor m_backgroundColor; /// 背景颜色
     QColor m_textColor; /// 文本颜色
     QColor m_borderColor; /// 边框颜色
-    QColor m_shadowColor; /// 阴影颜色
     int m_fontSize; /// 字体大小
     int m_radius; /// 圆角半径
-    bool m_hasShadow; /// 是否有阴影
     qreal m_opacity; /// 透明度值
     EM_TipsType m_tipsType; // 提示类别
     int m_showDuration; /// 显示持续时间
     int m_animationDuration; /// 动画持续时间
     int m_borderWidth; /// 边框宽度
-    int m_shadowRadius; /// 阴影半径
-    QPoint m_shadowOffset; /// 阴影偏移
 };

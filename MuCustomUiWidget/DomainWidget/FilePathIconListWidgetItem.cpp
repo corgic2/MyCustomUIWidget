@@ -53,7 +53,6 @@ void FilePathIconListWidgetItem::InitializeWidget()
 
     // 设置Tips样式
     m_tipsWidget->SetRadius(6);
-    m_tipsWidget->EnableShadow(true);
 
     UpdateStyle();
 }

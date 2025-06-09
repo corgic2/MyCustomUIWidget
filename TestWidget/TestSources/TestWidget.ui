@@ -6,35 +6,64 @@
    <rect>
     <x>0</x>
     <y>0</y>
-    <width>600</width>
-    <height>400</height>
+    <width>800</width>
+    <height>600</height>
    </rect>
   </property>
   <property name="windowTitle">
-   <string>TestWidget</string>
+   <string>Custom Widget Test</string>
   </property>
-  <layout class="QVBoxLayout" name="verticalLayout">
-   <property name="spacing">
-    <number>0</number>
-   </property>
-   <property name="leftMargin">
-    <number>0</number>
-   </property>
-   <property name="topMargin">
-    <number>0</number>
-   </property>
-   <property name="rightMargin">
-    <number>0</number>
-   </property>
-   <property name="bottomMargin">
-    <number>0</number>
-   </property>
+  <layout class="QHBoxLayout" name="horizontalLayout">
    <item>
-    <layout class="QVBoxLayout" name="verticalLayout_2">
-     <property name="spacing">
-      <number>0</number>
+    <widget class="QScrollArea" name="scrollArea">
+     <property name="widgetResizable">
+      <bool>true</bool>
      </property>
-    </layout>
+     <widget class="QWidget" name="scrollAreaWidgetContents">
+      <layout class="QHBoxLayout" name="horizontalLayout_2">
+       <item>
+        <layout class="QVBoxLayout" name="testControlsLayout">
+         <item>
+          <widget class="QGroupBox" name="labelTestGroup">
+           <property name="title">
+            <string>CustomLabel Tests</string>
+           </property>
+           <layout class="QVBoxLayout" name="labelTestLayout"/>
+          </widget>
+         </item>
+         <item>
+          <widget class="QGroupBox" name="comboBoxTestGroup">
+           <property name="title">
+            <string>CustomComboBox Tests</string>
+           </property>
+           <layout class="QVBoxLayout" name="comboBoxTestLayout"/>
+          </widget>
+         </item>
+         <item>
+          <widget class="QGroupBox" name="tipsTestGroup">
+           <property name="title">
+            <string>CustomToolTips Tests</string>
+           </property>
+           <layout class="QVBoxLayout" name="tipsTestLayout"/>
+          </widget>
+         </item>
+        </layout>
+       </item>
+       <item>
+        <layout class="QVBoxLayout" name="testDisplayLayout">
+         <item>
+          <widget class="QGroupBox" name="displayGroup">
+           <property name="title">
+            <string>Test Display Area</string>
+           </property>
+           <layout class="QVBoxLayout" name="displayLayout"/>
+          </widget>
+         </item>
+        </layout>
+       </item>
+      </layout>
+     </widget>
+    </widget>
    </item>
   </layout>
  </widget>

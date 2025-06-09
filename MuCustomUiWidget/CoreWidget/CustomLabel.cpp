@@ -296,6 +296,11 @@ QColor CustomLabel::shadowColor() const
     return m_shadowColor;
 }
 
+void CustomLabel::SetShadowColor(const QColor& color)
+{
+    m_shadowColor = color;
+    UpdateStyle();
+}
 bool CustomLabel::hasBorder() const
 {
     return m_hasBorder;
@@ -306,9 +311,21 @@ QColor CustomLabel::borderColor() const
     return m_borderColor;
 }
 
+void CustomLabel::SetBorderColor(const QColor& color)
+{
+    m_borderColor = color;
+    UpdateStyle();
+}
+
 int CustomLabel::borderWidth() const
 {
     return m_borderWidth;
+}
+
+void CustomLabel::SetBorderWidth(int width)
+{
+    m_borderWidth = width;
+    UpdateStyle();
 }
 
 bool CustomLabel::isElideEnabled() const

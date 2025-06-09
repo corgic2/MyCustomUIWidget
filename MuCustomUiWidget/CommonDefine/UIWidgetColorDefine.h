@@ -112,11 +112,11 @@ namespace UIColorDefine
         /// <summary>
         /// 提示框背景色定义
         /// </summary>
-        const QColor ToolTipsNormal(250, 250, 250, 250); /// 普通提示框背景
-        const QColor ToolTipsInfo(236, 246, 255, 250); /// 信息提示框背景
-        const QColor ToolTipsWarning(255, 248, 220, 250); /// 警告提示框背景
-        const QColor ToolTipsError(255, 235, 235, 250); /// 错误提示框背景
-        const QColor ToolTipsSuccess(242, 255, 242, 250); /// 成功提示框背景
+        const QColor ToolTipsNormal(197, 245, 251, 255); /// 普通提示框背景
+        const QColor ToolTipsInfo(236, 246, 255, 255); /// 信息提示框背景
+        const QColor ToolTipsWarning(255, 248, 220, 255); /// 警告提示框背景
+        const QColor ToolTipsError(255, 235, 235, 255); /// 错误提示框背景
+        const QColor ToolTipsSuccess(242, 255, 242, 255); /// 成功提示框背景
     }
 
     /// <summary>
