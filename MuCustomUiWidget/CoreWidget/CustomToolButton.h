@@ -249,3 +249,9 @@ private:
     QColor m_borderColor;      /// 边框颜色
 };
 
+
+Q_DECLARE_METATYPE(CustomToolButton::EM_BackgroundType)
+
+Q_DECLARE_METATYPE(CustomToolButton::EM_FontSize)
+
+Q_DECLARE_METATYPE(CustomToolButton::EM_FontStyle)

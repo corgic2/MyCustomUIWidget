@@ -3,6 +3,7 @@
 #include <QLabel>
 #include <QPainter>
 #include <QWidget>
+#include "CustomFrame.h"
 #include "../CommonDefine/UIWidgetColorDefine.h"
 #include "../CommonDefine/UIWidgetGlobal.h"
 /// <summary>
@@ -317,3 +318,11 @@ private:
     QPixmap m_pixmap; /// 图片对象
     EM_ImageScaleMode m_imageScaleMode; /// 图片缩放模式
 };
+
+Q_DECLARE_METATYPE(CustomLabel::EM_BackgroundType)
+
+Q_DECLARE_METATYPE(CustomLabel::EM_FontSize)
+
+Q_DECLARE_METATYPE(CustomLabel::EM_FontStyle)
+
+Q_DECLARE_METATYPE(CustomLabel::EM_ImageScaleMode)

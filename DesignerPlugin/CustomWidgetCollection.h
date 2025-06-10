@@ -26,5 +26,5 @@ public:
     QList<QDesignerCustomWidgetInterface*> customWidgets() const override;
 
 private:
-    QList<QDesignerCustomWidgetInterface*> m_widgets;  /// 控件列表
+    QList<QDesignerCustomWidgetInterface*> m_widgets; /// 控件列表
 }; 
