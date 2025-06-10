@@ -85,7 +85,48 @@ void FilePathIconListWidget::AddFileItem(const FilePathIconListWidgetItem::ST_No
     addItem(item);
 }
 
-void FilePathIconListWidget::ClearItems()
+void FilePathIconListWidget::InsertFileItem(int index, const FilePathIconListWidgetItem::ST_NodeInfo& nodeInfo)
+{
+    auto item = new FilePathIconListWidgetItem(this);
+    item->SetNodeInfo(nodeInfo);
+    item->SetTextColor(m_itemTextColor);
+    item->SetBackgroundColor(m_backgroundColor);
+    item->SetHoverColor(m_itemHoverColor);
+    item->SetSelectedColor(m_itemSelectedColor);
+    item->EnableHoverEffect(m_enableHoverEffect);
+    item->EnableSelectedEffect(m_enableSelectedEffect);
+    insertItem(index, item);
+}
+
+void FilePathIconListWidget::RemoveItemByIndex(int index)
+{
+    if (index >= 0 && index < count())
+    {
+        QListWidgetItem* item = takeItem(index);
+        if (item)
+        {
+            delete item;
+        }
+    }
+}
+
+void FilePathIconListWidget::RemoveItem(FilePathIconListWidgetItem* item)
+{
+    if (item)
+    {
+        int rowIndex = row(item);
+        if (rowIndex >= 0)
+        {
+            QListWidgetItem* removedItem = takeItem(rowIndex);
+            if (removedItem)
+            {
+                delete removedItem;
+            }
+        }
+    }
+}
+
+void FilePathIconListWidget::Clear()
 {
     clear();
 }
@@ -95,9 +136,44 @@ FilePathIconListWidgetItem* FilePathIconListWidget::GetItem(int index) const
     return dynamic_cast<FilePathIconListWidgetItem*>(item(index));
 }
 
+FilePathIconListWidgetItem* FilePathIconListWidget::GetCurrentItem() const
+{
+    return dynamic_cast<FilePathIconListWidgetItem*>(currentItem());
+}
+
 int FilePathIconListWidget::GetItemCount() const
 {
     return count();
+}
+
+void FilePathIconListWidget::MoveItemToTop(FilePathIconListWidgetItem* item)
+{
+    if (item)
+    {
+        int currentRow = row(item);
+        if (currentRow > 0)
+        {
+            QListWidgetItem* takenItem = takeItem(currentRow);
+            if (takenItem)
+            {
+                insertItem(0, takenItem);
+                setCurrentItem(takenItem);
+            }
+        }
+    }
+}
+
+void FilePathIconListWidget::MoveItemToTop(int index)
+{
+    if (index > 0 && index < count())
+    {
+        QListWidgetItem* takenItem = takeItem(index);
+        if (takenItem)
+        {
+            insertItem(0, takenItem);
+            setCurrentItem(takenItem);
+        }
+    }
 }
 
 void FilePathIconListWidget::SetBackgroundColor(const QColor& color)

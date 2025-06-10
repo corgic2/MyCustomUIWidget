@@ -3,8 +3,8 @@
 #include <QMenu>
 #include <QWidget>
 #include "FilePathIconListWidgetItem.h"
-#include "../CommonDefine/UIWidgetGlobal.h"
 #include "ui_FilePathIconListWidget.h"
+#include "../CommonDefine/UIWidgetGlobal.h"
 
 QT_BEGIN_NAMESPACE
 namespace Ui { class FilePathIconListWidgetClass; };
@@ -43,7 +43,7 @@ public:
     /// <summary>
     /// 析构函数
     /// </summary>
-    ~FilePathIconListWidget();
+    ~FilePathIconListWidget() override;
 
     /// <summary>
     /// 添加文件项
@@ -51,9 +51,28 @@ public:
     void AddFileItem(const FilePathIconListWidgetItem::ST_NodeInfo& nodeInfo);
 
     /// <summary>
+    /// 在指定位置插入文件项
+    /// </summary>
+    /// <param name="index">插入位置的索引</param>
+    /// <param name="nodeInfo">节点信息</param>
+    void InsertFileItem(int index, const FilePathIconListWidgetItem::ST_NodeInfo& nodeInfo);
+
+    /// <summary>
+    /// 移除指定索引的文件项
+    /// </summary>
+    /// <param name="index">要移除的文件项索引</param>
+    void RemoveItemByIndex(int index);
+
+    /// <summary>
+    /// 移除指定的文件项
+    /// </summary>
+    /// <param name="item">要移除的文件项指针</param>
+    void RemoveItem(FilePathIconListWidgetItem* item);
+
+    /// <summary>
     /// 清空列表
     /// </summary>
-    void ClearItems();
+    void Clear();
 
     /// <summary>
     /// 获取指定索引的列表项
@@ -63,10 +82,28 @@ public:
     FilePathIconListWidgetItem* GetItem(int index) const;
 
     /// <summary>
+    /// 获取当前选中的列表项
+    /// </summary>
+    /// <returns>当前选中的列表项指针</returns>
+    FilePathIconListWidgetItem* GetCurrentItem() const;
+
+    /// <summary>
     /// 获取列表项数量
     /// </summary>
     /// <returns>列表项数量</returns>
     int GetItemCount() const;
+
+    /// <summary>
+    /// 将指定文件项移动到顶部
+    /// </summary>
+    /// <param name="item">要移动的文件项指针</param>
+    void MoveItemToTop(FilePathIconListWidgetItem* item);
+
+    /// <summary>
+    /// 将指定索引的文件项移动到顶部
+    /// </summary>
+    /// <param name="index">要移动的文件项索引</param>
+    void MoveItemToTop(int index);
 
     // 属性访问方法
     QColor GetBackgroundColor() const { return m_backgroundColor; }
