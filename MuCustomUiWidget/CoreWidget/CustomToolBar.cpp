@@ -26,7 +26,7 @@ void CustomToolBar::InitializeWidget()
     setAllowedAreas(Qt::TopToolBarArea);
 
     // 设置默认颜色
-    m_backgroundColor = UIColorDefine::background_color::Light;
+    m_backgroundColor = UIColorDefine::background_color::White;
     m_borderColor = UIColorDefine::border_color::Default;
     m_hoverColor = UIColorDefine::background_color::HoverBackground;
     m_pressedColor = UIColorDefine::background_color::PressedBackground;

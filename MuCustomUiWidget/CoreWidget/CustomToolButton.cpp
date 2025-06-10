@@ -26,7 +26,7 @@ void CustomToolButton::InitializeButton()
     m_fontStyle = FontStyle_Normal;
     m_backgroundType = BackgroundType_Transparent;
     m_backgroundColor = UIColorDefine::background_color::Transparent;
-    m_gradientStartColor = UIColorDefine::background_color::Light;
+    m_gradientStartColor = UIColorDefine::background_color::White;
     m_gradientEndColor = UIColorDefine::background_color::Dark;
     m_padding = 5;
     m_tipsType = CustomToolTips::Normal;

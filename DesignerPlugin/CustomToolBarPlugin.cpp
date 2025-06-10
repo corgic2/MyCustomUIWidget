@@ -34,7 +34,7 @@ QString CustomToolBarPlugin::includeFile() const
 QString CustomToolBarPlugin::domXml() const
 {
     // 使用预定义的颜色值
-    const QColor bgColor = UIColorDefine::background_color::Light;
+    const QColor bgColor = UIColorDefine::background_color::White;
     const QColor borderColor = UIColorDefine::border_color::Default;
     const QColor hoverColor = UIColorDefine::background_color::HoverBackground;
     const QColor pressedColor = UIColorDefine::background_color::PressedBackground;

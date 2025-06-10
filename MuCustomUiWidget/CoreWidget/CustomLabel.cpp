@@ -19,7 +19,7 @@ void CustomLabel::InitializeLabel()
     m_fontStyle = EM_FontStyle::FontStyle_Normal;
     m_backgroundType = EM_BackgroundType::BackgroundType_Transparent;
     m_backgroundColor = UIColorDefine::background_color::Transparent;
-    m_gradientStartColor = UIColorDefine::background_color::Light;
+    m_gradientStartColor = UIColorDefine::background_color::White;
     m_gradientEndColor = UIColorDefine::background_color::Dark;
     m_hasShadow = false;
     m_shadowColor = UIColorDefine::shadow_color::Default;

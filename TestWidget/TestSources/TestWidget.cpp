@@ -321,7 +321,7 @@ void TestWidget::OnTestToolTipsStyle()
             break;
         case 2:
             m_testTips->SetRadius(15);
-            m_testTips->SetBackgroundColor(UIColorDefine::background_color::ToolTipsSuccess);
+            m_testTips->SetBackgroundColor(UIColorDefine::background_color::Success);
             m_testTips->SetTextColor(UIColorDefine::font_color::Success);
             m_testTips->SetToolTips("Success Style");
             m_testTips->SetToolTipsEx("Large radius, success colors");

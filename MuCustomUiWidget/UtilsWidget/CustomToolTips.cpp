@@ -94,13 +94,13 @@ void CustomToolTips::SetTipsType(EM_TipsType type)
             m_backgroundColor = UIColorDefine::background_color::ToolTipsInfo;
             break;
         case Warning:
-            m_backgroundColor = UIColorDefine::background_color::ToolTipsWarning;
+            m_backgroundColor = UIColorDefine::background_color::Warning;
             break;
         case Error:
-            m_backgroundColor = UIColorDefine::background_color::ToolTipsError;
+            m_backgroundColor = UIColorDefine::background_color::Error;
             break;
         case Success:
-            m_backgroundColor = UIColorDefine::background_color::ToolTipsSuccess;
+            m_backgroundColor = UIColorDefine::background_color::Success;
             break;
         default:
             m_backgroundColor = UIColorDefine::background_color::ToolTipsNormal;

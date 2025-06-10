@@ -92,7 +92,6 @@ namespace UIColorDefine
         /// </summary>
         const QColor Transparent(0, 0, 0, 0); /// 透明背景
         const QColor White(255, 255, 255); /// 白色背景
-        const QColor Light(248, 249, 250); /// 浅色背景
         const QColor Dark(52, 58, 64); /// 深色背景
 
         /// <summary>
@@ -114,9 +113,6 @@ namespace UIColorDefine
         /// </summary>
         const QColor ToolTipsNormal(197, 245, 251, 255); /// 普通提示框背景
         const QColor ToolTipsInfo(236, 246, 255, 255); /// 信息提示框背景
-        const QColor ToolTipsWarning(255, 248, 220, 255); /// 警告提示框背景
-        const QColor ToolTipsError(255, 235, 235, 255); /// 错误提示框背景
-        const QColor ToolTipsSuccess(242, 255, 242, 255); /// 成功提示框背景
     }
 
     /// <summary>
