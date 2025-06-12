@@ -74,8 +74,25 @@ void FilePathIconListWidget::SetupConnections()
 
 void FilePathIconListWidget::AddFileItem(const FilePathIconListWidgetItem::ST_NodeInfo& nodeInfo)
 {
+    // 确保文件路径和显示名称使用UTF-8编码
+    FilePathIconListWidgetItem::ST_NodeInfo utf8NodeInfo = nodeInfo;
+    
+    // 如果显示名称为空，使用文件名
+    if (utf8NodeInfo.displayName.isEmpty())
+    {
+        QFileInfo fileInfo(utf8NodeInfo.filePath);
+        utf8NodeInfo.displayName = QString::fromUtf8(fileInfo.fileName().toUtf8());
+    }
+    else
+    {
+        utf8NodeInfo.displayName = QString::fromUtf8(utf8NodeInfo.displayName.toUtf8());
+    }
+
+    // 确保文件路径使用UTF-8编码
+    utf8NodeInfo.filePath = QString::fromUtf8(utf8NodeInfo.filePath.toUtf8());
+
     auto item = new FilePathIconListWidgetItem(this);
-    item->SetNodeInfo(nodeInfo);
+    item->SetNodeInfo(utf8NodeInfo);
     item->SetTextColor(m_itemTextColor);
     item->SetBackgroundColor(m_backgroundColor);
     item->SetHoverColor(m_itemHoverColor);
@@ -87,8 +104,25 @@ void FilePathIconListWidget::AddFileItem(const FilePathIconListWidgetItem::ST_No
 
 void FilePathIconListWidget::InsertFileItem(int index, const FilePathIconListWidgetItem::ST_NodeInfo& nodeInfo)
 {
+    // 确保文件路径和显示名称使用UTF-8编码
+    FilePathIconListWidgetItem::ST_NodeInfo utf8NodeInfo = nodeInfo;
+    
+    // 如果显示名称为空，使用文件名
+    if (utf8NodeInfo.displayName.isEmpty())
+    {
+        QFileInfo fileInfo(utf8NodeInfo.filePath);
+        utf8NodeInfo.displayName = QString::fromUtf8(fileInfo.fileName().toUtf8());
+    }
+    else
+    {
+        utf8NodeInfo.displayName = QString::fromUtf8(utf8NodeInfo.displayName.toUtf8());
+    }
+
+    // 确保文件路径使用UTF-8编码
+    utf8NodeInfo.filePath = QString::fromUtf8(utf8NodeInfo.filePath.toUtf8());
+
     auto item = new FilePathIconListWidgetItem(this);
-    item->SetNodeInfo(nodeInfo);
+    item->SetNodeInfo(utf8NodeInfo);
     item->SetTextColor(m_itemTextColor);
     item->SetBackgroundColor(m_backgroundColor);
     item->SetHoverColor(m_itemHoverColor);

@@ -1,4 +1,6 @@
 ﻿#include "FilePathIconListWidgetItem.h"
+
+#include <QFileInfo>
 #include <QPainter>
 
 FilePathIconListWidgetItem::FilePathIconListWidgetItem(QListWidget* parent)
@@ -23,8 +25,17 @@ void FilePathIconListWidgetItem::SetNodeInfo(const ST_NodeInfo& nodeInfo)
 {
     m_nodeInfo = nodeInfo;
 
-    // 设置显示文本
-    setText(m_nodeInfo.displayName);
+    // 设置显示文本 - 确保使用UTF-8编码
+    if (!m_nodeInfo.displayName.isEmpty())
+    {
+        setText(QString::fromUtf8(m_nodeInfo.displayName.toUtf8()));
+    }
+    else
+    {
+        // 如果displayName为空，使用文件路径的最后一部分作为显示名
+        QFileInfo fileInfo(m_nodeInfo.filePath);
+        setText(QString::fromUtf8(fileInfo.fileName().toUtf8()));
+    }
 
     // 设置图标
     if (!m_nodeInfo.iconPath.isEmpty())
@@ -33,7 +44,7 @@ void FilePathIconListWidgetItem::SetNodeInfo(const ST_NodeInfo& nodeInfo)
     }
 
     // 设置提示文本
-    setToolTip(m_nodeInfo.filePath);
+    setToolTip(QString::fromUtf8(m_nodeInfo.filePath.toUtf8()));
 
     UpdateStyle();
 }
