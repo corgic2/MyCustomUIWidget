@@ -11,6 +11,7 @@
 #include "ValidatedLineEditPlugin.h"
 #include "FilePickerPlugin.h"
 #include "ImagePreviewBoxPlugin.h"
+#include "DraggableListWidgetPlugin.h"
 
 CustomWidgetCollection::CustomWidgetCollection(QObject* parent)
     : QObject(parent)
@@ -24,6 +25,7 @@ CustomWidgetCollection::CustomWidgetCollection(QObject* parent)
     m_widgets.append(new ValidatedLineEditPlugin(this));
     m_widgets.append(new FilePickerPlugin(this));
     m_widgets.append(new ImagePreviewBoxPlugin(this));
+    m_widgets.append(new DraggableListWidgetPlugin(this));
 }
 
 QList<QDesignerCustomWidgetInterface*> CustomWidgetCollection::customWidgets() const
