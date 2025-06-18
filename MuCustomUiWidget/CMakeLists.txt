@@ -38,19 +38,24 @@ add_library(${PROJECT_NAME} SHARED
     ${UI_HEADERS}
 )
 
+# 设置输出目录
+set(PublishDir "${CMAKE_SOURCE_DIR}/x64/$<CONFIG>")
+
 # 包含目录
 target_include_directories(${PROJECT_NAME} PUBLIC
     ${CMAKE_CURRENT_SOURCE_DIR}
     ${CMAKE_CURRENT_SOURCE_DIR}/CommonDefine
     ${CMAKE_BINARY_DIR}
     ${CMAKE_CURRENT_BINARY_DIR}
+    "${CMAKE_SOURCE_DIR}/include"
 )
 
-# 链接Qt库
+# 链接Qt库和SDK库
 target_link_libraries(${PROJECT_NAME} PUBLIC
     Qt5::Core
     Qt5::Gui
     Qt5::Widgets
+    "${PublishDir}/SDK.lib"
 )
 
 # 定义导出宏

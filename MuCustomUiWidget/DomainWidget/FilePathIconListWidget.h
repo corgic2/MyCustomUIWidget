@@ -2,6 +2,7 @@
 #include <QListWidget>
 #include <QMenu>
 #include <QWidget>
+#include <QTimer>
 #include "FilePathIconListWidgetItem.h"
 #include "ui_FilePathIconListWidget.h"
 #include "../CommonDefine/UIWidgetGlobal.h"
@@ -159,6 +160,48 @@ public:
     /// <param name="color">边框颜色</param>
     void SetBorderColor(const QColor& color);
 
+    /// <summary>
+    /// 设置JSON文件路径
+    /// </summary>
+    /// <param name="jsonFilePath">JSON文件路径</param>
+    void SetJsonFilePath(const QString& jsonFilePath);
+
+    /// <summary>
+    /// 获取JSON文件路径
+    /// </summary>
+    /// <returns>JSON文件路径</returns>
+    QString GetJsonFilePath() const;
+
+    /// <summary>
+    /// 从JSON文件加载文件列表
+    /// </summary>
+    /// <returns>是否加载成功</returns>
+    bool LoadFileListFromJson();
+
+    /// <summary>
+    /// 保存文件列表到JSON文件
+    /// </summary>
+    /// <returns>是否保存成功</returns>
+    bool SaveFileListToJson();
+
+    /// <summary>
+    /// 设置自动保存间隔（毫秒）
+    /// </summary>
+    /// <param name="interval">自动保存间隔，0表示禁用自动保存</param>
+    void SetAutoSaveInterval(int interval);
+
+    /// <summary>
+    /// 获取自动保存间隔（毫秒）
+    /// </summary>
+    /// <returns>自动保存间隔</returns>
+    int GetAutoSaveInterval() const;
+
+    /// <summary>
+    /// 启用或禁用自动保存
+    /// </summary>
+    /// <param name="enable">是否启用自动保存</param>
+    void EnableAutoSave(bool enable);
+
 signals:
     /// <summary>
     /// 文件项双击信号
@@ -174,6 +217,16 @@ signals:
     /// 右键菜单请求信号
     /// </summary>
     void SigContextMenuRequested(const QString& filePath, const QPoint& pos);
+
+    /// <summary>
+    /// 文件列表加载完成信号
+    /// </summary>
+    void SigFileListLoaded();
+
+    /// <summary>
+    /// 文件列表保存完成信号
+    /// </summary>
+    void SigFileListSaved();
 
 protected:
     /// <summary>
@@ -206,6 +259,11 @@ private slots:
     /// 复制文件路径槽函数
     /// </summary>
     void SlotCopyFilePath(bool bClicked);
+
+    /// <summary>
+    /// 自动保存槽函数
+    /// </summary>
+    void SlotAutoSave();
 
 private:
     /// <summary>
@@ -240,5 +298,8 @@ private:
     bool m_showContextMenu; /// 是否显示右键菜单
     int m_borderWidth; /// 边框宽度
     QColor m_borderColor; /// 边框颜色
+    QString m_jsonFilePath;                /// JSON文件路径
+    QTimer* m_autoSaveTimer = nullptr;     /// 自动保存定时器
+    int m_autoSaveInterval = 1800000;      /// 自动保存间隔（默认30分钟）
 };
 

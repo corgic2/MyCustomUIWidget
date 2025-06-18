@@ -1,5 +1,7 @@
-echo "Copy Successfully"
+set "SDKDIR=D:\WorkSpace\MySdk"
 
+xcopy "%SDKDIR%\include\*.h" "%~dp0include\" /E /I /Y
+xcopy "%SDKDIR%\x64\Release\*" "%~dp0x64\Release\" /E /I /Y
 @ECHO OFF
 set CURDIR=%~dp0
 set DLLDIR=%~dp0x64\Release\

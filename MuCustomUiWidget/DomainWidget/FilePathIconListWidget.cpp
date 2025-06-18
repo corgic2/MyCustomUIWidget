@@ -10,6 +10,10 @@
 #include <QProcess>
 #include <QUrl>
 #include <QVBoxLayout>
+#include <QJsonDocument>
+#include <QJsonObject>
+#include <QJsonArray>
+#include "FileSystem/FileSystem.h"
 
 FilePathIconListWidget::FilePathIconListWidget(QWidget* parent)
     : QListWidget(parent)
@@ -24,6 +28,9 @@ FilePathIconListWidget::FilePathIconListWidget(QWidget* parent)
     , m_showContextMenu(true)
     , m_borderWidth(0)
     , m_borderColor(Qt::transparent)
+    , m_jsonFilePath("")
+    , m_autoSaveInterval(0)
+    , m_autoSaveTimer(nullptr)
 {
     InitializeWidget();
     InitializeContextMenu();
@@ -32,6 +39,11 @@ FilePathIconListWidget::FilePathIconListWidget(QWidget* parent)
 
 FilePathIconListWidget::~FilePathIconListWidget()
 {
+    if (m_autoSaveTimer)
+    {
+        m_autoSaveTimer->stop();
+        SAFE_DELETE_POINTER_VALUE(m_autoSaveTimer);
+    }
     SAFE_DELETE_POINTER_VALUE(m_contextMenu);
 }
 
@@ -423,4 +435,143 @@ void FilePathIconListWidget::UpdateStyle()
             fileItem->EnableSelectedEffect(m_enableSelectedEffect);
         }
     }
+}
+
+void FilePathIconListWidget::SetJsonFilePath(const QString& jsonFilePath)
+{
+    m_jsonFilePath = jsonFilePath;
+}
+
+QString FilePathIconListWidget::GetJsonFilePath() const
+{
+    return m_jsonFilePath;
+}
+
+bool FilePathIconListWidget::LoadFileListFromJson()
+{
+    if (m_jsonFilePath.isEmpty())
+    {
+        return false;
+    }
+
+    std::string jsonStr;
+    my_sdk::EM_JsonOperationResult result = my_sdk::FileSystem::ReadJsonFromFile(m_jsonFilePath.toStdString(), jsonStr);
+
+    if (result == my_sdk::EM_JsonOperationResult::Success && my_sdk::FileSystem::ValidateJsonString(jsonStr))
+    {
+        // 使用Qt的JSON解析功能解析数据
+        QJsonDocument document = QJsonDocument::fromJson(QString::fromStdString(jsonStr).toUtf8());
+        if (document.isObject())
+        {
+            QJsonObject rootObject = document.object();
+            // 遍历根对象的所有子对象
+            for (auto it = rootObject.begin(); it != rootObject.end(); ++it)
+            {
+                QJsonObject fileObject = it.value().toObject();
+                if (!fileObject.isEmpty())
+                {
+                    std::string filePath = my_sdk::FileSystem::QtPathToStdPath(fileObject["filePath"].toString().toStdString());
+                    QString qtFilePath = QString::fromStdString(my_sdk::FileSystem::StdPathToQtPath(filePath));
+
+                    // 使用FileSystem API检查文件是否存在
+                    if (my_sdk::FileSystem::Exists(filePath))
+                    {
+                        FilePathIconListWidgetItem::ST_NodeInfo nodeInfo;
+                        nodeInfo.filePath = qtFilePath;
+                        nodeInfo.displayName = fileObject["displayName"].toString();
+                        nodeInfo.iconPath = fileObject["iconPath"].toString();
+
+                        // 添加到列表
+                        AddFileItem(nodeInfo);
+                    }
+                }
+            }
+            emit SigFileListLoaded();
+            return true;
+        }
+    }
+    return false;
+}
+
+bool FilePathIconListWidget::SaveFileListToJson()
+{
+    if (m_jsonFilePath.isEmpty())
+    {
+        return false;
+    }
+
+    QJsonObject rootObject;
+
+    for (int i = 0; i < count(); ++i)
+    {
+        auto fileItem = dynamic_cast<FilePathIconListWidgetItem*>(item(i));
+        if (fileItem)
+        {
+            QJsonObject fileObject;
+            fileObject["filePath"] = fileItem->GetNodeInfo().filePath;
+            fileObject["displayName"] = fileItem->GetNodeInfo().displayName;
+            fileObject["iconPath"] = fileItem->GetNodeInfo().iconPath;
+
+            rootObject[QString::number(i)] = fileObject;
+        }
+    }
+
+    QJsonDocument doc(rootObject);
+    QString jsonQStr = doc.toJson(QJsonDocument::Indented);
+    std::string jsonStr = jsonQStr.toUtf8().constData();
+
+    // 使用FileSystem API保存JSON
+    my_sdk::EM_JsonOperationResult result = my_sdk::FileSystem::WriteJsonToFile(m_jsonFilePath.toStdString(), jsonStr, true);
+
+    if (result == my_sdk::EM_JsonOperationResult::Success)
+    {
+        emit SigFileListSaved();
+        return true;
+    }
+    return false;
+}
+
+void FilePathIconListWidget::SetAutoSaveInterval(int interval)
+{
+    m_autoSaveInterval = interval;
+    if (m_autoSaveTimer)
+    {
+        if (interval > 0)
+        {
+            m_autoSaveTimer->setInterval(interval);
+            m_autoSaveTimer->start();
+        }
+        else
+        {
+            m_autoSaveTimer->stop();
+        }
+    }
+}
+
+int FilePathIconListWidget::GetAutoSaveInterval() const
+{
+    return m_autoSaveInterval;
+}
+
+void FilePathIconListWidget::EnableAutoSave(bool enable)
+{
+    if (enable)
+    {
+        if (!m_autoSaveTimer)
+        {
+            m_autoSaveTimer = new QTimer(this);
+            m_autoSaveTimer->setInterval(m_autoSaveInterval);
+            connect(m_autoSaveTimer, &QTimer::timeout, this, &FilePathIconListWidget::SlotAutoSave);
+        }
+        m_autoSaveTimer->start();
+    }
+    else if (m_autoSaveTimer)
+    {
+        m_autoSaveTimer->stop();
+    }
+}
+
+void FilePathIconListWidget::SlotAutoSave()
+{
+    SaveFileListToJson();
 }
