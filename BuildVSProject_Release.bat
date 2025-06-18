@@ -16,5 +16,6 @@ if defined QT_DIR (
 ) else (
     set QTDIR=D:/Qt/5.15.2/msvc2019_64
 )
+xcopy "%SDKDIR%\x64\Release\*" "%QTDIR%\bin" /E /I /Y
 
 pause

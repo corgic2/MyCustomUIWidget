@@ -7,6 +7,7 @@
 #include "CustomLabelPlugin.h"
 #include "CustomToolButtonPlugin.h"
 #include "FilePathIconListWidgetPlugin.h"
+#include "ValidatedLineEditPlugin.h"
 
 CustomWidgetCollection::CustomWidgetCollection(QObject* parent)
     : QObject(parent)
@@ -16,6 +17,7 @@ CustomWidgetCollection::CustomWidgetCollection(QObject* parent)
     m_widgets.append(new CustomToolButtonPlugin(this));
     m_widgets.append(new FilePathIconListWidgetPlugin(this));
     m_widgets.append(new CustomFramePlugin(this));
+    m_widgets.append(new ValidatedLineEditPlugin(this));
 }
 
 QList<QDesignerCustomWidgetInterface*> CustomWidgetCollection::customWidgets() const
