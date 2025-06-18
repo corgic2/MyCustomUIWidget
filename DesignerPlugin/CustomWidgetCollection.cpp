@@ -8,16 +8,18 @@
 #include "CustomToolButtonPlugin.h"
 #include "FilePathIconListWidgetPlugin.h"
 #include "ValidatedLineEditPlugin.h"
+#include "FilePickerPlugin.h"
 
 CustomWidgetCollection::CustomWidgetCollection(QObject* parent)
     : QObject(parent)
 {
     m_widgets.append(new CustomComboBoxPlugin(this));
+    m_widgets.append(new CustomFramePlugin(this));
     m_widgets.append(new CustomLabelPlugin(this));
     m_widgets.append(new CustomToolButtonPlugin(this));
     m_widgets.append(new FilePathIconListWidgetPlugin(this));
-    m_widgets.append(new CustomFramePlugin(this));
     m_widgets.append(new ValidatedLineEditPlugin(this));
+    m_widgets.append(new FilePickerPlugin(this));
 }
 
 QList<QDesignerCustomWidgetInterface*> CustomWidgetCollection::customWidgets() const
