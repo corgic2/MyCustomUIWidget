@@ -14,7 +14,7 @@
 #include <QJsonObject>
 #include <QJsonArray>
 #include "FileSystem/FileSystem.h"
-
+#include "SDKCommonDefine/SDKCommonDefine.h"
 FilePathIconListWidget::FilePathIconListWidget(QWidget* parent)
     : QListWidget(parent)
     , m_contextMenu(nullptr)
@@ -44,6 +44,7 @@ FilePathIconListWidget::~FilePathIconListWidget()
         m_autoSaveTimer->stop();
         SAFE_DELETE_POINTER_VALUE(m_autoSaveTimer);
     }
+    SaveFileListToJson();
     SAFE_DELETE_POINTER_VALUE(m_contextMenu);
 }
 
@@ -453,7 +454,10 @@ bool FilePathIconListWidget::LoadFileListFromJson()
     {
         return false;
     }
-
+    if (!my_sdk::FileSystem::Exists(m_jsonFilePath.toStdString()))
+    {
+        my_sdk::FileSystem::WriteStringToFile(m_jsonFilePath.toStdString(), "");
+    }
     std::string jsonStr;
     my_sdk::EM_JsonOperationResult result = my_sdk::FileSystem::ReadJsonFromFile(m_jsonFilePath.toStdString(), jsonStr);
 

@@ -2,6 +2,7 @@
 #include <QEvent>
 #include <QPainter>
 #include <QPen>
+#include "SDKCommonDefine/SDKCommonDefine.h"
 
 CustomToolButton::CustomToolButton(QWidget* parent)
     : QToolButton(parent)
