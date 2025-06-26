@@ -71,6 +71,13 @@ public:
     void RemoveItem(FilePathIconListWidgetItem* item);
 
     /// <summary>
+    /// 根据文件路径移除文件项
+    /// </summary>
+    /// <param name="filePath">要移除的文件路径</param>
+    /// <returns>是否成功移除</returns>
+    bool RemoveItemByFilePath(const QString& filePath);
+
+    /// <summary>
     /// 清空列表
     /// </summary>
     void Clear();
@@ -228,6 +235,16 @@ signals:
     /// </summary>
     void SigFileListSaved();
 
+    /// <summary>
+    /// 删除文件信号
+    /// </summary>
+    void SigDeleteFileRequested(const QString& filePath);
+
+    /// <summary>
+    /// 打开方式信号
+    /// </summary>
+    void SigOpenWithRequested(const QString& filePath);
+
 protected:
     /// <summary>
     /// 上下文菜单事件
@@ -246,19 +263,19 @@ private slots:
     void SlotItemClicked(QListWidgetItem* item);
 
     /// <summary>
-    /// 显示文件属性槽函数
-    /// </summary>
-    void SlotShowFileProperties(bool clicked);
-
-    /// <summary>
     /// 在资源管理器中显示槽函数
     /// </summary>
-    void SlotShowInExplorer(bool bClicked);
+    void SlotShowInExplorer();
 
     /// <summary>
-    /// 复制文件路径槽函数
+    /// 删除音视频文件槽函数
     /// </summary>
-    void SlotCopyFilePath(bool bClicked);
+    void SlotDeleteAVFile();
+
+    /// <summary>
+    /// 打开方式槽函数
+    /// </summary>
+    void SlotOpenWith();
 
     /// <summary>
     /// 自动保存槽函数
@@ -298,8 +315,8 @@ private:
     bool m_showContextMenu; /// 是否显示右键菜单
     int m_borderWidth; /// 边框宽度
     QColor m_borderColor; /// 边框颜色
-    QString m_jsonFilePath;                /// JSON文件路径
-    QTimer* m_autoSaveTimer = nullptr;     /// 自动保存定时器
-    int m_autoSaveInterval = 1800000;      /// 自动保存间隔（默认30分钟）
+    QString m_jsonFilePath; /// JSON文件路径
+    QTimer* m_autoSaveTimer; /// 自动保存定时器
+    int m_autoSaveInterval; /// 自动保存间隔（默认30分钟）
 };
 

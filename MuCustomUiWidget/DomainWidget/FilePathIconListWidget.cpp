@@ -4,33 +4,22 @@
 #include <QContextMenuEvent>
 #include <QDesktopServices>
 #include <QDir>
+#include <QFileDialog>
 #include <QFileInfo>
+#include <QJsonArray>
+#include <QJsonDocument>
+#include <QJsonObject>
+#include <QMessageBox>
 #include <QPainter>
 #include <QPen>
 #include <QProcess>
 #include <QUrl>
 #include <QVBoxLayout>
-#include <QJsonDocument>
-#include <QJsonObject>
-#include <QJsonArray>
 #include "FileSystem/FileSystem.h"
 #include "SDKCommonDefine/SDKCommonDefine.h"
+
 FilePathIconListWidget::FilePathIconListWidget(QWidget* parent)
-    : QListWidget(parent)
-    , m_contextMenu(nullptr)
-    , m_itemHeight(32)
-    , m_backgroundColor(UIColorDefine::background_color::White)
-    , m_itemHoverColor(UIColorDefine::background_color::HoverBackground)
-    , m_itemSelectedColor(UIColorDefine::background_color::PressedBackground)
-    , m_itemTextColor(UIColorDefine::font_color::Primary)
-    , m_enableHoverEffect(true)
-    , m_enableSelectedEffect(true)
-    , m_showContextMenu(true)
-    , m_borderWidth(0)
-    , m_borderColor(Qt::transparent)
-    , m_jsonFilePath("")
-    , m_autoSaveInterval(0)
-    , m_autoSaveTimer(nullptr)
+    : QListWidget(parent), m_contextMenu(nullptr), m_itemHeight(32), m_backgroundColor(UIColorDefine::background_color::White), m_itemHoverColor(UIColorDefine::background_color::HoverBackground), m_itemSelectedColor(UIColorDefine::background_color::PressedBackground), m_itemTextColor(UIColorDefine::font_color::Primary), m_enableHoverEffect(true), m_enableSelectedEffect(true), m_showContextMenu(true), m_borderWidth(0), m_borderColor(Qt::transparent), m_jsonFilePath(""), m_autoSaveTimer(nullptr), m_autoSaveInterval(1800000)
 {
     InitializeWidget();
     InitializeContextMenu();
@@ -65,18 +54,25 @@ void FilePathIconListWidget::InitializeContextMenu()
     m_contextMenu = new QMenu(this);
 
     // 添加菜单项
-    auto propertiesAction = new QAction(tr("属性"), this);
-    auto showInExplorerAction = new QAction(tr("在资源管理器中显示"), this);
-    auto copyPathAction = new QAction(tr("复制文件路径"), this);
+    auto showInExplorerAction = new QAction(tr("在文件资源管理器中显示"), this);
+    auto deleteFileAction = new QAction(tr("删除音视频文件"), this);
+    auto openWithAction = new QAction(tr("打开方式..."), this);
 
-    m_contextMenu->addAction(propertiesAction);
+    // 设置图标
+    showInExplorerAction->setIcon(style()->standardIcon(QStyle::SP_DirOpenIcon));
+    deleteFileAction->setIcon(style()->standardIcon(QStyle::SP_TrashIcon));
+    openWithAction->setIcon(style()->standardIcon(QStyle::SP_ComputerIcon));
+
     m_contextMenu->addAction(showInExplorerAction);
-    m_contextMenu->addAction(copyPathAction);
+    m_contextMenu->addSeparator();
+    m_contextMenu->addAction(deleteFileAction);
+    m_contextMenu->addSeparator();
+    m_contextMenu->addAction(openWithAction);
 
     // 连接信号
-    connect(propertiesAction, &QAction::triggered, this, &FilePathIconListWidget::SlotShowFileProperties);
     connect(showInExplorerAction, &QAction::triggered, this, &FilePathIconListWidget::SlotShowInExplorer);
-    connect(copyPathAction, &QAction::triggered, this, &FilePathIconListWidget::SlotCopyFilePath);
+    connect(deleteFileAction, &QAction::triggered, this, &FilePathIconListWidget::SlotDeleteAVFile);
+    connect(openWithAction, &QAction::triggered, this, &FilePathIconListWidget::SlotOpenWith);
 }
 
 void FilePathIconListWidget::SetupConnections()
@@ -89,7 +85,7 @@ void FilePathIconListWidget::AddFileItem(const FilePathIconListWidgetItem::ST_No
 {
     // 确保文件路径和显示名称使用UTF-8编码
     FilePathIconListWidgetItem::ST_NodeInfo utf8NodeInfo = nodeInfo;
-    
+
     // 如果显示名称为空，使用文件名
     if (utf8NodeInfo.displayName.isEmpty())
     {
@@ -119,7 +115,7 @@ void FilePathIconListWidget::InsertFileItem(int index, const FilePathIconListWid
 {
     // 确保文件路径和显示名称使用UTF-8编码
     FilePathIconListWidgetItem::ST_NodeInfo utf8NodeInfo = nodeInfo;
-    
+
     // 如果显示名称为空，使用文件名
     if (utf8NodeInfo.displayName.isEmpty())
     {
@@ -171,6 +167,20 @@ void FilePathIconListWidget::RemoveItem(FilePathIconListWidgetItem* item)
             }
         }
     }
+}
+
+bool FilePathIconListWidget::RemoveItemByFilePath(const QString& filePath)
+{
+    for (int i = 0; i < count(); ++i)
+    {
+        auto fileItem = dynamic_cast<FilePathIconListWidgetItem*>(item(i));
+        if (fileItem && fileItem->GetFilePath() == filePath)
+        {
+            RemoveItemByIndex(i);
+            return true;
+        }
+    }
+    return false;
 }
 
 void FilePathIconListWidget::Clear()
@@ -355,25 +365,7 @@ void FilePathIconListWidget::SlotItemClicked(QListWidgetItem* item)
     }
 }
 
-void FilePathIconListWidget::SlotShowFileProperties(bool clicked)
-{
-    QListWidgetItem* tmpCurrentItem = currentItem();
-    if (tmpCurrentItem)
-    {
-        auto fileItem = dynamic_cast<FilePathIconListWidgetItem*>(tmpCurrentItem);
-        if (fileItem)
-        {
-            QString filePath = fileItem->GetFilePath();
-            QFileInfo fileInfo(filePath);
-            if (fileInfo.exists())
-            {
-                // TODO: 显示文件属性对话框
-            }
-        }
-    }
-}
-
-void FilePathIconListWidget::SlotShowInExplorer(bool bClicked)
+void FilePathIconListWidget::SlotShowInExplorer()
 {
     QListWidgetItem* tmpCurrentItem = currentItem();
     if (tmpCurrentItem)
@@ -388,11 +380,15 @@ void FilePathIconListWidget::SlotShowInExplorer(bool bClicked)
                 QString argument = QString("/select,\"%1\"").arg(QDir::toNativeSeparators(filePath));
                 QProcess::startDetached("explorer.exe", QStringList(argument));
             }
+            else
+            {
+                QMessageBox::warning(this, tr("文件不存在"), tr("文件 %1 不存在。").arg(filePath));
+            }
         }
     }
 }
 
-void FilePathIconListWidget::SlotCopyFilePath(bool bClicked)
+void FilePathIconListWidget::SlotDeleteAVFile()
 {
     QListWidgetItem* tmpCurrentItem = currentItem();
     if (tmpCurrentItem)
@@ -401,8 +397,71 @@ void FilePathIconListWidget::SlotCopyFilePath(bool bClicked)
         if (fileItem)
         {
             QString filePath = fileItem->GetFilePath();
-            QClipboard* clipboard = QApplication::clipboard();
-            clipboard->setText(filePath);
+            QFileInfo fileInfo(filePath);
+
+            if (!fileInfo.exists())
+            {
+                QMessageBox::warning(this, tr("文件不存在"), tr("文件 %1 不存在。").arg(filePath));
+                return;
+            }
+
+            int result = QMessageBox::question(this, tr("删除文件"), tr("确定要删除文件列表的 %1 吗？\n此操作不可撤销。").arg(fileInfo.fileName()), QMessageBox::Yes | QMessageBox::No, QMessageBox::No);
+
+            if (result == QMessageBox::Yes)
+            {
+                // 发送删除信号，让外部处理具体的删除逻辑
+                emit SigDeleteFileRequested(filePath);
+
+                // 从列表中移除该项
+                RemoveItemByFilePath(filePath);
+            }
+        }
+    }
+}
+
+void FilePathIconListWidget::SlotOpenWith()
+{
+    QListWidgetItem* tmpCurrentItem = currentItem();
+    if (tmpCurrentItem)
+    {
+        auto fileItem = dynamic_cast<FilePathIconListWidgetItem*>(tmpCurrentItem);
+        if (fileItem)
+        {
+            QString filePath = fileItem->GetFilePath();
+            QFileInfo fileInfo(filePath);
+
+            if (!fileInfo.exists())
+            {
+                QMessageBox::warning(this, tr("文件不存在"), tr("文件 %1 不存在。").arg(filePath));
+                return;
+            }
+
+            // 弹出文件选择对话框，选择要用来打开文件的程序
+            QString selectedProgram = QFileDialog::getOpenFileName(this, tr("选择打开程序"), QString(), tr("可执行文件 (*.exe);;所有文件 (*.*)"));
+
+            if (!selectedProgram.isEmpty())
+            {
+                QFileInfo programInfo(selectedProgram);
+                if (programInfo.exists() && programInfo.isExecutable())
+                {
+                    // 使用选择的程序打开文件
+                    QStringList arguments;
+                    arguments << QDir::toNativeSeparators(filePath);
+
+                    bool success = QProcess::startDetached(selectedProgram, arguments);
+                    if (!success)
+                    {
+                        QMessageBox::warning(this, tr("打开失败"), tr("无法使用 %1 打开文件 %2").arg(programInfo.fileName()).arg(fileInfo.fileName()));
+                    }
+                }
+                else
+                {
+                    QMessageBox::warning(this, tr("程序无效"), tr("选择的程序 %1 不存在或不可执行。").arg(selectedProgram));
+                }
+            }
+
+            // 发送打开方式信号
+            emit SigOpenWithRequested(filePath);
         }
     }
 }
@@ -417,8 +476,7 @@ void FilePathIconListWidget::UpdateStyle()
         QListWidget::item {
             height: %2px;
         }
-    )").arg(UIColorDefine::color_convert::ToCssString(m_backgroundColor))
-       .arg(m_itemHeight);
+    )").arg(UIColorDefine::color_convert::ToCssString(m_backgroundColor)).arg(m_itemHeight);
 
     setStyleSheet(styleSheet);
 
