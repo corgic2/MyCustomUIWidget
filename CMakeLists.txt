@@ -38,7 +38,6 @@ set(CMAKE_CXX_FLAGS_RELEASE "${CMAKE_CXX_FLAGS_RELEASE} /Zi")
 set(CMAKE_EXE_LINKER_FLAGS_RELEASE "${CMAKE_EXE_LINKER_FLAGS_RELEASE} /DEBUG /OPT:REF /OPT:ICF")
 set(CMAKE_SHARED_LINKER_FLAGS_RELEASE "${CMAKE_SHARED_LINKER_FLAGS_RELEASE} /DEBUG /OPT:REF /OPT:ICF")
 
-
 # VS过滤器宏
 macro(source_group_by_dir source_files)
     if(MSVC)
@@ -63,6 +62,7 @@ macro(source_group_by_dir source_files)
 endmacro(source_group_by_dir)
 
 # 添加子项目（按依赖顺序）
+add_subdirectory(StyleSystem)
 add_subdirectory(MuCustomUiWidget)
 add_subdirectory(DesignerPlugin)
 add_subdirectory(TestWidget)

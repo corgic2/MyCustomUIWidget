@@ -48,6 +48,7 @@ target_include_directories(${PROJECT_NAME} PUBLIC
     ${CMAKE_BINARY_DIR}
     ${CMAKE_CURRENT_BINARY_DIR}
     "${CMAKE_SOURCE_DIR}/include"
+    "${CMAKE_SOURCE_DIR}/StyleSystem"
 )
 
 # 链接Qt库和SDK库
@@ -55,6 +56,7 @@ target_link_libraries(${PROJECT_NAME} PUBLIC
     Qt5::Core
     Qt5::Gui
     Qt5::Widgets
+    StyleSystem
     "${PublishDir}/SDK.lib"
 )
 

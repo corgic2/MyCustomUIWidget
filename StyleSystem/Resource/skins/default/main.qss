@@ -1,0 +1,228 @@
+/* Default Theme Styles */
+
+/* 基础样式 */
+QWidget {
+    background-color: @backgroundColor;
+    color: @textColor;
+    font-family: "Segoe UI", "Microsoft YaHei", Arial, sans-serif;
+    font-size: 9pt;
+}
+
+/* 按钮样式 */
+QPushButton {
+    background-color: @primaryColor;
+    color: white;
+    border: none;
+    padding: 8px 16px;
+    border-radius: 4px;
+    font-weight: bold;
+}
+
+QPushButton:hover {
+    background-color: @hoverColor;
+    color: @textColor;
+}
+
+QPushButton:pressed {
+    background-color: @selectedColor;
+}
+
+QPushButton:disabled {
+    background-color: @disabledColor;
+    color: #999999;
+}
+
+/* 输入框样式 */
+QLineEdit {
+    background-color: @backgroundColor;
+    color: @textColor;
+    border: 2px solid @borderColor;
+    padding: 6px;
+    border-radius: 4px;
+}
+
+QLineEdit:focus {
+    border-color: @primaryColor;
+}
+
+/* 组合框样式 */
+QComboBox {
+    background-color: @backgroundColor;
+    color: @textColor;
+    border: 2px solid @borderColor;
+    padding: 6px;
+    border-radius: 4px;
+}
+
+QComboBox:hover {
+    border-color: @primaryColor;
+}
+
+QComboBox::drop-down {
+    border: none;
+    width: 20px;
+}
+
+QComboBox::down-arrow {
+    image: url(:/default/icons/dropdown.png);
+    width: 12px;
+    height: 12px;
+}
+
+/* 列表样式 */
+QListWidget {
+    background-color: @backgroundColor;
+    color: @textColor;
+    border: 1px solid @borderColor;
+    alternate-background-color: @hoverColor;
+}
+
+QListWidget::item {
+    padding: 8px;
+    border-bottom: 1px solid @borderColor;
+}
+
+QListWidget::item:selected {
+    background-color: @selectedColor;
+}
+
+QListWidget::item:hover {
+    background-color: @hoverColor;
+}
+
+/* 标签页样式 */
+QTabWidget::pane {
+    border: 1px solid @borderColor;
+    background-color: @backgroundColor;
+}
+
+QTabBar::tab {
+    background-color: @hoverColor;
+    color: @textColor;
+    padding: 8px 16px;
+    margin-right: 2px;
+    border-top-left-radius: 4px;
+    border-top-right-radius: 4px;
+}
+
+QTabBar::tab:selected {
+    background-color: @primaryColor;
+    color: white;
+}
+
+QTabBar::tab:hover {
+    background-color: @selectedColor;
+}
+
+/* 滚动条样式 */
+QScrollBar:vertical {
+    background-color: @hoverColor;
+    width: 12px;
+    border-radius: 6px;
+}
+
+QScrollBar::handle:vertical {
+    background-color: @borderColor;
+    border-radius: 6px;
+    min-height: 20px;
+}
+
+QScrollBar::handle:vertical:hover {
+    background-color: @primaryColor;
+}
+
+QScrollBar::add-line:vertical,
+QScrollBar::sub-line:vertical {
+    border: none;
+    background: none;
+}
+
+/* 进度条样式 */
+QProgressBar {
+    background-color: @hoverColor;
+    border: 1px solid @borderColor;
+    border-radius: 4px;
+    text-align: center;
+}
+
+QProgressBar::chunk {
+    background-color: @primaryColor;
+    border-radius: 4px;
+}
+
+/* 菜单样式 */
+QMenuBar {
+    background-color: @backgroundColor;
+    color: @textColor;
+    border-bottom: 1px solid @borderColor;
+}
+
+QMenuBar::item {
+    padding: 8px 16px;
+    background-color: transparent;
+}
+
+QMenuBar::item:selected {
+    background-color: @hoverColor;
+}
+
+QMenu {
+    background-color: @backgroundColor;
+    color: @textColor;
+    border: 1px solid @borderColor;
+    padding: 4px;
+}
+
+QMenu::item {
+    padding: 8px 24px;
+    background-color: transparent;
+}
+
+QMenu::item:selected {
+    background-color: @primaryColor;
+    color: white;
+}
+
+/* 工具栏样式 */
+QToolBar {
+    background-color: @backgroundColor;
+    border: 1px solid @borderColor;
+    spacing: 2px;
+}
+
+QToolButton {
+    background-color: transparent;
+    border: none;
+    padding: 6px;
+    border-radius: 4px;
+}
+
+QToolButton:hover {
+    background-color: @hoverColor;
+}
+
+QToolButton:pressed {
+    background-color: @selectedColor;
+}
+
+/* 状态栏样式 */
+QStatusBar {
+    background-color: @backgroundColor;
+    color: @textColor;
+    border-top: 1px solid @borderColor;
+}
+
+/* 分组框样式 */
+QGroupBox {
+    font-weight: bold;
+    border: 2px solid @borderColor;
+    border-radius: 4px;
+    margin-top: 8px;
+    padding-top: 8px;
+}
+
+QGroupBox::title {
+    subcontrol-origin: margin;
+    left: 10px;
+    padding: 0 8px 0 8px;
+} 

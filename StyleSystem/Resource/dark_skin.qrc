@@ -1,0 +1,9 @@
+<RCC>
+    <qresource prefix="/dark">
+        <file>skins/dark/main.qss</file>
+        <file>skins/dark/skin_config.json</file>
+        <file>skins/dark/icons/close.png</file>
+        <file>skins/dark/icons/minimize.png</file>
+        <file>skins/dark/icons/maximize.png</file>
+    </qresource>
+</RCC> 
