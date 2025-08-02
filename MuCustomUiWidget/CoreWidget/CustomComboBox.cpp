@@ -1,6 +1,7 @@
 ﻿#include "CustomComboBox.h"
 #include <QPainter>
 #include <QStyleOption>
+#include "SkinStyleLoader.h"
 
 CustomComboBox::CustomComboBox(QWidget* parent)
     : QComboBox(parent)
@@ -19,6 +20,7 @@ CustomComboBox::CustomComboBox(QWidget* parent)
     InitializeComboBox();
     // 初始化默认边距
     setContentsMargins(0, 0, 0, 0);
+    AUTO_LOAD_SKIN_STYLE();
 }
 
 CustomComboBox::~CustomComboBox()

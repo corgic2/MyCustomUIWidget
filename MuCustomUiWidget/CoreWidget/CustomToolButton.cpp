@@ -2,6 +2,7 @@
 #include <QEvent>
 #include <QPainter>
 #include <QPen>
+#include "SkinStyleLoader.h"
 #include "SDKCommonDefine/SDKCommonDefine.h"
 
 CustomToolButton::CustomToolButton(QWidget* parent)
@@ -12,6 +13,7 @@ CustomToolButton::CustomToolButton(QWidget* parent)
     InitializeButton();
     // 初始化默认边距
     setContentsMargins(0, 0, 0, 0);
+    AUTO_LOAD_SKIN_STYLE();
 }
 
 CustomToolButton::~CustomToolButton()

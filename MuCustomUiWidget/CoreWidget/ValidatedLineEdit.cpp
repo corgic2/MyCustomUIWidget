@@ -1,6 +1,7 @@
 ﻿#include "ValidatedLineEdit.h"
 #include <QFocusEvent>
 #include <QToolTip>
+#include "SkinStyleLoader.h"
 
 ValidatedLineEdit::ValidatedLineEdit(QWidget* parent)
     : QLineEdit(parent)
@@ -9,6 +10,7 @@ ValidatedLineEdit::ValidatedLineEdit(QWidget* parent)
     , m_validationType(Custom)
 {
     Initialize();
+    AUTO_LOAD_SKIN_STYLE();
 }
 
 ValidatedLineEdit::~ValidatedLineEdit()

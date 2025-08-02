@@ -7,6 +7,7 @@ CustomFrame::CustomFrame(QWidget* parent)
     : QFrame(parent)
 {
     InitializeFrame();
+    AUTO_LOAD_SKIN_STYLE();
 }
 
 CustomFrame::~CustomFrame()

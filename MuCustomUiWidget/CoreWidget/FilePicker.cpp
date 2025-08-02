@@ -10,6 +10,7 @@ FilePicker::FilePicker(QWidget* parent)
     , m_isSaveDialog(false)
 {
     Initialize();
+    AUTO_LOAD_SKIN_STYLE();
 }
 
 FilePicker::~FilePicker()

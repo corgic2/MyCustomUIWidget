@@ -2,6 +2,7 @@
 #include <QPainter>
 #include <QStyleOption>
 #include <QResizeEvent>
+#include "SkinStyleLoader.h"
 
 CustomToolBar::CustomToolBar(QWidget* parent)
     : QToolBar(parent)
@@ -11,6 +12,7 @@ CustomToolBar::CustomToolBar(QWidget* parent)
     , m_shadowSize(4)
 {
     InitializeWidget();
+    AUTO_LOAD_SKIN_STYLE();
 }
 
 CustomToolBar::~CustomToolBar()

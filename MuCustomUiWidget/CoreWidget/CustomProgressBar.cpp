@@ -4,6 +4,7 @@
 #include <QRadialGradient>
 #include <QPainterPath>
 #include <QFontMetrics>
+#include "SkinStyleLoader.h"
 
 CustomProgressBar::CustomProgressBar(QWidget* parent)
     : QProgressBar(parent)
@@ -12,6 +13,7 @@ CustomProgressBar::CustomProgressBar(QWidget* parent)
     , m_stripeOffset(0)
 {
     InitializeProgressBar();
+    AUTO_LOAD_SKIN_STYLE();
 }
 
 CustomProgressBar::~CustomProgressBar()

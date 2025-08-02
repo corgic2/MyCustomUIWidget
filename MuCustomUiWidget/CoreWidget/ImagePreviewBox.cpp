@@ -1,11 +1,13 @@
 ﻿#include "ImagePreviewBox.h"
 #include <QPainter>
 #include <QFileInfo>
+#include "SkinStyleLoader.h"
 
 ImagePreviewBox::ImagePreviewBox(QWidget* parent)
     : QWidget(parent)
 {
     Initialize();
+    AUTO_LOAD_SKIN_STYLE();
 }
 
 ImagePreviewBox::~ImagePreviewBox()

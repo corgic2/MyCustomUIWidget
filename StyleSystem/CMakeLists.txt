@@ -12,6 +12,8 @@ set(STYLE_SYSTEM_SOURCES
     SkinInfo.cpp
     SkinResource.h
     SkinResource.cpp
+    SkinStyleLoader.h
+    SkinStyleLoader.cpp
 )
 
 # 收集资源文件
