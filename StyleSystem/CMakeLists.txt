@@ -1,29 +1,10 @@
-# StyleSystem CMakeLists.txt
-cmake_minimum_required(VERSION 3.10)
-
+# StyleSystem 项目配置
 project(StyleSystem)
-
 # 收集源文件
-set(STYLE_SYSTEM_SOURCES
-    StyleSystemGlobal.h
-    SkinManager.h
-    SkinManager.cpp
-    SkinInfo.h
-    SkinInfo.cpp
-    SkinResource.h
-    SkinResource.cpp
-    SkinStyleLoader.h
-    SkinStyleLoader.cpp
+file(GLOB_RECURSE STYLE_SYSTEM_SOURCES
+    "*.h"
+    "*.cpp"
 )
-
-# 收集资源文件
-set(RESOURCE_FILES
-    Resource/default_skin.qrc
-    Resource/dark_skin.qrc
-)
-
-# 处理资源文件
-qt5_add_resources(RESOURCE_SOURCES ${RESOURCE_FILES})
 
 # 创建共享库
 add_library(${PROJECT_NAME} SHARED
@@ -55,6 +36,5 @@ endif()
 
 # VS过滤器
 source_group("Header Files" FILES ${STYLE_SYSTEM_SOURCES})
-source_group("Resource Files" FILES ${RESOURCE_FILES})
 source_group("Generated Files" FILES ${RESOURCE_SOURCES})
 

@@ -1,8 +1,8 @@
 ﻿# 指定CMake的最低版本
 cmake_minimum_required(VERSION 3.10)
 
-# 设置项目名称
-project(MuCustomUiWidgetRoot)
+# 设置解决方案名称
+project(MuCustomUIWidgetSolution)
 
 # 设置使用到的Qt模块
 set(QT_MODULES Core Gui Widgets Designer UiPlugin)
@@ -61,8 +61,8 @@ macro(source_group_by_dir source_files)
     endif(MSVC)
 endmacro(source_group_by_dir)
 
-# 添加子项目（按依赖顺序）
+# 包含各项目的CMake配置
 add_subdirectory(StyleSystem)
-add_subdirectory(MuCustomUiWidget)
+add_subdirectory(MyCustomUiWidget)
 add_subdirectory(DesignerPlugin)
 add_subdirectory(TestWidget)

@@ -1,0 +1,19 @@
+<RCC>
+    <qresource prefix="/CoreWidget">
+        <file>CustomButton.qss</file>
+        <file>CustomComboBox.qss</file>
+        <file>CustomFrame.qss</file>
+        <file>CustomLabel.qss</file>
+        <file>CustomProgressBar.qss</file>
+        <file>CustomToolBar.qss</file>
+        <file>CustomToolButton.qss</file>
+        <file>ValidatedLineEdit.qss</file>
+    </qresource>
+    <qresource prefix="/DomainWidget">
+        <file>FilePicker.qss</file>
+        <file>ImagePreviewBox.qss</file>
+    </qresource>
+    <qresource prefix="/Default">
+        <file>CommonStyles.qss</file>
+    </qresource>
+</RCC>

@@ -1,5 +1,5 @@
 ﻿#include "CustomToolBarPlugin.h"
-#include "../MuCustomUiWidget/CommonDefine/UIWidgetColorDefine.h"
+#include "../MyCustomUiWidget/CommonDefine/UIWidgetColorDefine.h"
 
 CustomToolBarPlugin::CustomToolBarPlugin(QObject* parent)
     : CustomWidgetPlugin(parent)

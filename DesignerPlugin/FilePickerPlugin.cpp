@@ -1,5 +1,5 @@
 ﻿#include "FilePickerPlugin.h"
-#include "../MuCustomUiWidget/CoreWidget/FilePicker.h"
+#include "../MyCustomUiWidget/CoreWidget/FilePicker.h"
 
 FilePickerPlugin::FilePickerPlugin(QObject* parent)
     : CustomWidgetPlugin(parent)

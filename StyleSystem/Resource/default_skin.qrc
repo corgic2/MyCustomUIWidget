@@ -1,9 +1,0 @@
-<RCC>
-    <qresource prefix="/default">
-        <file>skins/default/main.qss</file>
-        <file>skins/default/skin_config.json</file>
-        <file>skins/default/icons/close.png</file>
-        <file>skins/default/icons/minimize.png</file>
-        <file>skins/default/icons/maximize.png</file>
-    </qresource>
-</RCC>

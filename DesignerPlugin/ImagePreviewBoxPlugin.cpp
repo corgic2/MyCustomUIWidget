@@ -1,5 +1,5 @@
-#include "ImagePreviewBoxPlugin.h"
-#include "../MuCustomUiWidget/CoreWidget/ImagePreviewBox.h"
+﻿#include "ImagePreviewBoxPlugin.h"
+#include "../MyCustomUiWidget/CoreWidget/ImagePreviewBox.h"
 
 ImagePreviewBoxPlugin::ImagePreviewBoxPlugin(QObject* parent)
     : CustomWidgetPlugin(parent)

@@ -276,8 +276,8 @@ QString SkinResource::externalResourceDirectory() const
 void SkinResource::initializeBuiltinResources()
 {
     // 注册内置皮肤资源
-    registerSkinResource("default", ":/default");
-    registerSkinResource("dark", ":/dark");
+    //registerSkinResource("default", ":/default");
+    //registerSkinResource("dark", ":/dark");
 }
 
 void SkinResource::updateResourceIndex()

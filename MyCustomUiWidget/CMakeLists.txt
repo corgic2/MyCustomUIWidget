@@ -1,9 +1,5 @@
-﻿# 指定CMake的最低版本
-cmake_minimum_required(VERSION 3.10)
-
-# 设置项目名称
-project(MuCustomUiWidget)
-
+﻿# MyCustomUiWidget 项目配置
+project(MyCustomUiWidget)
 # 收集源文件
 file(GLOB_RECURSE UI_SRC 
     "CoreWidget/*.cpp"
@@ -29,7 +25,7 @@ file(GLOB_RECURSE COMMON_SRC
 
 # 收集资源定义文件
 file(GLOB_RECURSE RESOURCE_SRC
-    "Resources/*.qss"
+    "*.qss"
     "*.qrc"
     "*.ini"
     "*.json"
@@ -41,6 +37,7 @@ qt5_wrap_ui(UI_HEADERS ${UI_FILES})
 add_library(${PROJECT_NAME} SHARED
     ${UI_SRC}
     ${COMMON_SRC}
+    ${RESOURCE_SRC}
     ${UI_FILES}
     ${UI_HEADERS}
 )
@@ -85,6 +82,7 @@ endif()
 # VS过滤器
 source_group_by_dir(UI_SRC)
 source_group_by_dir(COMMON_SRC)
+source_group_by_dir(RESOURCE_SRC)
 source_group("Generated Files" FILES ${UI_HEADERS})
 source_group("Form Files" FILES ${UI_FILES})
 source_group("Resources Files" FILES ${RESOURCE_SRC})

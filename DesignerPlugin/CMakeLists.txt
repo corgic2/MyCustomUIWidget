@@ -1,9 +1,5 @@
-﻿# 指定CMake的最低版本
-cmake_minimum_required(VERSION 3.10)
-
-# 设置项目名称
-project(CustomWidgetPlugin)
-
+# DesignerPlugin 项目配置
+project(DesignerPlugin)
 # 获取Qt插件目录
 get_target_property(QT_QMAKE_EXECUTABLE Qt5::qmake IMPORTED_LOCATION)
 execute_process(
@@ -48,10 +44,10 @@ set_target_properties(${PROJECT_NAME} PROPERTIES
 # 包含目录
 target_include_directories(${PROJECT_NAME} PRIVATE
     ${CMAKE_CURRENT_SOURCE_DIR}
-    ${CMAKE_SOURCE_DIR}/MuCustomUiWidget
-    ${CMAKE_SOURCE_DIR}/MuCustomUiWidget/CommonDefine
-    ${CMAKE_SOURCE_DIR}/MuCustomUiWidget/CoreWidget
-    ${CMAKE_SOURCE_DIR}/MuCustomUiWidget/UtilsWidget
+    ${CMAKE_SOURCE_DIR}/MyCustomUiWidget
+    ${CMAKE_SOURCE_DIR}/MyCustomUiWidget/CommonDefine
+    ${CMAKE_SOURCE_DIR}/MyCustomUiWidget/CoreWidget
+    ${CMAKE_SOURCE_DIR}/MyCustomUiWidget/UtilsWidget
     ${CMAKE_BINARY_DIR}
     ${CMAKE_CURRENT_BINARY_DIR}
 )
@@ -63,7 +59,7 @@ target_link_libraries(${PROJECT_NAME} PRIVATE
     Qt5::Widgets
     Qt5::Designer
     Qt5::UiPlugin
-    MuCustomUiWidget
+    MyCustomUiWidget
 )
 
 # 定义导出宏
@@ -93,6 +89,6 @@ add_custom_command(TARGET ${PROJECT_NAME} POST_BUILD
     
     # 复制主库DLL到Qt bin目录
     COMMAND ${CMAKE_COMMAND} -E copy_if_different
-        $<TARGET_FILE:MuCustomUiWidget>
-        "${QT_BIN_DIR}/$<TARGET_FILE_NAME:MuCustomUiWidget>"
+        $<TARGET_FILE:MyCustomUiWidget>
+        "${QT_BIN_DIR}/$<TARGET_FILE_NAME:MyCustomUiWidget>"
 )
