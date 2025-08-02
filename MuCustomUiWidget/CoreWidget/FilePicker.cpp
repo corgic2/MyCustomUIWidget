@@ -2,6 +2,7 @@
 #include <QHBoxLayout>
 #include <QFileDialog>
 #include <QDir>
+#include "SkinStyleLoader.h"
 
 FilePicker::FilePicker(QWidget* parent)
     : QWidget(parent)
