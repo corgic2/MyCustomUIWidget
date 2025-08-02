@@ -1,4 +1,4 @@
-#include "ImagePreviewBox.h"
+﻿#include "ImagePreviewBox.h"
 #include <QPainter>
 #include <QFileInfo>
 

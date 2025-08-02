@@ -18,7 +18,7 @@ set(CMAKE_AUTOMOC_OUTPUT_DIR "${CMAKE_BINARY_DIR}/moc")
 
 # 启用C++17并设置UTF-8
 if(MSVC)
-    add_compile_options(/std:c++17 /utf-8 /bigobj)
+    add_compile_options(/std:c++17 /utf-8 /bigobj /FS)
 else()
     add_compile_options(-std=c++17)
 endif()

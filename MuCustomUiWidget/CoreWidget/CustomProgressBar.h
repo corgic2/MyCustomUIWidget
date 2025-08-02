@@ -8,7 +8,6 @@
 #include <QWidget>
 #include "../CommonDefine/UIWidgetColorDefine.h"
 #include "../CommonDefine/UIWidgetGlobal.h"
-
 /// <summary>
 /// 自定义进度条控件类，提供丰富的样式和动画效果设置
 /// </summary>

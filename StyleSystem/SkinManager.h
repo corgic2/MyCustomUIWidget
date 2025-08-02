@@ -1,93 +1,99 @@
-#ifndef SKINMANAGER_H
+﻿#ifndef SKINMANAGER_H
 #define SKINMANAGER_H
 
-#include "StyleSystemGlobal.h"
-#include "SkinInfo.h"
-#include "SkinResource.h"
-#include <QObject>
 #include <QApplication>
-#include <QSettings>
 #include <QMap>
 #include <QMutex>
+#include <QObject>
+#include <QSettings>
+#include "SkinInfo.h"
+#include "SkinResource.h"
+#include "StyleSystemGlobal.h"
 
+/// <summary>
+/// 皮肤主题管理类
+/// </summary>
 class STYLESYSTEM_EXPORT SkinManager : public QObject
 {
     Q_OBJECT
     Q_PROPERTY(QString currentSkinId READ currentSkinId WRITE setCurrentSkinId NOTIFY currentSkinIdChanged)
     Q_PROPERTY(QStringList availableSkins READ availableSkins NOTIFY availableSkinsChanged)
-
 public:
     static SkinManager* instance();
     static void destroyInstance();
 
-    // 皮肤管理
-    bool loadSkin(const QString &skinId);
-    bool applySkin(const QString &skinId);
-    bool applyGlobalStyle();
-    
+    /// <summary>
+    /// 获取当前皮肤ID
+    /// </summary>
     QString currentSkinId() const;
-    void setCurrentSkinId(const QString &skinId);
+    void setCurrentSkinId(const QString& skinId);
     
+    /// <summary>
+    /// 获取可用皮肤列表
+    /// </summary>
     QStringList availableSkins() const;
-    SkinInfo* getSkinInfo(const QString &skinId) const;
-    
-    // 资源访问
-    QString getResourcePath(const QString &skinId, const QString &resourceName) const;
-    QString getResourcePath(const QString &resourceName) const; // 使用当前皮肤
-    
-    // 样式处理
-    QString parseStyleSheet(const QString &styleSheet, const QString &skinId) const;
-    QString getCurrentStyleSheet() const;
-    
-    // 配置管理
-    void loadSettings();
-    void saveSettings();
-    
-    // 错误处理
-    SkinError getLastError() const;
-    QString getErrorString(SkinError error) const;
 
-public slots:
-    void refreshAvailableSkins();
-    void resetToDefaultSkin();
+    /// <summary>
+    /// 加载组件样式并自动应用
+    /// </summary>
+    /// <param name="component">目标组件</param>
+    /// <param name="componentClassName">组件类名，为空时自动获取</param>
+    /// <param name="skinId">皮肤ID，为空时使用当前皮肤</param>
+    /// <returns></returns>
+    bool loadComponentStyle(QWidget* component, const QString& componentClassName = QString(), const QString& skinId = QString());
+    
+    /// <summary>
+    /// 添加QRC文件路径到皮肤系统
+    /// </summary>
+    /// <param name="qrcPath">QRC文件路径</param>
+    /// <param name="skinId">皮肤ID，为空时从文件名提取</param>
+    /// <returns></returns>
+    bool addQrcResource(const QString& qrcPath, const QString& skinId = QString());
+    
+    /// <summary>
+    /// 获取颜色变量值
+    /// </summary>
+    /// <param name="colorKey">颜色键名</param>
+    /// <param name="skinId">皮肤ID</param>
+    /// <returns></returns>
+    QString getColorVariable(const QString& colorKey, const QString& skinId = QString()) const;
+    
+    /// <summary>
+    /// 从QRC中获取任意QSS文件内容
+    /// </summary>
+    /// <param name="fileName">QSS文件名（可不带.qss后缀）</param>
+    /// <param name="skinId">皮肤ID，为空时使用当前皮肤</param>
+    /// <returns>QSS内容字符串</returns>
+    QString getStyleContent(const QString& fileName, const QString& skinId = QString()) const;
+    
+    /// <summary>
+    /// 获取指定皮肤下所有可用的QSS文件
+    /// </summary>
+    /// <param name="skinId">皮肤ID，为空时使用当前皮肤</param>
+    /// <returns>QSS文件名列表（不含路径）</returns>
+    QStringList getAvailableStyleFiles(const QString& skinId = QString()) const;
 
 signals:
-    void currentSkinIdChanged(const QString &skinId);
-    void availableSkinsChanged(const QStringList &skins);
-    void skinChanged(const QString &skinId);
-    void skinLoadError(const QString &skinId, SkinError error);
+    void currentSkinIdChanged(const QString& skinId);
+    void availableSkinsChanged(const QStringList& skins);
+    void skinChanged(const QString& skinId);
 
 private:
-    explicit SkinManager(QObject *parent = nullptr);
-    ~SkinManager();
-    
-    // 初始化
-    void initializeBuiltinSkins();
-    void loadSkinConfigs();
-    
-    // 皮肤加载
-    bool loadSkinConfig(const QString &skinId);
-    bool validateSkinStructure(const QString &skinId);
-    
-    // 样式解析
-    QString replaceColorVariables(const QString &styleSheet, const QMap<QString, QString> &variables) const;
-    QString processStyleDirectives(const QString &styleSheet) const;
-    
-    // 回退机制
-    void fallbackToDefaultSkin();
+    explicit SkinManager(QObject* parent = nullptr);
+    ~SkinManager() override;
+
+    QString parseStyleSheet(const QString& styleSheet, const QString& skinId) const;
+    QString replaceColorVariables(const QString& styleSheet, const QMap<QString, QString>& variables) const;
 
 private:
-    static SkinManager *s_instance;
+    static SkinManager* s_instance;
     static QMutex s_mutex;
-    
+
     QString m_currentSkinId;
-    QString m_currentStyleSheet;
+    SkinResource* m_skinResource;
     QMap<QString, SkinInfo*> m_skinInfos;
-    SkinResource *m_skinResource;
-    QSettings *m_settings;
-    SkinError m_lastError;
-    
+
     Q_DISABLE_COPY(SkinManager)
 };
 
-#endif // SKINMANAGER_H 
+#endif // SKINMANAGER_H

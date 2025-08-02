@@ -5,7 +5,6 @@
 #include "../CommonDefine/UIWidgetGlobal.h"
 #include "../CommonDefine/UIWidgetColorDefine.h"
 #include "../CommonDefine/RegexDefine.h"
-
 /// <summary>
 /// 带验证功能的输入框控件
 /// </summary>

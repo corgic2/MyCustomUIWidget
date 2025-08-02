@@ -4,7 +4,6 @@
 #include "../CommonDefine/UIWidgetColorDefine.h"
 #include "../CommonDefine/UIWidgetGlobal.h"
 #include "../UtilsWidget/CustomToolTips.h"
-
 /// <summary>
 /// 自定义工具按钮类，提供丰富的样式设置和提示功能
 /// </summary>

@@ -1,0 +1,45 @@
+/* CustomComboBox 样式定义 */
+CustomComboBox {
+    background-color: @backgroundColor;
+    color: @fontColor;
+    border: 2px solid @borderColor;
+    border-radius: 4px;
+    padding: 6px;
+    font-size: @fontSize;
+    font-weight: @fontWeight;
+    font-style: @fontStyle;
+}
+
+CustomComboBox:hover {
+    border-color: @hoverColor;
+}
+
+CustomComboBox:focus {
+    border-color: @primaryColor;
+}
+
+CustomComboBox::drop-down {
+    border: none;
+    width: 20px;
+    background-color: transparent;
+}
+
+CustomComboBox::down-arrow {
+    image: url(:/icons/dropdown.png);
+    width: 12px;
+    height: 12px;
+}
+
+CustomComboBox QAbstractItemView {
+    background-color: @itemBackgroundColor;
+    color: @itemFontColor;
+    border: 1px solid @borderColor;
+    selection-background-color: @selectedColor;
+    selection-color: white;
+}
+
+CustomComboBox QAbstractItemView::item {
+    padding: 4px;
+    height: @itemHeight;
+    margin: @itemSpacing;
+}

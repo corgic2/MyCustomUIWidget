@@ -1,0 +1,35 @@
+/* ValidatedLineEdit 样式定义 */
+ValidatedLineEdit {
+    background-color: @backgroundColor;
+    color: @fontColor;
+    border: 2px solid @borderColor;
+    border-radius: 4px;
+    padding: 6px;
+    font-size: @fontSize;
+}
+
+ValidatedLineEdit:focus {
+    border-color: @primaryColor;
+}
+
+ValidatedLineEdit:disabled {
+    background-color: @disabledColor;
+    color: @disabledTextColor;
+    border-color: @disabledBorderColor;
+}
+
+ValidatedLineEdit[validationState="valid"] {
+    border-color: @successColor;
+}
+
+ValidatedLineEdit[validationState="invalid"] {
+    border-color: @errorColor;
+}
+
+ValidatedLineEdit[validationState="warning"] {
+    border-color: @warningColor;
+}
+
+ValidatedLineEdit::placeholder {
+    color: @placeholderColor;
+}

@@ -8,6 +8,9 @@
 #include <QMap>
 #include <QVariant>
 
+/// <summary>
+/// 颜色json存储信息，id，name，author，version，description，colorMap，ResourcesFiles等
+/// </summary>
 class STYLESYSTEM_EXPORT SkinInfo : public QObject
 {
     Q_OBJECT
@@ -61,7 +64,6 @@ public:
 
     // 验证
     bool isValid() const;
-    SkinError validate() const;
 
     // 序列化
     QVariantMap toVariantMap() const;
@@ -80,11 +82,8 @@ private:
     QString m_author;
     QString m_version;
     QString m_description;
-    QString m_resourcePath;
-    QString m_configPath;
-    QString m_stylePath;
     QMap<QString, QString> m_colorVariables;
     QStringList m_requiredFiles;
 };
 
-#endif // SKININFO_H 
+#endif // SKININFO_H

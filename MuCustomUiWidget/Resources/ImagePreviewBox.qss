@@ -1,0 +1,46 @@
+/* ImagePreviewBox 样式定义 */
+ImagePreviewBox {
+    background-color: @backgroundColor;
+    border: 2px solid @borderColor;
+    border-radius: 4px;
+    padding: 4px;
+}
+
+ImagePreviewBox QLabel {
+    background-color: transparent;
+    color: @fontColor;
+    font-size: @fontSize;
+    border: none;
+}
+
+ImagePreviewBox QPushButton {
+    background-color: @primaryColor;
+    color: white;
+    border: none;
+    padding: 6px 12px;
+    border-radius: 4px;
+    font-size: @fontSize;
+}
+
+ImagePreviewBox QPushButton:hover {
+    background-color: @hoverColor;
+}
+
+ImagePreviewBox QPushButton:pressed {
+    background-color: @pressedColor;
+}
+
+ImagePreviewBox QPushButton:disabled {
+    background-color: @disabledColor;
+    color: @disabledTextColor;
+}
+
+ImagePreviewBox[hasImage="false"] {
+    background-color: @emptyBackgroundColor;
+    border-style: dashed;
+}
+
+ImagePreviewBox[hasImage="true"] {
+    background-color: @backgroundColor;
+    border-style: solid;
+}

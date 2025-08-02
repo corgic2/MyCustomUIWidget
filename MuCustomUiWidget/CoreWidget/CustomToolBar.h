@@ -6,7 +6,6 @@
 #include <QPainter>
 #include "../CommonDefine/UIWidgetColorDefine.h"
 #include "../CommonDefine/UIWidgetGlobal.h"
-
 /// <summary>
 /// 自定义工具栏类，提供现代化UI风格和丰富的样式设置
 /// </summary>

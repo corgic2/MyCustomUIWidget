@@ -1,4 +1,4 @@
-# 指定CMake的最低版本
+﻿# 指定CMake的最低版本
 cmake_minimum_required(VERSION 3.10)
 
 # 设置项目名称
@@ -27,9 +27,16 @@ file(GLOB_RECURSE COMMON_SRC
     "CommonDefine/*.h"
 )
 
+# 收集资源定义文件
+file(GLOB_RECURSE RESOURCE_SRC
+    "Resources/*.qss"
+    "*.qrc"
+    "*.ini"
+    "*.json"
+)
+
 # 为UI文件生成头文件
 qt5_wrap_ui(UI_HEADERS ${UI_FILES})
-
 # 创建共享库
 add_library(${PROJECT_NAME} SHARED
     ${UI_SRC}
@@ -80,4 +87,5 @@ source_group_by_dir(UI_SRC)
 source_group_by_dir(COMMON_SRC)
 source_group("Generated Files" FILES ${UI_HEADERS})
 source_group("Form Files" FILES ${UI_FILES})
+source_group("Resources Files" FILES ${RESOURCE_SRC})
 

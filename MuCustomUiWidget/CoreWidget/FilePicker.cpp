@@ -1,4 +1,4 @@
-#include "FilePicker.h"
+﻿#include "FilePicker.h"
 #include <QHBoxLayout>
 #include <QFileDialog>
 #include <QDir>

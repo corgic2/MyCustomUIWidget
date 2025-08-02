@@ -5,7 +5,6 @@
 #include <QWidget>
 #include "../CommonDefine/UIWidgetColorDefine.h"
 #include "../CommonDefine/UIWidgetGlobal.h"
-
 /// <summary>
 /// 自定义Frame控件类，提供丰富的样式和布局设置
 /// </summary>

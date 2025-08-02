@@ -1,0 +1,33 @@
+/* CustomFrame 样式定义 */
+CustomFrame {
+    background-color: @backgroundColor;
+    border: @borderWidth solid @borderColor;
+    border-radius: 4px;
+    padding: @padding;
+}
+
+CustomFrame[backgroundType="1"] {
+    background-color: @backgroundColor;
+}
+
+CustomFrame[backgroundType="2"] {
+    background: qlineargradient(x1:0, y1:0, x2:1, y2:1,
+                                stop:0 @gradientStartColor,
+                                stop:1 @gradientEndColor);
+}
+
+CustomFrame[hasLeftBorder="true"] {
+    border-left: @borderWidth solid @borderColor;
+}
+
+CustomFrame[hasTopBorder="true"] {
+    border-top: @borderWidth solid @borderColor;
+}
+
+CustomFrame[hasRightBorder="true"] {
+    border-right: @borderWidth solid @borderColor;
+}
+
+CustomFrame[hasBottomBorder="true"] {
+    border-bottom: @borderWidth solid @borderColor;
+}

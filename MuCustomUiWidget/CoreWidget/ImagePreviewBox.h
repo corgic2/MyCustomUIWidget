@@ -1,4 +1,4 @@
-#pragma once
+﻿#pragma once
 
 #include <QWidget>
 #include <QLabel>
@@ -9,7 +9,6 @@
 #include <QMimeData>
 #include "../CommonDefine/UIWidgetGlobal.h"
 #include "../CommonDefine/UIWidgetColorDefine.h"
-
 /// <summary>
 /// 图片预览框控件
 /// </summary>

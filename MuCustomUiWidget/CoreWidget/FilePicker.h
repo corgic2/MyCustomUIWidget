@@ -1,11 +1,10 @@
-#pragma once
+﻿#pragma once
 
 #include <QWidget>
 #include <QLineEdit>
 #include <QToolButton>
 #include <QFileDialog>
 #include "../CommonDefine/UIWidgetGlobal.h"
-
 /// <summary>
 /// 文件选择器控件
 /// </summary>

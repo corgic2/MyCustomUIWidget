@@ -1,4 +1,4 @@
-#ifndef STYLESYSTEMGLOBAL_H
+﻿#ifndef STYLESYSTEMGLOBAL_H
 #define STYLESYSTEMGLOBAL_H
 
 #include <QtCore/qglobal.h>

@@ -1,0 +1,16 @@
+<!DOCTYPE RCC>
+<RCC version="1.0">
+    <qresource prefix="/MuCustomUiWidget">
+        <!-- 组件样式文件 -->
+        <file>Resources/CustomFrame.qss</file>
+        <file>Resources/CustomComboBox.qss</file>
+        <file>Resources/CustomLabel.qss</file>
+        <file>Resources/CustomProgressBar.qss</file>
+        <file>Resources/CustomToolButton.qss</file>
+        <file>Resources/CustomToolBar.qss</file>
+        <file>Resources/ValidatedLineEdit.qss</file>
+        <file>Resources/FilePicker.qss</file>
+        <file>Resources/ImagePreviewBox.qss</file>
+        <file>Resources/CustomButton.qss</file>
+    </qresource>
+</RCC>

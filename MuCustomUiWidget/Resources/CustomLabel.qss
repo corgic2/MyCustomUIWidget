@@ -1,0 +1,26 @@
+/* CustomLabel 样式定义 */
+CustomLabel {
+    color: @fontColor;
+    background-color: transparent;
+    font-size: @fontSize;
+    font-weight: @fontWeight;
+    font-style: @fontStyle;
+}
+
+CustomLabel[backgroundType="1"] {
+    background-color: @backgroundColor;
+    border-radius: 4px;
+    padding: 4px;
+}
+
+CustomLabel[backgroundType="2"] {
+    background: qlineargradient(x1:0, y1:0, x2:1, y2:1,
+                                stop:0 @gradientStartColor,
+                                stop:1 @gradientEndColor);
+    border-radius: 4px;
+    padding: 4px;
+}
+
+CustomLabel:disabled {
+    color: @disabledColor;
+}

@@ -1,0 +1,38 @@
+/* FilePicker 样式定义 */
+FilePicker {
+    background-color: @backgroundColor;
+    border: 1px solid @borderColor;
+    border-radius: 4px;
+    padding: 4px;
+}
+
+FilePicker QPushButton {
+    background-color: @primaryColor;
+    color: white;
+    border: none;
+    padding: 4px 8px;
+    border-radius: 4px;
+    font-size: @fontSize;
+}
+
+FilePicker QPushButton:hover {
+    background-color: @hoverColor;
+}
+
+FilePicker QLineEdit {
+    background-color: @inputBackgroundColor;
+    color: @fontColor;
+    border: 1px solid @borderColor;
+    border-radius: 2px;
+    padding: 4px;
+    font-size: @fontSize;
+}
+
+FilePicker QLineEdit:focus {
+    border-color: @primaryColor;
+}
+
+FilePicker QLineEdit:disabled {
+    background-color: @disabledColor;
+    color: @disabledTextColor;
+}

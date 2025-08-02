@@ -1,18 +1,16 @@
-﻿#include "SkinInfo.h"
+#include "SkinInfo.h"
 #include <QDir>
 #include <QFileInfo>
 
 SkinInfo::SkinInfo(QObject* parent)
     : QObject(parent)
 {
-    // 设置默认必需文件
     m_requiredFiles << DEFAULT_STYLE_FILE << DEFAULT_CONFIG_FILE;
 }
 
 SkinInfo::SkinInfo(const QString& skinId, QObject* parent)
     : QObject(parent), m_id(skinId)
 {
-    // 设置默认必需文件
     m_requiredFiles << DEFAULT_STYLE_FILE << DEFAULT_CONFIG_FILE;
 }
 
@@ -90,35 +88,7 @@ void SkinInfo::setDescription(const QString& description)
     }
 }
 
-QString SkinInfo::resourcePath() const
-{
-    return m_resourcePath;
-}
 
-void SkinInfo::setResourcePath(const QString& path)
-{
-    m_resourcePath = path;
-}
-
-QString SkinInfo::configPath() const
-{
-    return m_configPath;
-}
-
-void SkinInfo::setConfigPath(const QString& path)
-{
-    m_configPath = path;
-}
-
-QString SkinInfo::stylePath() const
-{
-    return m_stylePath;
-}
-
-void SkinInfo::setStylePath(const QString& path)
-{
-    m_stylePath = path;
-}
 
 QMap<QString, QString> SkinInfo::colorVariables() const
 {
@@ -160,35 +130,7 @@ void SkinInfo::addRequiredFile(const QString& file)
 
 bool SkinInfo::isValid() const
 {
-    return validate() == SkinError::NoError;
-}
-
-SkinError SkinInfo::validate() const
-{
-    // 检查基本信息
-    if (m_id.isEmpty())
-    {
-        return SkinError::InvalidSkinStructure;
-    }
-
-    // 检查资源路径
-    if (m_resourcePath.isEmpty())
-    {
-        return SkinError::ResourceNotFound;
-    }
-
-    // 检查必需文件
-    for (const QString& file : m_requiredFiles)
-    {
-        QString filePath = QString(":%1/%2").arg(m_id, file);
-        QFileInfo fileInfo(filePath);
-        if (!fileInfo.exists())
-        {
-            return SkinError::ResourceNotFound;
-        }
-    }
-
-    return SkinError::NoError;
+    return !m_id.isEmpty();
 }
 
 QVariantMap SkinInfo::toVariantMap() const
@@ -199,7 +141,7 @@ QVariantMap SkinInfo::toVariantMap() const
     map["author"] = m_author;
     map["version"] = m_version;
     map["description"] = m_description;
-    
+
     // 修复：将QMap转换为QVariantMap
     QVariantMap colorVariantMap;
     for (auto it = m_colorVariables.begin(); it != m_colorVariables.end(); ++it)
@@ -207,7 +149,7 @@ QVariantMap SkinInfo::toVariantMap() const
         colorVariantMap[it.key()] = it.value();
     }
     map["colorVariables"] = colorVariantMap;
-    
+
     map["requiredFiles"] = m_requiredFiles;
     return map;
 }
