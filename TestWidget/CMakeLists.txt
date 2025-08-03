@@ -1,4 +1,4 @@
-# TestWidget 项目配置
+﻿# TestWidget 项目配置
 project(TestWidget)
 # 收集源文件
 file(GLOB_RECURSE TEST_SRC 

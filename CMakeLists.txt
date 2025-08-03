@@ -2,7 +2,7 @@
 cmake_minimum_required(VERSION 3.10)
 
 # 设置解决方案名称
-project(MuCustomUIWidgetSolution)
+project(MyCustomUIWidgetSolution)
 
 # 设置使用到的Qt模块
 set(QT_MODULES Core Gui Widgets Designer UiPlugin)

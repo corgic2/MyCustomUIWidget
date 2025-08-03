@@ -21,7 +21,6 @@ public:
     /// </summary>
     /// <returns></returns>
     QStringList scanAvailableSkins() const;
-    QStringList scanResourceDirectory(const QString &directory) const;
     bool registerSkinResource(const QString &skinId, const QString &resourcePath);
     void unregisterSkinResource(const QString &skinId);
 
@@ -42,7 +41,6 @@ public:
     /// <param name="componentClassName"></param>
     /// <returns></returns>
     QString getComponentStyleContent(const QString &skinId, const QString &componentClassName) const;
-    QStringList getAvailableComponents(const QString &skinId) const;
     
     /// <summary>
     /// 从QRC中查找任意QSS文件内容
@@ -51,52 +49,24 @@ public:
     /// <param name="fileName"></param>
     /// <returns></returns>
     QString getStyleContentFromQrc(const QString &skinId, const QString &fileName) const;
-    
     /// <summary>
-    /// 递归查找QRC中所有QSS文件
+    /// 寻找所有QSS文件
     /// </summary>
     /// <param name="skinId"></param>
     /// <returns></returns>
-    QStringList findAllQssFiles(const QString &skinId) const;
-
-    /// <summary>
-    /// 资源验证
-    /// </summary>
-    /// <param name="skinId"></param>
-    /// <param name="resourceName"></param>
-    /// <returns></returns>
-    bool isResourceValid(const QString &skinId, const QString &resourceName) const; //是否有效
-    bool isSkinResourceComplete(const QString &skinId) const; // 是否存在
-    /// <summary>
-    /// 外部资源支持
-    /// </summary>
-    /// <param name="filePath"></param>
-    /// <returns></returns>
-    bool loadExternalResource(const QString &filePath);
-    void setExternalResourceDirectory(const QString &directory);
-    QString externalResourceDirectory() const;
-
-
-
+    QStringList findAllQssFiles(const QString& skinId) const;
 signals:
     void resourceChanged(const QString &skinId, const QString &resourceName);
     void skinResourceAdded(const QString &skinId);
     void skinResourceRemoved(const QString &skinId);
-
-
-
 private:
     void initializeBuiltinResources();
-    void updateResourceIndex();
-    QString normalizeResourcePath(const QString &path) const;
-
 private:
     /// <summary>
     /// 皮肤id -> 资源路径
     /// /// </summary>
     QMap<QString, QString> m_resourcePaths;  // skinId -> resourcePath
-    QFileSystemWatcher *m_watcher;
-    QString m_externalResourceDirectory;
+    QMap<QString, QStringList> m_skinPreFix;
 };
 
 #endif // SKINRESOURCE_H

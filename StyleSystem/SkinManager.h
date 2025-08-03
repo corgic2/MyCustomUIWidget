@@ -57,7 +57,6 @@ public:
     /// <param name="skinId">皮肤ID</param>
     /// <returns></returns>
     QString getColorVariable(const QString& colorKey, const QString& skinId = QString()) const;
-    
     /// <summary>
     /// 从QRC中获取任意QSS文件内容
     /// </summary>
@@ -65,34 +64,27 @@ public:
     /// <param name="skinId">皮肤ID，为空时使用当前皮肤</param>
     /// <returns>QSS内容字符串</returns>
     QString getStyleContent(const QString& fileName, const QString& skinId = QString()) const;
-    
-    /// <summary>
-    /// 获取指定皮肤下所有可用的QSS文件
-    /// </summary>
-    /// <param name="skinId">皮肤ID，为空时使用当前皮肤</param>
-    /// <returns>QSS文件名列表（不含路径）</returns>
-    QStringList getAvailableStyleFiles(const QString& skinId = QString()) const;
-
 signals:
     void currentSkinIdChanged(const QString& skinId);
     void availableSkinsChanged(const QStringList& skins);
     void skinChanged(const QString& skinId);
-
 private:
     explicit SkinManager(QObject* parent = nullptr);
     ~SkinManager() override;
-
+    /// <summary>
+    /// 替换颜色变量
+    /// </summary>
+    /// <param name="styleSheet"></param>
+    /// <param name="skinId"></param>
+    /// <returns></returns>
     QString parseStyleSheet(const QString& styleSheet, const QString& skinId) const;
     QString replaceColorVariables(const QString& styleSheet, const QMap<QString, QString>& variables) const;
-
 private:
     static SkinManager* s_instance;
     static QMutex s_mutex;
-
     QString m_currentSkinId;
-    SkinResource* m_skinResource;
+    SkinResource* m_skinResource = nullptr;
     QMap<QString, SkinInfo*> m_skinInfos;
-
     Q_DISABLE_COPY(SkinManager)
 };
 

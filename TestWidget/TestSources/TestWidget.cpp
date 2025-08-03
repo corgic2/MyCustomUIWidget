@@ -1,7 +1,6 @@
 ﻿#include "TestWidget.h"
 #include <QPushButton>
 #include <QVBoxLayout>
-
 TestWidget::TestWidget(QWidget *parent)
     : QWidget(parent)
     , ui(new Ui::TestWidgetClass())

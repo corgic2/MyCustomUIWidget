@@ -46,8 +46,6 @@ void SkinManager::destroyInstance()
     }
 }
 
-
-
 QString SkinManager::currentSkinId() const
 {
     return m_currentSkinId;
@@ -119,12 +117,13 @@ bool SkinManager::addQrcResource(const QString& qrcPath, const QString& skinId)
     }
     
     QFileInfo fileInfo(qrcPath);
-    if (!fileInfo.exists()) {
+    if (!fileInfo.exists())
+    {
         return false;
     }
-    
+
     QString targetSkinId = skinId.isEmpty() ? fileInfo.baseName() : skinId;
-    
+
     // 注册QRC资源
     if (!m_skinResource->registerSkinResource(targetSkinId, qrcPath)) {
         return false;
@@ -154,12 +153,6 @@ QString SkinManager::getStyleContent(const QString& fileName, const QString& ski
 {
     QString targetSkinId = skinId.isEmpty() ? m_currentSkinId : skinId;
     return m_skinResource->getStyleContentFromQrc(targetSkinId, fileName);
-}
-
-QStringList SkinManager::getAvailableStyleFiles(const QString& skinId) const
-{
-    QString targetSkinId = skinId.isEmpty() ? m_currentSkinId : skinId;
-    return m_skinResource->getAvailableComponents(targetSkinId);
 }
 
 QString SkinManager::replaceColorVariables(const QString& styleSheet, const QMap<QString, QString>& variables) const

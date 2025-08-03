@@ -1,4 +1,4 @@
-#ifndef SKINSTYLELOADER_H
+﻿#ifndef SKINSTYLELOADER_H
 #define SKINSTYLELOADER_H
 
 #include "StyleSystemGlobal.h"
