@@ -43,27 +43,7 @@ QString CustomToolButtonPlugin::domXml() const
                 <height>32</height>
             </rect>
         </property>
-        <property name="toolTipsText">
-            <string></string>
-        </property>
-        <property name="toolTipsExText">
-            <string></string>
-        </property>
-        <property name="tipsType">
-            <enum>CustomToolTips::Normal</enum>
-        </property>
-        <property name="fontSize">
-            <number>12</number>
-        </property>
-        <property name="fontStyle">
-            <enum>CustomToolButton::FontStyle_Normal</enum>
-        </property>
-        <property name="backgroundType">
-            <enum>CustomToolButton::BackgroundType_Transparent</enum>
-        </property>
-        <property name="padding">
-            <number>5</number>
-        </property>
+
     </widget>
 </ui>
 )");

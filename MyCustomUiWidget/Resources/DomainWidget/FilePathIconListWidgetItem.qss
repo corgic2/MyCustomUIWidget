@@ -1,0 +1,250 @@
+/* FilePathIconListWidgetItem 样式定义 */
+
+FilePathIconListWidgetItem {
+    background-color: transparent;
+    border: 1px solid transparent;
+    border-radius: 6px;
+    padding: 8px 12px;
+    margin: 2px 4px;
+    min-height: 32px;
+    font-family: "Microsoft YaHei", "PingFang SC", "Helvetica Neue", Helvetica, Arial, sans-serif;
+    font-size: 14px;
+    color: rgb(@dark_color);
+    outline: none;
+}
+
+FilePathIconListWidgetItem:hover {
+    background-color: rgba(@hover_background_color, 0.7);
+    border-color: rgba(@light_color, 0.5);
+}
+
+FilePathIconListWidgetItem:selected {
+    background-color: rgba(@info_color, 0.1);
+    border-color: rgb(@info_color);
+    color: rgb(@info_color);
+}
+
+FilePathIconListWidgetItem:selected:active {
+    background-color: rgba(@info_color, 0.15);
+    border-color: rgb(@info_color);
+}
+
+FilePathIconListWidgetItem:selected:!active {
+    background-color: rgba(@info_color, 0.05);
+    border-color: rgba(@info_color, 0.5);
+}
+
+FilePathIconListWidgetItem:disabled {
+    background-color: rgba(@white_color, 0.5);
+    border-color: transparent;
+    color: rgb(@disabled_color);
+}
+
+/* 图标样式 */
+FilePathIconListWidgetItem QLabel#iconLabel {
+    background-color: transparent;
+    border: none;
+    padding: 0px;
+    margin-right: 8px;
+    min-width: 24px;
+    max-width: 24px;
+    min-height: 24px;
+    max-height: 24px;
+}
+
+/* 文本标签样式 */
+FilePathIconListWidgetItem QLabel#nameLabel {
+    background-color: transparent;
+    border: none;
+    padding: 0px;
+    font-weight: 500;
+    font-size: 14px;
+    color: rgb(@dark_color);
+}
+
+FilePathIconListWidgetItem QLabel#pathLabel {
+    background-color: transparent;
+    border: none;
+    padding: 0px;
+    font-size: 12px;
+    color: rgb(@light_color);
+}
+
+FilePathIconListWidgetItem QLabel#sizeLabel {
+    background-color: transparent;
+    border: none;
+    padding: 0px;
+    font-size: 11px;
+    color: rgb(@light_color);
+}
+
+/* 状态样式 */
+FilePathIconListWidgetItem[state="normal"] {
+    background-color: transparent;
+    color: rgb(@dark_color);
+}
+
+FilePathIconListWidgetItem[state="hover"] {
+    background-color: rgba(@hover_background_color, 0.7);
+    border-color: rgba(@light_color, 0.5);
+}
+
+FilePathIconListWidgetItem[state="selected"] {
+    background-color: rgba(@info_color, 0.1);
+    border-color: rgb(@info_color);
+    color: rgb(@info_color);
+}
+
+FilePathIconListWidgetItem[state="disabled"] {
+    background-color: rgba(@white_color, 0.5);
+    color: rgb(@disabled_color);
+}
+
+FilePathIconListWidgetItem[state="error"] {
+    background-color: rgba(@error_color, 0.05);
+    border-color: rgb(@error_color);
+    color: rgb(@error_color);
+}
+
+FilePathIconListWidgetItem[state="warning"] {
+    background-color: rgba(@warning_color, 0.05);
+    border-color: rgb(@warning_color);
+    color: rgb(@warning_color);
+}
+
+FilePathIconListWidgetItem[state="success"] {
+    background-color: rgba(@success_color, 0.05);
+    border-color: rgb(@success_color);
+    color: rgb(@success_color);
+}
+
+/* 文件类型样式 */
+FilePathIconListWidgetItem[type="folder"] {
+    border-left: 3px solid rgb(@success_color);
+}
+
+FilePathIconListWidgetItem[type="folder"] QLabel#nameLabel {
+    color: rgb(@success_color);
+}
+
+FilePathIconListWidgetItem[type="file"] {
+    border-left: 3px solid rgb(@info_color);
+}
+
+FilePathIconListWidgetItem[type="file"] QLabel#nameLabel {
+    color: rgb(@info_color);
+}
+
+FilePathIconListWidgetItem[type="image"] {
+    border-left: 3px solid rgb(@warning_color);
+}
+
+FilePathIconListWidgetItem[type="image"] QLabel#nameLabel {
+    color: rgb(@warning_color);
+}
+
+FilePathIconListWidgetItem[type="document"] {
+    border-left: 3px solid rgb(@primary_color);
+}
+
+FilePathIconListWidgetItem[type="document"] QLabel#nameLabel {
+    color: rgb(@primary_color);
+}
+
+/* 紧凑模式 */
+FilePathIconListWidgetItem[compact="true"] {
+    padding: 4px 8px;
+    margin: 1px 2px;
+    min-height: 24px;
+}
+
+FilePathIconListWidgetItem[compact="true"] QLabel#iconLabel {
+    margin-right: 4px;
+    min-width: 16px;
+    max-width: 16px;
+    min-height: 16px;
+    max-height: 16px;
+}
+
+FilePathIconListWidgetItem[compact="true"] QLabel#nameLabel {
+    font-size: 12px;
+}
+
+FilePathIconListWidgetItem[compact="true"] QLabel#pathLabel,
+FilePathIconListWidgetItem[compact="true"] QLabel#sizeLabel {
+    font-size: 10px;
+}
+
+/* 扩展模式 */
+FilePathIconListWidgetItem[expanded="true"] {
+    padding: 12px 16px;
+    margin: 4px 6px;
+    min-height: 48px;
+}
+
+FilePathIconListWidgetItem[expanded="true"] QLabel#iconLabel {
+    margin-right: 12px;
+    min-width: 32px;
+    max-width: 32px;
+    min-height: 32px;
+    max-height: 32px;
+}
+
+FilePathIconListWidgetItem[expanded="true"] QLabel#nameLabel {
+    font-size: 16px;
+    font-weight: 600;
+}
+
+FilePathIconListWidgetItem[expanded="true"] QLabel#pathLabel {
+    font-size: 13px;
+}
+
+FilePathIconListWidgetItem[expanded="true"] QLabel#sizeLabel {
+    font-size: 12px;
+}
+
+/* 深色主题 */
+FilePathIconListWidgetItem[theme="dark"] {
+    background-color: transparent;
+    color: rgb(@white_color);
+}
+
+FilePathIconListWidgetItem[theme="dark"]:hover {
+    background-color: rgba(@white_color, 0.1);
+    border-color: rgba(@white_color, 0.3);
+}
+
+FilePathIconListWidgetItem[theme="dark"]:selected {
+    background-color: rgba(@info_color, 0.2);
+    border-color: rgb(@info_color);
+    color: rgb(@info_color);
+}
+
+FilePathIconListWidgetItem[theme="dark"] QLabel#nameLabel {
+    color: rgb(@white_color);
+}
+
+FilePathIconListWidgetItem[theme="dark"] QLabel#pathLabel,
+FilePathIconListWidgetItem[theme="dark"] QLabel#sizeLabel {
+    color: rgba(@white_color, 0.7);
+}
+
+/* 动画效果 */
+FilePathIconListWidgetItem {
+    transition: all 200ms ease;
+}
+
+FilePathIconListWidgetItem QLabel {
+    transition: color 150ms ease, background-color 150ms ease;
+}
+
+/* 工具提示样式 */
+FilePathIconListWidgetItem QToolTip {
+    background-color: rgb(@dark_color);
+    color: rgb(@white_color);
+    border: 1px solid rgba(@white_color, 0.3);
+    border-radius: 4px;
+    padding: 8px;
+    font-size: 12px;
+    opacity: 200;
+}

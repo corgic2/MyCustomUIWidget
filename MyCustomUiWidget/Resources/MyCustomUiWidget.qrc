@@ -1,19 +1,17 @@
 <RCC>
-    <qresource prefix="/CoreWidget">
-        <file>CustomButton.qss</file>
-        <file>CustomComboBox.qss</file>
-        <file>CustomFrame.qss</file>
-        <file>CustomLabel.qss</file>
-        <file>CustomProgressBar.qss</file>
-        <file>CustomToolBar.qss</file>
-        <file>CustomToolButton.qss</file>
-        <file>ValidatedLineEdit.qss</file>
+    <qresource prefix="/CustomUiWidget">
+        <file>CoreWidget/CustomComboBox.qss</file>
+        <file>CoreWidget/CustomFrame.qss</file>
+        <file>CoreWidget/CustomLabel.qss</file>
+        <file>CoreWidget/CustomProgressBar.qss</file>
+        <file>CoreWidget/CustomToolBar.qss</file>
+        <file>CoreWidget/CustomToolButton.qss</file>
+        <file>CoreWidget/ValidatedLineEdit.qss</file>
+        <file>DomainWidget/FilePathIconListWidget.qss</file>
+        <file>DomainWidget/FilePathIconListWidgetItem.qss</file>
+        <file>DomainWidget/FilePicker.qss</file>
     </qresource>
-    <qresource prefix="/DomainWidget">
-        <file>FilePicker.qss</file>
-        <file>ImagePreviewBox.qss</file>
-    </qresource>
-    <qresource prefix="/Default">
-        <file>CommonStyles.qss</file>
+    <qresource prefix="/Config">
+        <file>Default/skin_config.json</file>
     </qresource>
 </RCC>

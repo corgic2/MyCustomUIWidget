@@ -1,29 +1,29 @@
-#include "SkinInfo.h"
+#include "SkinVersionInfo.h"
 #include <QDir>
 #include <QFileInfo>
 
-SkinInfo::SkinInfo(QObject* parent)
+SkinVersionInfo::SkinVersionInfo(QObject* parent)
     : QObject(parent)
 {
-    m_requiredFiles << DEFAULT_STYLE_FILE << DEFAULT_CONFIG_FILE;
+    m_requiredFiles << DEFAULT_CONFIG_FILE;
 }
 
-SkinInfo::SkinInfo(const QString& skinId, QObject* parent)
+SkinVersionInfo::SkinVersionInfo(const QString& skinId, QObject* parent)
     : QObject(parent), m_id(skinId)
 {
-    m_requiredFiles << DEFAULT_STYLE_FILE << DEFAULT_CONFIG_FILE;
+    m_requiredFiles << DEFAULT_CONFIG_FILE;
 }
 
-SkinInfo::~SkinInfo()
+SkinVersionInfo::~SkinVersionInfo()
 {
 }
 
-QString SkinInfo::id() const
+QString SkinVersionInfo::id() const
 {
     return m_id;
 }
 
-void SkinInfo::setId(const QString& id)
+void SkinVersionInfo::setId(const QString& id)
 {
     if (m_id != id)
     {
@@ -32,12 +32,12 @@ void SkinInfo::setId(const QString& id)
     }
 }
 
-QString SkinInfo::name() const
+QString SkinVersionInfo::name() const
 {
     return m_name;
 }
 
-void SkinInfo::setName(const QString& name)
+void SkinVersionInfo::setName(const QString& name)
 {
     if (m_name != name)
     {
@@ -46,12 +46,12 @@ void SkinInfo::setName(const QString& name)
     }
 }
 
-QString SkinInfo::author() const
+QString SkinVersionInfo::author() const
 {
     return m_author;
 }
 
-void SkinInfo::setAuthor(const QString& author)
+void SkinVersionInfo::setAuthor(const QString& author)
 {
     if (m_author != author)
     {
@@ -60,12 +60,12 @@ void SkinInfo::setAuthor(const QString& author)
     }
 }
 
-QString SkinInfo::version() const
+QString SkinVersionInfo::version() const
 {
     return m_version;
 }
 
-void SkinInfo::setVersion(const QString& version)
+void SkinVersionInfo::setVersion(const QString& version)
 {
     if (m_version != version)
     {
@@ -74,12 +74,12 @@ void SkinInfo::setVersion(const QString& version)
     }
 }
 
-QString SkinInfo::description() const
+QString SkinVersionInfo::description() const
 {
     return m_description;
 }
 
-void SkinInfo::setDescription(const QString& description)
+void SkinVersionInfo::setDescription(const QString& description)
 {
     if (m_description != description)
     {
@@ -89,38 +89,37 @@ void SkinInfo::setDescription(const QString& description)
 }
 
 
-
-QMap<QString, QString> SkinInfo::colorVariables() const
+QMap<QString, QString> SkinVersionInfo::colorVariables() const
 {
     return m_colorVariables;
 }
 
-void SkinInfo::setColorVariables(const QMap<QString, QString>& variables)
+void SkinVersionInfo::setColorVariables(const QMap<QString, QString>& variables)
 {
     m_colorVariables = variables;
 }
 
-void SkinInfo::addColorVariable(const QString& name, const QString& value)
+void SkinVersionInfo::addColorVariable(const QString& name, const QString& value)
 {
     m_colorVariables[name] = value;
 }
 
-QString SkinInfo::getColorVariable(const QString& name) const
+QString SkinVersionInfo::getColorVariable(const QString& name) const
 {
     return m_colorVariables.value(name);
 }
 
-QStringList SkinInfo::requiredFiles() const
+QStringList SkinVersionInfo::requiredFiles() const
 {
     return m_requiredFiles;
 }
 
-void SkinInfo::setRequiredFiles(const QStringList& files)
+void SkinVersionInfo::setRequiredFiles(const QStringList& files)
 {
     m_requiredFiles = files;
 }
 
-void SkinInfo::addRequiredFile(const QString& file)
+void SkinVersionInfo::addRequiredFile(const QString& file)
 {
     if (!m_requiredFiles.contains(file))
     {
@@ -128,12 +127,12 @@ void SkinInfo::addRequiredFile(const QString& file)
     }
 }
 
-bool SkinInfo::isValid() const
+bool SkinVersionInfo::isValid() const
 {
     return !m_id.isEmpty();
 }
 
-QVariantMap SkinInfo::toVariantMap() const
+QVariantMap SkinVersionInfo::toVariantMap() const
 {
     QVariantMap map;
     map["id"] = m_id;
@@ -150,11 +149,10 @@ QVariantMap SkinInfo::toVariantMap() const
     }
     map["colorVariables"] = colorVariantMap;
 
-    map["requiredFiles"] = m_requiredFiles;
     return map;
 }
 
-bool SkinInfo::fromVariantMap(const QVariantMap& map)
+bool SkinVersionInfo::fromVariantMap(const QVariantMap& map)
 {
     setId(map.value("id").toString());
     setName(map.value("name").toString());
@@ -170,8 +168,5 @@ bool SkinInfo::fromVariantMap(const QVariantMap& map)
         colorVariables[it.key()] = it.value().toString();
     }
     m_colorVariables = colorVariables;
-
-    m_requiredFiles = map.value("requiredFiles").toStringList();
-
     return true;
 }

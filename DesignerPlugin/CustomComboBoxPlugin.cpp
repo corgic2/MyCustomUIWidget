@@ -43,27 +43,6 @@ QString CustomComboBoxPlugin::domXml() const
                 <height>30</height>
             </rect>
         </property>
-        <property name="fontSize">
-            <enum>CustomComboBox::FontSize_Normal</enum>
-        </property>
-        <property name="fontStyle">
-            <enum>CustomComboBox::FontStyle_Normal</enum>
-        </property>
-        <property name="backgroundType">
-            <enum>CustomComboBox::BackgroundType_Transparent</enum>
-        </property>
-        <property name="itemSpacing">
-            <number>2</number>
-        </property>
-        <property name="itemHeight">
-            <number>24</number>
-        </property>
-        <property name="searchEnabled">
-            <bool>false</bool>
-        </property>
-        <property name="searchPlaceholderText">
-            <string>搜索...</string>
-        </property>
     </widget>
 </ui>
 )");

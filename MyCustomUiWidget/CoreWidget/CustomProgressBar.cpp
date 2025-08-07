@@ -1,639 +1,249 @@
-﻿#include "CustomProgressBar.h"
+#include "CustomProgressBar.h"
 #include <QGraphicsDropShadowEffect>
 #include <QLinearGradient>
 #include <QRadialGradient>
 #include <QPainterPath>
 #include <QFontMetrics>
+#include <QPainter>
+#include <QStyleOption>
+#include <QDebug>
 #include "SkinStyleLoader.h"
 
 CustomProgressBar::CustomProgressBar(QWidget* parent)
     : QProgressBar(parent)
-    , m_animation(nullptr)
-    , m_stripeTimer(nullptr)
-    , m_stripeOffset(0)
 {
-    InitializeProgressBar();
     AUTO_LOAD_SKIN_STYLE();
+    
+    setTextVisible(true);
+    setAlignment(Qt::AlignCenter);
+    setMinimum(0);
+    setMaximum(100);
+    
+    InitializeAnimation();
+    UpdateProgressStyle();
 }
 
 CustomProgressBar::~CustomProgressBar()
 {
-    if (m_animation != nullptr)
-    {
-        m_animation->stop();
-        delete m_animation;
-        m_animation = nullptr;
+    if (m_progressAnimation) {
+        m_progressAnimation->stop();
+        delete m_progressAnimation;
+        m_progressAnimation = nullptr;
     }
     
-    if (m_stripeTimer != nullptr)
-    {
-        m_stripeTimer->stop();
-        delete m_stripeTimer;
-        m_stripeTimer = nullptr;
+    if (m_pulseTimer) {
+        m_pulseTimer->stop();
+        delete m_pulseTimer;
+        m_pulseTimer = nullptr;
     }
 }
 
-void CustomProgressBar::InitializeProgressBar()
+void CustomProgressBar::SetProgressValue(int value)
 {
-    // 初始化默认值
-    m_progressBarStyle = EM_ProgressBarStyle::ProgressBarStyle_Default;
-    m_backgroundColor = UIColorDefine::background_color::White;
-    m_progressColor = UIColorDefine::theme_color::Primary;
-    m_textColor = UIColorDefine::font_color::Primary;
-    m_enableGradient = false;
-    m_gradientStartColor = UIColorDefine::gradient_color::Primary.start;
-    m_gradientEndColor = UIColorDefine::gradient_color::Primary.end;
-    m_enableAnimation = false;
-    m_animationDuration = 500;
-    m_textPosition = EM_TextPosition::TextPosition_Center;
-    m_enableShadow = false;
-    m_shadowColor = UIColorDefine::shadow_color::Default;
-    m_enableBorder = false;
-    m_borderColor = UIColorDefine::border_color::Default;
-    m_borderWidth = 1;
-    m_borderRadius = 0;
-    m_enableStripes = false;
-    m_stripeDirection = EM_StripeDirection::StripeDirection_LeftToRight;
-
-    // 设置默认范围
-    setRange(0, 100);
-    setValue(0);
-
-    // 初始化动画
-    m_animation = new QPropertyAnimation(this, "value", this);
-    m_animation->setEasingCurve(QEasingCurve::OutCubic);
-    connect(m_animation, &QPropertyAnimation::finished, this, &CustomProgressBar::SlotAnimationFinished);
-
-    // 初始化条纹动画定时器
-    m_stripeTimer = new QTimer(this);
-    m_stripeTimer->setInterval(50);
-    connect(m_stripeTimer, &QTimer::timeout, this, &CustomProgressBar::SlotUpdateStripeAnimation);
-
-    // 设置默认样式
-    UpdateStyle();
-}
-
-void CustomProgressBar::SetProgressBarStyle(EM_ProgressBarStyle style)
-{
-    m_progressBarStyle = style;
-    UpdateStyle();
-    update();
-}
-
-CustomProgressBar::EM_ProgressBarStyle CustomProgressBar::progressBarStyle() const
-{
-    return m_progressBarStyle;
-}
-
-void CustomProgressBar::SetBackgroundColor(const QColor& color)
-{
-    m_backgroundColor = color;
-    UpdateStyle();
-    update();
-}
-
-QColor CustomProgressBar::backgroundColor() const
-{
-    return m_backgroundColor;
-}
-
-void CustomProgressBar::SetProgressColor(const QColor& color)
-{
-    m_progressColor = color;
-    UpdateStyle();
-    update();
-}
-
-QColor CustomProgressBar::progressColor() const
-{
-    return m_progressColor;
-}
-
-void CustomProgressBar::SetTextColor(const QColor& color)
-{
-    m_textColor = color;
-    UpdateStyle();
-    update();
-}
-
-QColor CustomProgressBar::textColor() const
-{
-    return m_textColor;
-}
-
-void CustomProgressBar::SetEnableGradient(bool enable)
-{
-    m_enableGradient = enable;
-    UpdateStyle();
-    update();
-}
-
-bool CustomProgressBar::isGradientEnabled() const
-{
-    return m_enableGradient;
-}
-
-void CustomProgressBar::SetGradientStartColor(const QColor& color)
-{
-    m_gradientStartColor = color;
-    if (m_enableGradient)
-    {
-        UpdateStyle();
-        update();
+    if (value < minimum()) {
+        value = minimum();
+    } else if (value > maximum()) {
+        value = maximum();
     }
-}
-
-QColor CustomProgressBar::gradientStartColor() const
-{
-    return m_gradientStartColor;
-}
-
-void CustomProgressBar::SetGradientEndColor(const QColor& color)
-{
-    m_gradientEndColor = color;
-    if (m_enableGradient)
-    {
-        UpdateStyle();
-        update();
-    }
-}
-
-QColor CustomProgressBar::gradientEndColor() const
-{
-    return m_gradientEndColor;
-}
-
-void CustomProgressBar::SetEnableAnimation(bool enable)
-{
-    m_enableAnimation = enable;
-    m_animation->setDuration(enable ? m_animationDuration : 0);
-}
-
-bool CustomProgressBar::isAnimationEnabled() const
-{
-    return m_enableAnimation;
-}
-
-void CustomProgressBar::SetAnimationDuration(int duration)
-{
-    m_animationDuration = duration;
-    if (m_enableAnimation)
-    {
-        m_animation->setDuration(duration);
-    }
-}
-
-int CustomProgressBar::animationDuration() const
-{
-    return m_animationDuration;
-}
-
-void CustomProgressBar::SetTextPosition(EM_TextPosition position)
-{
-    m_textPosition = position;
-    update();
-}
-
-CustomProgressBar::EM_TextPosition CustomProgressBar::textPosition() const
-{
-    return m_textPosition;
-}
-
-void CustomProgressBar::SetEnableShadow(bool enable)
-{
-    m_enableShadow = enable;
     
-    if (m_enableShadow)
-    {
-        auto shadow = new QGraphicsDropShadowEffect(this);
-        shadow->setBlurRadius(UIColorDefine::size::DefaultShadowRadius);
-        shadow->setColor(m_shadowColor);
-        shadow->setOffset(UIColorDefine::size::DefaultShadowOffset, UIColorDefine::size::DefaultShadowOffset);
-        setGraphicsEffect(shadow);
-    }
-    else
-    {
-        setGraphicsEffect(nullptr);
-    }
-}
-
-bool CustomProgressBar::isShadowEnabled() const
-{
-    return m_enableShadow;
-}
-
-void CustomProgressBar::SetShadowColor(const QColor& color)
-{
-    m_shadowColor = color;
-    if (m_enableShadow)
-    {
-        SetEnableShadow(true);
-    }
-}
-
-QColor CustomProgressBar::shadowColor() const
-{
-    return m_shadowColor;
-}
-
-void CustomProgressBar::SetEnableBorder(bool enable)
-{
-    m_enableBorder = enable;
-    UpdateStyle();
-    update();
-}
-
-bool CustomProgressBar::isBorderEnabled() const
-{
-    return m_enableBorder;
-}
-
-void CustomProgressBar::SetBorderColor(const QColor& color)
-{
-    m_borderColor = color;
-    if (m_enableBorder)
-    {
-        UpdateStyle();
-        update();
-    }
-}
-
-QColor CustomProgressBar::borderColor() const
-{
-    return m_borderColor;
-}
-
-void CustomProgressBar::SetBorderWidth(int width)
-{
-    m_borderWidth = width;
-    if (m_enableBorder)
-    {
-        UpdateStyle();
-        update();
-    }
-}
-
-int CustomProgressBar::borderWidth() const
-{
-    return m_borderWidth;
-}
-
-void CustomProgressBar::SetBorderRadius(int radius)
-{
-    m_borderRadius = radius;
-    UpdateStyle();
-    update();
-}
-
-int CustomProgressBar::borderRadius() const
-{
-    return m_borderRadius;
-}
-
-void CustomProgressBar::SetEnableStripes(bool enable)
-{
-    m_enableStripes = enable;
-    if (enable)
-    {
-        SlotStartStripeAnimation();
-    }
-    else
-    {
-        SlotStopStripeAnimation();
-    }
-    update();
-}
-
-bool CustomProgressBar::isStripesEnabled() const
-{
-    return m_enableStripes;
-}
-
-void CustomProgressBar::SetStripeDirection(EM_StripeDirection direction)
-{
-    m_stripeDirection = direction;
-    if (m_enableStripes)
-    {
-        update();
-    }
-}
-
-CustomProgressBar::EM_StripeDirection CustomProgressBar::stripeDirection() const
-{
-    return m_stripeDirection;
-}
-
-void CustomProgressBar::SetValueWithAnimation(int value)
-{
-    if (m_enableAnimation)
-    {
-        m_animation->stop();
-        m_animation->setStartValue(this->value());
-        m_animation->setEndValue(value);
-        m_animation->start();
-    }
-    else
-    {
-        setValue(value);
-    }
-}
-
-void CustomProgressBar::Reset()
-{
-    if (m_animation != nullptr)
-    {
-        m_animation->stop();
-    }
-    setValue(minimum());
-    m_stripeOffset = 0;
-    update();
-}
-
-void CustomProgressBar::SlotStartStripeAnimation()
-{
-    if (m_stripeTimer != nullptr && !m_stripeTimer->isActive())
-    {
-        m_stripeTimer->start();
-    }
-}
-
-void CustomProgressBar::SlotStopStripeAnimation()
-{
-    if (m_stripeTimer != nullptr && m_stripeTimer->isActive())
-    {
-        m_stripeTimer->stop();
-    }
-}
-
-void CustomProgressBar::SlotAnimationFinished()
-{
-    emit SigAnimationFinished();
-}
-
-void CustomProgressBar::SlotUpdateStripeAnimation()
-{
-    m_stripeOffset = (m_stripeOffset + 2) % 20;
-    update();
-}
-
-void CustomProgressBar::UpdateStyle()
-{
-    m_styleSheet = QString();
-
-    // 基础样式
-    m_styleSheet += QString("QProgressBar { ");
-    m_styleSheet += QString("background-color: %1; ").arg(UIColorDefine::color_convert::ToCssString(m_backgroundColor));
-    m_styleSheet += QString("color: %1; ").arg(UIColorDefine::color_convert::ToCssString(m_textColor));
-
-    // 边框样式
-    if (m_enableBorder)
-    {
-        m_styleSheet += QString("border: %1px solid %2; ")
-                        .arg(m_borderWidth)
-                        .arg(UIColorDefine::color_convert::ToCssString(m_borderColor));
-    }
-    else
-    {
-        m_styleSheet += "border: none; ";
-    }
-
-    // 圆角样式
-    if (m_borderRadius > 0)
-    {
-        m_styleSheet += QString("border-radius: %1px; ").arg(m_borderRadius);
-    }
-
-    m_styleSheet += "text-align: center; } ";
-
-    // 进度条chunk样式
-    m_styleSheet += "QProgressBar::chunk { ";
+    m_targetValue = value;
     
-    if (m_enableGradient)
-    {
-        m_styleSheet += QString("background: %1; ").arg(UIColorDefine::color_convert::ToGradientString(m_gradientStartColor, m_gradientEndColor));
+    if (m_animationEnabled && m_progressAnimation) {
+        m_progressAnimation->setStartValue(m_animatedValue);
+        m_progressAnimation->setEndValue(value);
+        m_progressAnimation->start();
+    } else {
+        SetValueImmediately(value);
     }
-    else
-    {
-        m_styleSheet += QString("background-color: %1; ").arg(UIColorDefine::color_convert::ToCssString(m_progressColor));
+    
+    emit SigProgressValueChanged(value);
+}
+
+int CustomProgressBar::GetAnimatedValue() const
+{
+    return m_animatedValue;
+}
+
+void CustomProgressBar::SetAnimatedValue(int value)
+{
+    if (m_animatedValue != value) {
+        m_animatedValue = value;
+        update();
     }
+}
 
-    if (m_borderRadius > 0)
-    {
-        m_styleSheet += QString("border-radius: %1px; ").arg(m_borderRadius);
+void CustomProgressBar::SetProgressState(EM_ProgressState state)
+{
+    if (m_progressState != state) {
+        m_progressState = state;
+        UpdateProgressStyle();
+        emit SigProgressStateChanged(state);
+        update();
     }
+}
 
-    m_styleSheet += "} ";
+EM_ProgressState CustomProgressBar::GetProgressState() const
+{
+    return m_progressState;
+}
 
-    setStyleSheet(m_styleSheet);
+void CustomProgressBar::SetCircular(bool circular)
+{
+    if (m_circular != circular) {
+        m_circular = circular;
+        setAttribute(Qt::WA_OpaquePaintEvent, circular);
+        updateGeometry();
+        update();
+    }
+}
+
+bool CustomProgressBar::GetCircular() const
+{
+    return m_circular;
+}
+
+void CustomProgressBar::SetAnimationConfig(const ST_AnimationConfig& config)
+{
+    m_animationConfig = config;
+    if (m_progressAnimation) {
+        m_progressAnimation->setDuration(config.m_animationDuration);
+        m_progressAnimation->setEasingCurve(config.m_easingType);
+    }
+}
+
+ST_AnimationConfig CustomProgressBar::GetAnimationConfig() const
+{
+    return m_animationConfig;
+}
+
+void CustomProgressBar::SetAnimationEnabled(bool enabled)
+{
+    m_animationEnabled = enabled;
+    if (!enabled && m_progressAnimation && m_progressAnimation->state() == QAbstractAnimation::Running) {
+        m_progressAnimation->stop();
+        SetValueImmediately(m_targetValue);
+    }
+}
+
+void CustomProgressBar::SetValueImmediately(int value)
+{
+    m_animatedValue = value;
+    setValue(value);
+    update();
+}
+
+void CustomProgressBar::InitializeAnimation()
+{
+    m_progressAnimation = new QPropertyAnimation(this, "animatedValue");
+    m_progressAnimation->setDuration(m_animationConfig.m_animationDuration);
+    m_progressAnimation->setEasingCurve(m_animationConfig.m_easingType);
+    
+    connect(m_progressAnimation, &QPropertyAnimation::finished, this, &CustomProgressBar::SlotOnAnimationFinished);
+}
+
+void CustomProgressBar::UpdateProgressStyle()
+{
+    switch (m_progressState) {
+    case EM_ProgressState::EM_PROGRESS_NORMAL:
+        setProperty("progress-state", "progress-normal");
+        break;
+    case EM_ProgressState::EM_PROGRESS_SUCCESS:
+        setProperty("progress-state", "progress-success");
+        break;
+    case EM_ProgressState::EM_PROGRESS_WARNING:
+        setProperty("progress-state", "progress-warning");
+        break;
+    case EM_ProgressState::EM_PROGRESS_ERROR:
+        setProperty("progress-state", "progress-error");
+        break;
+    }
+    
+    style()->unpolish(this);
+    style()->polish(this);
+    update();
 }
 
 void CustomProgressBar::paintEvent(QPaintEvent* event)
 {
-    Q_UNUSED(event)
-    
     QPainter painter(this);
     painter.setRenderHint(QPainter::Antialiasing);
-
-    QRect rect = this->rect();
     
-    // 绘制背景
-    DrawBackground(&painter, rect);
-    
-    // 绘制进度
-    DrawProgress(&painter, rect);
-    
-    // 绘制条纹效果
-    if (m_enableStripes)
-    {
-        DrawStripes(&painter, rect);
-    }
-    
-    // 绘制文本
-    if (m_textPosition != TextPosition_Hidden)
-    {
-        DrawText(&painter, rect);
+    if (m_circular) {
+        DrawCircularProgress(painter, rect());
+    } else {
+        DrawLinearProgress(painter, rect());
     }
 }
 
-void CustomProgressBar::valueChanged(int value)
+void CustomProgressBar::resizeEvent(QResizeEvent* event)
 {
-    QProgressBar::valueChanged(value);
-    emit SigValueChanged(value);
+    QProgressBar::resizeEvent(event);
+    update();
 }
 
-void CustomProgressBar::DrawBackground(QPainter* painter, const QRect& rect)
+void CustomProgressBar::DrawLinearProgress(QPainter& painter, const QRect& rect)
 {
-    painter->save();
+    QStyleOptionProgressBar option;
+    option.initFrom(this);
+    option.rect = rect;
+    option.minimum = minimum();
+    option.maximum = maximum();
+    option.progress = m_animatedValue;
+    option.text = text();
+    option.textVisible = isTextVisible();
+    option.textAlignment = alignment();
     
-    QPainterPath path;
-    if (m_borderRadius > 0)
-    {
-        path.addRoundedRect(rect, m_borderRadius, m_borderRadius);
-    }
-    else
-    {
-        path.addRect(rect);
-    }
-    
-    painter->fillPath(path, m_backgroundColor);
-    
-    // 绘制边框
-    if (m_enableBorder)
-    {
-        QPen pen(m_borderColor, m_borderWidth);
-        painter->setPen(pen);
-        painter->drawPath(path);
-    }
-    
-    painter->restore();
+    style()->drawControl(QStyle::CE_ProgressBar, &option, &painter, this);
 }
 
-void CustomProgressBar::DrawProgress(QPainter* painter, const QRect& rect)
+void CustomProgressBar::DrawCircularProgress(QPainter& painter, const QRect& rect)
 {
-    if (value() <= minimum())
-    {
-        return;
+    int size = qMin(rect.width(), rect.height());
+    int centerX = rect.center().x();
+    int centerY = rect.center().y();
+    int radius = size / 2 - 10;
+    
+    QRectF arcRect(centerX - radius, centerY - radius, radius * 2, radius * 2);
+    
+    // 背景圆环
+    painter.setPen(QPen(QColor(200, 200, 200), 8));
+    painter.drawEllipse(arcRect);
+    
+    // 进度圆环
+    qreal progressAngle = 360.0 * m_animatedValue / maximum();
+    
+    QColor progressColor;
+    switch (m_progressState) {
+    case EM_ProgressState::EM_PROGRESS_SUCCESS:
+        progressColor = QColor(40, 167, 69);
+        break;
+    case EM_ProgressState::EM_PROGRESS_WARNING:
+        progressColor = QColor(255, 193, 7);
+        break;
+    case EM_ProgressState::EM_PROGRESS_ERROR:
+        progressColor = QColor(220, 53, 69);
+        break;
+    default:
+        progressColor = QColor(0, 123, 255);
+        break;
     }
     
-    painter->save();
+    painter.setPen(QPen(progressColor, 8));
+    painter.drawArc(arcRect, 90 * 16, -progressAngle * 16);
     
-    QRect progressRect = GetProgressRect(rect);
+    // 中心文本
+    QFont font = painter.font();
+    font.setPixelSize(12);
+    font.setBold(true);
+    painter.setFont(font);
     
-    QPainterPath path;
-    if (m_borderRadius > 0)
-    {
-        path.addRoundedRect(progressRect, m_borderRadius, m_borderRadius);
-    }
-    else
-    {
-        path.addRect(progressRect);
-    }
-    
-    if (m_enableGradient)
-    {
-        QLinearGradient gradient;
-        gradient.setStart(progressRect.topLeft());
-        gradient.setFinalStop(progressRect.topRight());
-        gradient.setColorAt(0, m_gradientStartColor);
-        gradient.setColorAt(1, m_gradientEndColor);
-        painter->fillPath(path, gradient);
-    }
-    else
-    {
-        painter->fillPath(path, m_progressColor);
-    }
-    
-    painter->restore();
+    QString text = QString("%1%").arg(m_animatedValue);
+    painter.setPen(Qt::black);
+    painter.drawText(arcRect, Qt::AlignCenter, text);
 }
 
-void CustomProgressBar::DrawStripes(QPainter* painter, const QRect& rect)
+void CustomProgressBar::SlotOnAnimationFinished()
 {
-    if (value() <= minimum())
-    {
-        return;
-    }
-    
-    painter->save();
-    
-    QRect progressRect = GetProgressRect(rect);
-    painter->setClipRect(progressRect);
-    
-    // 设置条纹颜色（略微透明的白色）
-    QColor stripeColor(255, 255, 255, 50);
-    painter->setBrush(stripeColor);
-    painter->setPen(Qt::NoPen);
-    
-    int stripeWidth = 10;
-    int spacing = 10;
-    
-    switch (m_stripeDirection)
-    {
-        case StripeDirection_LeftToRight:
-        case StripeDirection_RightToLeft:
-        {
-            int offset = (m_stripeDirection == StripeDirection_LeftToRight) ? m_stripeOffset : -m_stripeOffset;
-            for (int x = progressRect.left() - stripeWidth + offset; x < progressRect.right(); x += stripeWidth + spacing)
-            {
-                QRect stripeRect(x, progressRect.top(), stripeWidth, progressRect.height());
-                painter->drawRect(stripeRect);
-            }
-            break;
-        }
-        case StripeDirection_Diagonal:
-        {
-            for (int i = -progressRect.height(); i < progressRect.width() + progressRect.height(); i += stripeWidth + spacing)
-            {
-                QPolygon stripe;
-                int x = i + m_stripeOffset;
-                stripe << QPoint(x, progressRect.top())
-                       << QPoint(x + stripeWidth, progressRect.top())
-                       << QPoint(x + stripeWidth - progressRect.height(), progressRect.bottom())
-                       << QPoint(x - progressRect.height(), progressRect.bottom());
-                painter->drawPolygon(stripe);
-            }
-            break;
-        }
-    }
-    
-    painter->restore();
+    emit SigAnimationFinished();
 }
 
-void CustomProgressBar::DrawText(QPainter* painter, const QRect& rect)
-{
-    painter->save();
-    
-    QString text = QString("%1%").arg(static_cast<int>((static_cast<double>(value() - minimum()) / (maximum() - minimum())) * 100));
-    
-    painter->setPen(m_textColor);
-    painter->setFont(font());
-    
-    QFontMetrics fm(font());
-    QRect textRect = rect;
-    
-    switch (m_textPosition)
-    {
-        case TextPosition_Center:
-            painter->drawText(rect, Qt::AlignCenter, text);
-            break;
-        case TextPosition_Left:
-            textRect.setLeft(textRect.left() + 5);
-            painter->drawText(textRect, Qt::AlignLeft | Qt::AlignVCenter, text);
-            break;
-        case TextPosition_Right:
-            textRect.setRight(textRect.right() - 5);
-            painter->drawText(textRect, Qt::AlignRight | Qt::AlignVCenter, text);
-            break;
-        case TextPosition_Outside:
-            textRect.setLeft(rect.right() + 5);
-            textRect.setWidth(fm.horizontalAdvance(text) + 10);
-            painter->drawText(textRect, Qt::AlignLeft | Qt::AlignVCenter, text);
-            break;
-        case TextPosition_Hidden:
-            // 不绘制文本
-            break;
-    }
-    
-    painter->restore();
-}
-
-QRect CustomProgressBar::GetProgressRect(const QRect& rect) const
-{
-    if (maximum() <= minimum())
-    {
-        return QRect();
-    }
-    
-    double progress = static_cast<double>(value() - minimum()) / (maximum() - minimum());
-    int progressWidth = static_cast<int>(rect.width() * progress);
-    
-    QRect progressRect = rect;
-    progressRect.setWidth(progressWidth);
-    
-    // 考虑边框宽度
-    if (m_enableBorder)
-    {
-        progressRect.adjust(m_borderWidth, m_borderWidth, 0, -m_borderWidth);
-    }
-    
-    return progressRect;
-} 

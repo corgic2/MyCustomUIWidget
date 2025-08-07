@@ -1,0 +1,156 @@
+/* CustomFrame 样式定义 */
+
+CustomFrame {
+    background-color: rgb(@white_color);
+    border: 1px solid rgba(@light_color, 0.8);
+    border-radius: 8px;
+    padding: 0px;
+}
+
+CustomFrame:hover {
+    border-color: rgba(@info_color, 0.3);
+    box-shadow: 0 2px 8px rgba(0, 0, 0, 0.1);
+}
+
+/* 无边框样式 */
+CustomFrame[frame-style="none"] {
+    border: none;
+    border-radius: 0px;
+}
+
+/* 线框样式 */
+CustomFrame[frame-style="line"] {
+    border: 1px solid rgb(@light_color);
+    border-radius: 0px;
+}
+
+/* 面板样式 */
+CustomFrame[frame-style="panel"] {
+    border: 2px solid rgb(@light_color);
+    border-radius: 8px;
+    background-color: rgb(@white_color);
+}
+
+/* 凸起样式 */
+CustomFrame[frame-style="raised"] {
+    border: 1px solid rgba(@light_color, 0.8);
+    border-radius: 8px;
+    background-color: rgb(@white_color);
+    box-shadow: 0 2px 4px rgba(0, 0, 0, 0.1);
+}
+
+/* 凹陷样式 */
+CustomFrame[frame-style="sunken"] {
+    border: 1px inset rgba(@light_color, 0.8);
+    border-radius: 8px;
+    background-color: rgb(@hover_background_color);
+}
+
+/* 阴影样式 */
+CustomFrame[frame-style="shadow"] {
+    border: none;
+    border-radius: 8px;
+    background-color: rgb(@white_color);
+    box-shadow: 0 4px 12px rgba(0, 0, 0, 0.15);
+}
+
+/* 卡片样式 */
+CustomFrame[frame-style="card"] {
+    border: 1px solid rgba(@light_color, 0.5);
+    border-radius: 12px;
+    background-color: rgb(@white_color);
+    box-shadow: 0 2px 8px rgba(0, 0, 0, 0.08);
+}
+
+CustomFrame[frame-style="card"]:hover {
+    box-shadow: 0 4px 16px rgba(0, 0, 0, 0.12);
+    border-color: rgba(@info_color, 0.2);
+}
+
+/* 圆角样式变体 */
+CustomFrame[corner="small"] {
+    border-radius: 4px;
+}
+
+CustomFrame[corner="medium"] {
+    border-radius: 8px;
+}
+
+CustomFrame[corner="large"] {
+    border-radius: 16px;
+}
+
+CustomFrame[corner="round"] {
+    border-radius: 50px;
+}
+
+/* 边框颜色变体 */
+CustomFrame[border-color="primary"] {
+    border-color: rgb(@info_color);
+}
+
+CustomFrame[border-color="success"] {
+    border-color: rgb(@success_color);
+}
+
+CustomFrame[border-color="warning"] {
+    border-color: rgb(@warning_color);
+}
+
+CustomFrame[border-color="error"] {
+    border-color: rgb(@error_color);
+}
+
+/* 背景色变体 */
+CustomFrame[background="transparent"] {
+    background-color: transparent;
+}
+
+CustomFrame[background="light"] {
+    background-color: rgb(@hover_background_color);
+}
+
+CustomFrame[background="dark"] {
+    background-color: rgb(@dark_color);
+    color: rgb(@white_color);
+}
+
+/* 禁用状态 */
+CustomFrame:disabled {
+    background-color: rgba(@disabled_color, 0.1);
+    border-color: rgba(@disabled_color, 0.3);
+}
+
+/* 分组样式 */
+CustomFrame[group="first"] {
+    border-bottom-left-radius: 0px;
+    border-bottom-right-radius: 0px;
+    border-bottom: none;
+}
+
+CustomFrame[group="middle"] {
+    border-radius: 0px;
+    border-top: none;
+    border-bottom: none;
+}
+
+CustomFrame[group="last"] {
+    border-top-left-radius: 0px;
+    border-top-right-radius: 0px;
+    border-top: none;
+}
+
+/* 标题栏样式 */
+CustomFrame[header="true"] {
+    background-color: rgb(@hover_background_color);
+    border-bottom: 1px solid rgba(@light_color, 0.8);
+    border-radius: 8px 8px 0px 0px;
+    padding: 12px 16px;
+}
+
+/* 内容区域样式 */
+CustomFrame[content="true"] {
+    border-top: none;
+    border-radius: 0px 0px 8px 8px;
+    padding: 16px;
+}

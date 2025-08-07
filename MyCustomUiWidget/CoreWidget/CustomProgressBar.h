@@ -1,77 +1,40 @@
-﻿#pragma once
+#pragma once
 
 #include <QProgressBar>
 #include <QPropertyAnimation>
-#include <QEasingCurve>
-#include <QPainter>
 #include <QTimer>
 #include <QWidget>
 #include "../CommonDefine/UIWidgetColorDefine.h"
 #include "../CommonDefine/UIWidgetGlobal.h"
+
 /// <summary>
-/// 自定义进度条控件类，提供丰富的样式和动画效果设置
+/// 进度条状态枚举
+/// </summary>
+enum class EM_ProgressState {
+    EM_PROGRESS_NORMAL = 0,
+    EM_PROGRESS_SUCCESS,
+    EM_PROGRESS_WARNING,
+    EM_PROGRESS_ERROR
+};
+
+/// <summary>
+/// 进度条动画配置结构体
+/// </summary>
+struct ST_AnimationConfig {
+    bool m_enableAnimation = true;
+    int m_animationDuration = 500;
+    QEasingCurve::Type m_easingType = QEasingCurve::OutCubic;
+};
+
+/// <summary>
+/// 自定义进度条控件类，提供丰富的样式和动画效果
 /// </summary>
 class CustomUIGlobal_API CustomProgressBar : public QProgressBar
 {
     Q_OBJECT
-
-    // 使用MEMBER关键字让Qt Designer可以直接编辑这些属性
-    Q_PROPERTY(EM_ProgressBarStyle progressBarStyle READ progressBarStyle WRITE SetProgressBarStyle)
-    Q_PROPERTY(QColor backgroundColor READ backgroundColor WRITE SetBackgroundColor)
-    Q_PROPERTY(QColor progressColor READ progressColor WRITE SetProgressColor)
-    Q_PROPERTY(QColor textColor READ textColor WRITE SetTextColor)
-    Q_PROPERTY(bool enableGradient READ isGradientEnabled WRITE SetEnableGradient)
-    Q_PROPERTY(QColor gradientStartColor READ gradientStartColor WRITE SetGradientStartColor)
-    Q_PROPERTY(QColor gradientEndColor READ gradientEndColor WRITE SetGradientEndColor)
-    Q_PROPERTY(bool enableAnimation READ isAnimationEnabled WRITE SetEnableAnimation)
-    Q_PROPERTY(int animationDuration READ animationDuration WRITE SetAnimationDuration)
-    Q_PROPERTY(EM_TextPosition textPosition READ textPosition WRITE SetTextPosition)
-    Q_PROPERTY(bool enableShadow READ isShadowEnabled WRITE SetEnableShadow)
-    Q_PROPERTY(QColor shadowColor READ shadowColor WRITE SetShadowColor)
-    Q_PROPERTY(bool enableBorder READ isBorderEnabled WRITE SetEnableBorder)
-    Q_PROPERTY(QColor borderColor READ borderColor WRITE SetBorderColor)
-    Q_PROPERTY(int borderWidth READ borderWidth WRITE SetBorderWidth)
-    Q_PROPERTY(int borderRadius READ borderRadius WRITE SetBorderRadius)
-    Q_PROPERTY(bool enableStripes READ isStripesEnabled WRITE SetEnableStripes)
-    Q_PROPERTY(EM_StripeDirection stripeDirection READ stripeDirection WRITE SetStripeDirection)
-
-public:
-    /// <summary>
-    /// 进度条样式枚举，定义不同的外观风格
-    /// </summary>
-    enum EM_ProgressBarStyle
-    {
-        ProgressBarStyle_Default,   /// 默认样式
-        ProgressBarStyle_Flat,      /// 扁平样式
-        ProgressBarStyle_Rounded,   /// 圆角样式
-        ProgressBarStyle_Gradient,  /// 渐变样式
-        ProgressBarStyle_Stripe     /// 条纹样式
-    };
-    Q_ENUM(EM_ProgressBarStyle)
-
-    /// <summary>
-    /// 文本位置枚举，定义进度文本的显示位置
-    /// </summary>
-    enum EM_TextPosition
-    {
-        TextPosition_Center,   /// 居中显示
-        TextPosition_Left,     /// 左侧显示
-        TextPosition_Right,    /// 右侧显示
-        TextPosition_Outside,  /// 外部显示
-        TextPosition_Hidden    /// 隐藏文本
-    };
-    Q_ENUM(EM_TextPosition)
-
-    /// <summary>
-    /// 条纹方向枚举，定义条纹样式的方向
-    /// </summary>
-    enum EM_StripeDirection
-    {
-        StripeDirection_LeftToRight,  /// 从左到右
-        StripeDirection_RightToLeft,  /// 从右到左
-        StripeDirection_Diagonal      /// 对角线
-    };
-    Q_ENUM(EM_StripeDirection)
+    Q_PROPERTY(int animatedValue READ GetAnimatedValue WRITE SetAnimatedValue)
+    Q_PROPERTY(EM_ProgressState progressState READ GetProgressState WRITE SetProgressState)
+    Q_PROPERTY(bool circular READ GetCircular WRITE SetCircular)
 
 public:
     /// <summary>
@@ -86,333 +49,110 @@ public:
     ~CustomProgressBar() override;
 
     /// <summary>
-    /// 设置进度条样式
+    /// 设置进度值（带动画效果）
     /// </summary>
-    /// <param name="style">样式枚举值</param>
-    void SetProgressBarStyle(EM_ProgressBarStyle style);
+    /// <param name="value">进度值（0-100）</param>
+    void SetProgressValue(int value);
 
     /// <summary>
-    /// 获取进度条样式
+    /// 获取当前动画值
     /// </summary>
-    EM_ProgressBarStyle progressBarStyle() const;
+    /// <returns>当前动画值</returns>
+    int GetAnimatedValue() const;
 
     /// <summary>
-    /// 设置背景颜色
+    /// 设置动画值（内部使用）
     /// </summary>
-    /// <param name="color">背景颜色</param>
-    void SetBackgroundColor(const QColor& color);
+    /// <param name="value">动画值</param>
+    void SetAnimatedValue(int value);
 
     /// <summary>
-    /// 获取背景颜色
+    /// 设置进度条状态
     /// </summary>
-    QColor backgroundColor() const;
+    /// <param name="state">进度条状态</param>
+    void SetProgressState(EM_ProgressState state);
 
     /// <summary>
-    /// 设置进度颜色
+    /// 获取进度条状态
     /// </summary>
-    /// <param name="color">进度颜色</param>
-    void SetProgressColor(const QColor& color);
+    /// <returns>当前状态</returns>
+    EM_ProgressState GetProgressState() const;
 
     /// <summary>
-    /// 获取进度颜色
+    /// 设置是否为圆环进度条
     /// </summary>
-    QColor progressColor() const;
+    /// <param name="circular">是否为圆环</param>
+    void SetCircular(bool circular);
 
     /// <summary>
-    /// 设置文本颜色
+    /// 获取是否为圆环进度条
     /// </summary>
-    /// <param name="color">文本颜色</param>
-    void SetTextColor(const QColor& color);
+    /// <returns>是否为圆环</returns>
+    bool GetCircular() const;
 
     /// <summary>
-    /// 获取文本颜色
+    /// 设置动画配置
     /// </summary>
-    QColor textColor() const;
+    /// <param name="config">动画配置</param>
+    void SetAnimationConfig(const ST_AnimationConfig& config);
 
     /// <summary>
-    /// 设置是否启用渐变
+    /// 获取动画配置
     /// </summary>
-    /// <param name="enable">是否启用</param>
-    void SetEnableGradient(bool enable);
+    /// <returns>当前动画配置</returns>
+    ST_AnimationConfig GetAnimationConfig() const;
 
     /// <summary>
-    /// 获取是否启用渐变
+    /// 启用/禁用动画效果
     /// </summary>
-    bool isGradientEnabled() const;
+    /// <param name="enabled">是否启用</param>
+    void SetAnimationEnabled(bool enabled);
 
     /// <summary>
-    /// 设置渐变起始颜色
+    /// 立即完成动画（无动画效果）
     /// </summary>
-    /// <param name="color">起始颜色</param>
-    void SetGradientStartColor(const QColor& color);
-
-    /// <summary>
-    /// 获取渐变起始颜色
-    /// </summary>
-    QColor gradientStartColor() const;
-
-    /// <summary>
-    /// 设置渐变结束颜色
-    /// </summary>
-    /// <param name="color">结束颜色</param>
-    void SetGradientEndColor(const QColor& color);
-
-    /// <summary>
-    /// 获取渐变结束颜色
-    /// </summary>
-    QColor gradientEndColor() const;
-
-    /// <summary>
-    /// 设置是否启用动画
-    /// </summary>
-    /// <param name="enable">是否启用</param>
-    void SetEnableAnimation(bool enable);
-
-    /// <summary>
-    /// 获取是否启用动画
-    /// </summary>
-    bool isAnimationEnabled() const;
-
-    /// <summary>
-    /// 设置动画持续时间
-    /// </summary>
-    /// <param name="duration">持续时间（毫秒）</param>
-    void SetAnimationDuration(int duration);
-
-    /// <summary>
-    /// 获取动画持续时间
-    /// </summary>
-    int animationDuration() const;
-
-    /// <summary>
-    /// 设置文本位置
-    /// </summary>
-    /// <param name="position">文本位置枚举值</param>
-    void SetTextPosition(EM_TextPosition position);
-
-    /// <summary>
-    /// 获取文本位置
-    /// </summary>
-    EM_TextPosition textPosition() const;
-
-    /// <summary>
-    /// 设置是否启用阴影
-    /// </summary>
-    /// <param name="enable">是否启用</param>
-    void SetEnableShadow(bool enable);
-
-    /// <summary>
-    /// 获取是否启用阴影
-    /// </summary>
-    bool isShadowEnabled() const;
-
-    /// <summary>
-    /// 设置阴影颜色
-    /// </summary>
-    /// <param name="color">阴影颜色</param>
-    void SetShadowColor(const QColor& color);
-
-    /// <summary>
-    /// 获取阴影颜色
-    /// </summary>
-    QColor shadowColor() const;
-
-    /// <summary>
-    /// 设置是否启用边框
-    /// </summary>
-    /// <param name="enable">是否启用</param>
-    void SetEnableBorder(bool enable);
-
-    /// <summary>
-    /// 获取是否启用边框
-    /// </summary>
-    bool isBorderEnabled() const;
-
-    /// <summary>
-    /// 设置边框颜色
-    /// </summary>
-    /// <param name="color">边框颜色</param>
-    void SetBorderColor(const QColor& color);
-
-    /// <summary>
-    /// 获取边框颜色
-    /// </summary>
-    QColor borderColor() const;
-
-    /// <summary>
-    /// 设置边框宽度
-    /// </summary>
-    /// <param name="width">边框宽度</param>
-    void SetBorderWidth(int width);
-
-    /// <summary>
-    /// 获取边框宽度
-    /// </summary>
-    int borderWidth() const;
-
-    /// <summary>
-    /// 设置边框圆角半径
-    /// </summary>
-    /// <param name="radius">圆角半径</param>
-    void SetBorderRadius(int radius);
-
-    /// <summary>
-    /// 获取边框圆角半径
-    /// </summary>
-    int borderRadius() const;
-
-    /// <summary>
-    /// 设置是否启用条纹
-    /// </summary>
-    /// <param name="enable">是否启用</param>
-    void SetEnableStripes(bool enable);
-
-    /// <summary>
-    /// 获取是否启用条纹
-    /// </summary>
-    bool isStripesEnabled() const;
-
-    /// <summary>
-    /// 设置条纹方向
-    /// </summary>
-    /// <param name="direction">条纹方向枚举值</param>
-    void SetStripeDirection(EM_StripeDirection direction);
-
-    /// <summary>
-    /// 获取条纹方向
-    /// </summary>
-    EM_StripeDirection stripeDirection() const;
-
-    /// <summary>
-    /// 动画设置进度值
-    /// </summary>
-    /// <param name="value">目标进度值</param>
-    void SetValueWithAnimation(int value);
-
-    /// <summary>
-    /// 重置进度条到初始状态
-    /// </summary>
-    void Reset();
-
-public slots:
-    /// <summary>
-    /// 启动条纹动画槽函数
-    /// </summary>
-    void SlotStartStripeAnimation();
-
-    /// <summary>
-    /// 停止条纹动画槽函数
-    /// </summary>
-    void SlotStopStripeAnimation();
+    /// <param name="value">目标值</param>
+    void SetValueImmediately(int value);
 
 signals:
     /// <summary>
     /// 进度值改变信号
     /// </summary>
     /// <param name="value">新的进度值</param>
-    void SigValueChanged(int value);
+    void SigProgressValueChanged(int value);
 
     /// <summary>
     /// 动画完成信号
     /// </summary>
     void SigAnimationFinished();
 
-protected:
     /// <summary>
-    /// 重写绘制事件
+    /// 状态改变信号
     /// </summary>
-    /// <param name="event">绘制事件指针</param>
-    void paintEvent(QPaintEvent* event) override;
+    /// <param name="state">新的状态</param>
+    void SigProgressStateChanged(EM_ProgressState state);
 
-    /// <summary>
-    /// 重写值改变事件
-    /// </summary>
-    /// <param name="value">新的值</param>
-    void valueChanged(int value);
+protected:
+    void paintEvent(QPaintEvent* event) override;
+    void resizeEvent(QResizeEvent* event) override;
 
 private slots:
-    /// <summary>
-    /// 动画完成槽函数
-    /// </summary>
-    void SlotAnimationFinished();
-
-    /// <summary>
-    /// 条纹动画更新槽函数
-    /// </summary>
-    void SlotUpdateStripeAnimation();
+    void SlotOnAnimationFinished();
 
 private:
-    /// <summary>
-    /// 初始化进度条
-    /// </summary>
-    void InitializeProgressBar();
-
-    /// <summary>
-    /// 更新样式
-    /// </summary>
-    void UpdateStyle();
-
-    /// <summary>
-    /// 绘制背景
-    /// </summary>
-    /// <param name="painter">绘制器指针</param>
-    /// <param name="rect">绘制区域</param>
-    void DrawBackground(QPainter* painter, const QRect& rect);
-
-    /// <summary>
-    /// 绘制进度
-    /// </summary>
-    /// <param name="painter">绘制器指针</param>
-    /// <param name="rect">绘制区域</param>
-    void DrawProgress(QPainter* painter, const QRect& rect);
-
-    /// <summary>
-    /// 绘制条纹
-    /// </summary>
-    /// <param name="painter">绘制器指针</param>
-    /// <param name="rect">绘制区域</param>
-    void DrawStripes(QPainter* painter, const QRect& rect);
-
-    /// <summary>
-    /// 绘制文本
-    /// </summary>
-    /// <param name="painter">绘制器指针</param>
-    /// <param name="rect">绘制区域</param>
-    void DrawText(QPainter* painter, const QRect& rect);
-
-    /// <summary>
-    /// 获取进度区域
-    /// </summary>
-    /// <param name="rect">总区域</param>
-    /// <returns>进度区域</returns>
-    QRect GetProgressRect(const QRect& rect) const;
+    void InitializeAnimation();
+    void UpdateProgressStyle();
+    void DrawLinearProgress(QPainter& painter, const QRect& rect);
+    void DrawCircularProgress(QPainter& painter, const QRect& rect);
 
 private:
-    EM_ProgressBarStyle m_progressBarStyle;        /// 进度条样式
-    QColor m_backgroundColor;                      /// 背景颜色
-    QColor m_progressColor;                        /// 进度颜色
-    QColor m_textColor;                           /// 文本颜色
-    bool m_enableGradient;                        /// 是否启用渐变
-    QColor m_gradientStartColor;                  /// 渐变起始颜色
-    QColor m_gradientEndColor;                    /// 渐变结束颜色
-    bool m_enableAnimation;                       /// 是否启用动画
-    int m_animationDuration;                      /// 动画持续时间
-    EM_TextPosition m_textPosition;               /// 文本位置
-    bool m_enableShadow;                          /// 是否启用阴影
-    QColor m_shadowColor;                         /// 阴影颜色
-    bool m_enableBorder;                          /// 是否启用边框
-    QColor m_borderColor;                         /// 边框颜色
-    int m_borderWidth;                            /// 边框宽度
-    int m_borderRadius;                           /// 边框圆角半径
-    bool m_enableStripes;                         /// 是否启用条纹
-    EM_StripeDirection m_stripeDirection;         /// 条纹方向
-    
-    QPropertyAnimation* m_animation;              /// 进度动画
-    QTimer* m_stripeTimer;                        /// 条纹动画定时器
-    int m_stripeOffset;                           /// 条纹偏移量
-    QString m_styleSheet;                         /// 样式表字符串
+    int m_animatedValue = 0;
+    int m_targetValue = 0;
+    EM_ProgressState m_progressState = EM_ProgressState::EM_PROGRESS_NORMAL;
+    bool m_circular = false;
+    bool m_animationEnabled = true;
+    ST_AnimationConfig m_animationConfig;
+    QPropertyAnimation* m_progressAnimation = nullptr;
+    QTimer* m_pulseTimer = nullptr;
+    int m_pulseValue = 0;
 };
-
-Q_DECLARE_METATYPE(CustomProgressBar::EM_ProgressBarStyle)
-Q_DECLARE_METATYPE(CustomProgressBar::EM_TextPosition)
-Q_DECLARE_METATYPE(CustomProgressBar::EM_StripeDirection)

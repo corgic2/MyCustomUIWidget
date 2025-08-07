@@ -1,4 +1,4 @@
-﻿#include "FilePathIconListWidget.h"
+#include "FilePathIconListWidget.h"
 #include <QApplication>
 #include <QClipboard>
 #include <QContextMenuEvent>
@@ -15,15 +15,18 @@
 #include <QProcess>
 #include <QUrl>
 #include <QVBoxLayout>
+#include "SkinStyleLoader.h"
 #include "FileSystem/FileSystem.h"
 #include "SDKCommonDefine/SDKCommonDefine.h"
 
 FilePathIconListWidget::FilePathIconListWidget(QWidget* parent)
-    : QListWidget(parent), m_contextMenu(nullptr), m_itemHeight(32), m_backgroundColor(UIColorDefine::background_color::White), m_itemHoverColor(UIColorDefine::background_color::HoverBackground), m_itemSelectedColor(UIColorDefine::background_color::PressedBackground), m_itemTextColor(UIColorDefine::font_color::Primary), m_enableHoverEffect(true), m_enableSelectedEffect(true), m_showContextMenu(true), m_borderWidth(0), m_borderColor(Qt::transparent), m_jsonFilePath(""), m_autoSaveTimer(nullptr), m_autoSaveInterval(1800000)
+    : QListWidget(parent), m_contextMenu(nullptr), m_itemHeight(32), m_showContextMenu(true), m_jsonFilePath(""), m_autoSaveTimer(nullptr), m_autoSaveInterval(1800000)
 {
     InitializeWidget();
     InitializeContextMenu();
     SetupConnections();
+    // 使用皮肤系统加载样式
+    AUTO_LOAD_SKIN_STYLE();
 }
 
 FilePathIconListWidget::~FilePathIconListWidget()
@@ -44,9 +47,6 @@ void FilePathIconListWidget::InitializeWidget()
     setHorizontalScrollBarPolicy(Qt::ScrollBarAlwaysOff);
     setVerticalScrollBarPolicy(Qt::ScrollBarAsNeeded);
     setSpacing(1);
-
-    // 设置默认样式
-    UpdateStyle();
 }
 
 void FilePathIconListWidget::InitializeContextMenu()
@@ -102,12 +102,6 @@ void FilePathIconListWidget::AddFileItem(const FilePathIconListWidgetItem::ST_No
 
     auto item = new FilePathIconListWidgetItem(this);
     item->SetNodeInfo(utf8NodeInfo);
-    item->SetTextColor(m_itemTextColor);
-    item->SetBackgroundColor(m_backgroundColor);
-    item->SetHoverColor(m_itemHoverColor);
-    item->SetSelectedColor(m_itemSelectedColor);
-    item->EnableHoverEffect(m_enableHoverEffect);
-    item->EnableSelectedEffect(m_enableSelectedEffect);
     addItem(item);
 }
 
@@ -132,12 +126,6 @@ void FilePathIconListWidget::InsertFileItem(int index, const FilePathIconListWid
 
     auto item = new FilePathIconListWidgetItem(this);
     item->SetNodeInfo(utf8NodeInfo);
-    item->SetTextColor(m_itemTextColor);
-    item->SetBackgroundColor(m_backgroundColor);
-    item->SetHoverColor(m_itemHoverColor);
-    item->SetSelectedColor(m_itemSelectedColor);
-    item->EnableHoverEffect(m_enableHoverEffect);
-    item->EnableSelectedEffect(m_enableSelectedEffect);
     insertItem(index, item);
 }
 
@@ -231,92 +219,6 @@ void FilePathIconListWidget::MoveItemToTop(int index)
             setCurrentItem(takenItem);
         }
     }
-}
-
-void FilePathIconListWidget::SetBackgroundColor(const QColor& color)
-{
-    if (m_backgroundColor != color)
-    {
-        m_backgroundColor = color;
-        UpdateStyle();
-    }
-}
-
-void FilePathIconListWidget::SetItemHoverColor(const QColor& color)
-{
-    if (m_itemHoverColor != color)
-    {
-        m_itemHoverColor = color;
-        UpdateStyle();
-    }
-}
-
-void FilePathIconListWidget::SetItemSelectedColor(const QColor& color)
-{
-    if (m_itemSelectedColor != color)
-    {
-        m_itemSelectedColor = color;
-        UpdateStyle();
-    }
-}
-
-void FilePathIconListWidget::SetItemTextColor(const QColor& color)
-{
-    if (m_itemTextColor != color)
-    {
-        m_itemTextColor = color;
-        UpdateStyle();
-    }
-}
-
-void FilePathIconListWidget::SetItemHeight(int height)
-{
-    if (m_itemHeight != height)
-    {
-        m_itemHeight = height;
-        UpdateStyle();
-    }
-}
-
-void FilePathIconListWidget::SetEnableHoverEffect(bool enable)
-{
-    if (m_enableHoverEffect != enable)
-    {
-        m_enableHoverEffect = enable;
-        UpdateStyle();
-    }
-}
-
-void FilePathIconListWidget::SetEnableSelectedEffect(bool enable)
-{
-    if (m_enableSelectedEffect != enable)
-    {
-        m_enableSelectedEffect = enable;
-        UpdateStyle();
-    }
-}
-
-void FilePathIconListWidget::SetShowContextMenu(bool show)
-{
-    m_showContextMenu = show;
-}
-
-void FilePathIconListWidget::SetMargins(int left, int top, int right, int bottom)
-{
-    setContentsMargins(left, top, right, bottom);
-    update();
-}
-
-void FilePathIconListWidget::SetBorderWidth(int width)
-{
-    m_borderWidth = width;
-    update();
-}
-
-void FilePathIconListWidget::SetBorderColor(const QColor& color)
-{
-    m_borderColor = color;
-    update();
 }
 
 void FilePathIconListWidget::contextMenuEvent(QContextMenuEvent* event)
@@ -462,36 +364,6 @@ void FilePathIconListWidget::SlotOpenWith()
 
             // 发送打开方式信号
             emit SigOpenWithRequested(filePath);
-        }
-    }
-}
-
-void FilePathIconListWidget::UpdateStyle()
-{
-    QString styleSheet = QString(R"(
-        QListWidget {
-            background-color: %1;
-            border: none;
-        }
-        QListWidget::item {
-            height: %2px;
-        }
-    )").arg(UIColorDefine::color_convert::ToCssString(m_backgroundColor)).arg(m_itemHeight);
-
-    setStyleSheet(styleSheet);
-
-    // 更新所有项的样式
-    for (int i = 0; i < count(); ++i)
-    {
-        auto fileItem = dynamic_cast<FilePathIconListWidgetItem*>(item(i));
-        if (fileItem)
-        {
-            fileItem->SetTextColor(m_itemTextColor);
-            fileItem->SetBackgroundColor(m_backgroundColor);
-            fileItem->SetHoverColor(m_itemHoverColor);
-            fileItem->SetSelectedColor(m_itemSelectedColor);
-            fileItem->EnableHoverEffect(m_enableHoverEffect);
-            fileItem->EnableSelectedEffect(m_enableSelectedEffect);
         }
     }
 }

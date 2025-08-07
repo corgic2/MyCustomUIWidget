@@ -17,56 +17,52 @@ public:
     ~SkinResource();
 
     /// <summary>
-    /// 资源发现
+    /// 注册全局资源
     /// </summary>
+    /// <param name="resourcePath">资源路径</param>
     /// <returns></returns>
-    QStringList scanAvailableSkins() const;
-    bool registerSkinResource(const QString &skinId, const QString &resourcePath);
-    void unregisterSkinResource(const QString &skinId);
+    bool registerResource(const QString& resourcePath);
+    void unregisterResource(const QString& resourcePath);
 
     /// <summary>
-    /// 资源访问
+    /// 资源访问（从全局资源获取）
     /// </summary>
-    /// <param name="skinId"></param>
-    /// <param name="resourceName"></param>
+    /// <param name="resourceName">资源名称</param>
     /// <returns></returns>
-    QString getResourcePath(const QString &skinId, const QString &resourceName) const;
-    QString getStyleContent(const QString &skinId) const;
-    QByteArray getResourceData(const QString &skinId, const QString &resourceName) const;
+    QString getResourcePath(const QString& resourceName) const;
+    QString getStyleContent() const;
+    QByteArray getResourceData(const QString& resourceName) const;
     
     /// <summary>
-    /// 组件特定样式访问
+    /// 组件特定样式访问（从全局资源获取）
     /// </summary>
-    /// <param name="skinId"></param>
-    /// <param name="componentClassName"></param>
+    /// <param name="componentClassName">组件类名</param>
     /// <returns></returns>
-    QString getComponentStyleContent(const QString &skinId, const QString &componentClassName) const;
+    QString getComponentStyleContent(const QString& componentClassName) const;
     
     /// <summary>
     /// 从QRC中查找任意QSS文件内容
     /// </summary>
-    /// <param name="skinId"></param>
-    /// <param name="fileName"></param>
+    /// <param name="fileName">文件名</param>
     /// <returns></returns>
-    QString getStyleContentFromQrc(const QString &skinId, const QString &fileName) const;
+    QString getStyleContentFromQrc(const QString& fileName) const;
     /// <summary>
     /// 寻找所有QSS文件
     /// </summary>
-    /// <param name="skinId"></param>
     /// <returns></returns>
-    QStringList findAllQssFiles(const QString& skinId) const;
+    QStringList findAllQssFiles() const;
 signals:
-    void resourceChanged(const QString &skinId, const QString &resourceName);
-    void skinResourceAdded(const QString &skinId);
-    void skinResourceRemoved(const QString &skinId);
+    void resourceChanged(const QString& resourceName);
+    void skinResourceAdded(const QString& resourcePath);
+    void skinResourceRemoved(const QString& resourcePath);
 private:
     void initializeBuiltinResources();
 private:
     /// <summary>
-    /// 皮肤id -> 资源路径
-    /// /// </summary>
-    QMap<QString, QString> m_resourcePaths;  // skinId -> resourcePath
-    QMap<QString, QStringList> m_skinPreFix;
+    /// 资源路径列表
+    /// </summary>
+    QStringList m_resourcePaths;
+    QStringList m_resourcePrefixes;
 };
 
 #endif // SKINRESOURCE_H

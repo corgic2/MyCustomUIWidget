@@ -1,0 +1,19 @@
+{
+  "id": "default",
+  "name": "default",
+  "author": "default",
+  "version": "1.0.0",
+  "description": "default",
+  "colorVariables": {
+    "@dark_color": "0, 0, 0",
+    "@disabled_color": "153, 153, 153",
+    "@error_color": "217, 83, 79",
+    "@hover_background_color": "240, 240, 240",
+    "@info_color": "91, 192, 222",
+    "@link_color": "51, 122, 183",
+    "@success_color": "92, 184, 92",
+    "@tooltips_info_color": "236, 246, 255",
+    "@tooltips_normal_color": "197, 245, 251",
+    "@white_color": "255, 255, 255"
+  }
+}

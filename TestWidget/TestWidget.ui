@@ -47,6 +47,14 @@
            <layout class="QVBoxLayout" name="tipsTestLayout"/>
           </widget>
          </item>
+         <item>
+          <widget class="QGroupBox" name="fileListTestGroup">
+           <property name="title">
+            <string>FilePathIconListWidget Tests</string>
+           </property>
+           <layout class="QVBoxLayout" name="fileListTestLayout"/>
+          </widget>
+         </item>
         </layout>
        </item>
        <item>

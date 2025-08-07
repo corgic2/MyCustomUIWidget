@@ -43,18 +43,6 @@ QString ValidatedLineEditPlugin::domXml() const
                 <height>30</height>
             </rect>
         </property>
-        <property name="validationType">
-            <enum>ValidatedLineEdit::Custom</enum>
-        </property>
-        <property name="pattern">
-            <string></string>
-        </property>
-        <property name="errorMessage">
-            <string>输入格式不正确</string>
-        </property>
-        <property name="showErrorMessage">
-            <bool>true</bool>
-        </property>
     </widget>
 </ui>
 )");

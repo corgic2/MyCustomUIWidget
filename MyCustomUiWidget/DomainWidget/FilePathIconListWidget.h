@@ -16,25 +16,7 @@ QT_END_NAMESPACE
 /// </summary>
 class CustomUIGlobal_API FilePathIconListWidget : public QListWidget
 {
-    Q_OBJECT
-    /// 设置列表背景色
-    Q_PROPERTY(QColor backgroundColor READ GetBackgroundColor WRITE SetBackgroundColor)
-    /// 设置列表项悬停色
-    Q_PROPERTY(QColor itemHoverColor READ GetItemHoverColor WRITE SetItemHoverColor)
-    /// 设置列表项选中色
-    Q_PROPERTY(QColor itemSelectedColor READ GetItemSelectedColor WRITE SetItemSelectedColor)
-    /// 设置列表项文本色
-    Q_PROPERTY(QColor itemTextColor READ GetItemTextColor WRITE SetItemTextColor)
-    /// 设置列表项高度
-    Q_PROPERTY(int itemHeight READ GetItemHeight WRITE SetItemHeight)
-    /// 设置是否启用悬停效果
-    Q_PROPERTY(bool enableHoverEffect READ GetEnableHoverEffect WRITE SetEnableHoverEffect)
-    /// 设置是否启用选中效果
-    Q_PROPERTY(bool enableSelectedEffect READ GetEnableSelectedEffect WRITE SetEnableSelectedEffect)
-    /// 设置是否显示右键菜单
-    Q_PROPERTY(bool showContextMenu READ GetShowContextMenu WRITE SetShowContextMenu)
-
-public:
+    Q_OBJECT public:
     /// <summary>
     /// 构造函数
     /// </summary>
@@ -112,60 +94,6 @@ public:
     /// </summary>
     /// <param name="index">要移动的文件项索引</param>
     void MoveItemToTop(int index);
-
-    // 属性访问方法
-    QColor GetBackgroundColor() const { return m_backgroundColor; }
-
-    void SetBackgroundColor(const QColor& color);
-
-    QColor GetItemHoverColor() const { return m_itemHoverColor; }
-
-    void SetItemHoverColor(const QColor& color);
-
-    QColor GetItemSelectedColor() const { return m_itemSelectedColor; }
-
-    void SetItemSelectedColor(const QColor& color);
-
-    QColor GetItemTextColor() const { return m_itemTextColor; }
-
-    void SetItemTextColor(const QColor& color);
-
-    int GetItemHeight() const { return m_itemHeight; }
-
-    void SetItemHeight(int height);
-
-    bool GetEnableHoverEffect() const { return m_enableHoverEffect; }
-
-    void SetEnableHoverEffect(bool enable);
-
-    bool GetEnableSelectedEffect() const { return m_enableSelectedEffect; }
-
-    void SetEnableSelectedEffect(bool enable);
-
-    bool GetShowContextMenu() const { return m_showContextMenu; }
-
-    void SetShowContextMenu(bool show);
-
-    /// <summary>
-    /// 设置边距
-    /// </summary>
-    /// <param name="left">左边距</param>
-    /// <param name="top">上边距</param>
-    /// <param name="right">右边距</param>
-    /// <param name="bottom">下边距</param>
-    void SetMargins(int left, int top, int right, int bottom);
-
-    /// <summary>
-    /// 设置边框宽度
-    /// </summary>
-    /// <param name="width">边框宽度</param>
-    void SetBorderWidth(int width);
-
-    /// <summary>
-    /// 设置边框颜色
-    /// </summary>
-    /// <param name="color">边框颜色</param>
-    void SetBorderColor(const QColor& color);
 
     /// <summary>
     /// 设置JSON文件路径
@@ -298,23 +226,10 @@ private:
     /// </summary>
     void SetupConnections();
 
-    /// <summary>
-    /// 更新样式
-    /// </summary>
-    void UpdateStyle();
-
 private:
-    QMenu* m_contextMenu; /// 右键菜单
-    int m_itemHeight; /// 列表项高度
-    QColor m_backgroundColor; /// 背景色
-    QColor m_itemHoverColor; /// 悬停色
-    QColor m_itemSelectedColor; /// 选中色
-    QColor m_itemTextColor; /// 文本色
-    bool m_enableHoverEffect; /// 是否启用悬停效果
-    bool m_enableSelectedEffect; /// 是否启用选中效果
+    QMenu* m_contextMenu;   /// 右键菜单
+    int m_itemHeight;       /// 列表项高度
     bool m_showContextMenu; /// 是否显示右键菜单
-    int m_borderWidth; /// 边框宽度
-    QColor m_borderColor; /// 边框颜色
     QString m_jsonFilePath; /// JSON文件路径
     QTimer* m_autoSaveTimer; /// 自动保存定时器
     int m_autoSaveInterval; /// 自动保存间隔（默认30分钟）

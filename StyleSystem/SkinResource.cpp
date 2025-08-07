@@ -10,159 +10,193 @@ SkinResource::SkinResource(QObject* parent)
     : QObject(parent)
 {
     initializeBuiltinResources();
-    m_skinPreFix.insert("default", { "/Default","/CoreWidget","/DomainWidget" });
 }
 
 SkinResource::~SkinResource()
 {
 }
 
-QStringList SkinResource::scanAvailableSkins() const
+bool SkinResource::registerResource(const QString& resourcePath)
 {
-    QStringList skins;
-
-    // 只返回内置资源
-    for (auto it = m_resourcePaths.begin(); it != m_resourcePaths.end(); ++it)
-    {
-        skins.append(it.key());
-    }
-
-    return skins;
-}
-
-bool SkinResource::registerSkinResource(const QString& skinId, const QString& resourcePath)
-{
-    if (skinId.isEmpty() || resourcePath.isEmpty())
+    if (resourcePath.isEmpty())
     {
         return false;
     }
 
-    m_resourcePaths[skinId] = resourcePath;
-    emit skinResourceAdded(skinId);
+    if (m_resourcePaths.contains(resourcePath))
+    {
+        return false;
+    }
+
+    m_resourcePaths.append(resourcePath);
+
+    // 对于QRC资源，不需要检查文件系统是否存在
+    // 直接注册即可，Qt会自动处理QRC虚拟路径
+    emit skinResourceAdded(resourcePath);
     return true;
 }
 
-void SkinResource::unregisterSkinResource(const QString& skinId)
+void SkinResource::unregisterResource(const QString& resourcePath)
 {
-    if (m_resourcePaths.remove(skinId) > 0)
+    int removed = m_resourcePaths.removeAll(resourcePath);
+    if (removed > 0)
     {
-        emit skinResourceRemoved(skinId);
+        emit skinResourceRemoved(resourcePath);
     }
 }
 
-QString SkinResource::getResourcePath(const QString& skinId, const QString& resourceName) const
+QString SkinResource::getResourcePath(const QString& resourceName) const
 {
-    if (!m_resourcePaths.contains(skinId))
+    if (m_resourcePaths.isEmpty())
     {
         return QString();
     }
 
-    return QString(":%1/%2").arg(skinId, resourceName);
+    // 如果resourceName已经是完整路径，直接返回
+    if (resourceName.startsWith(":/"))
+    {
+        return resourceName;
+    }
+
+    // 尝试所有已注册的资源路径
+    for (const QString& basePath : m_resourcePaths)
+    {
+        QString fullPath = basePath + "/" + resourceName;
+        if (QFile::exists(":" + fullPath))
+        {
+            return fullPath;
+        }
+    }
+
+    // 如果没找到，返回第一个路径
+    QString basePath = m_resourcePaths.first();
+    if (resourceName.isEmpty())
+    {
+        return basePath;
+    }
+    return basePath + "/" + resourceName;
 }
 
-QString SkinResource::getStyleContent(const QString& skinId) const
+QString SkinResource::getStyleContent() const
 {
-    QString stylePath = getResourcePath(skinId, DEFAULT_STYLE_FILE);
-    QFile file(stylePath);
-
-    if (!file.open(QIODevice::ReadOnly | QIODevice::Text))
+    if (m_resourcePaths.isEmpty())
     {
-        qWarning() << "Failed to open style file:" << stylePath;
         return QString();
     }
 
-    return file.readAll();
+    QStringList qssFiles = findAllQssFiles();
+    QString styleContent;
+
+    for (const QString& qssFile : qssFiles)
+    {
+        QString content = getStyleContentFromQrc(qssFile);
+        if (!content.isEmpty())
+        {
+            styleContent += content + "\n";
+        }
+    }
+    return styleContent;
 }
 
-QByteArray SkinResource::getResourceData(const QString& skinId, const QString& resourceName) const
+QByteArray SkinResource::getResourceData(const QString& resourceName) const
 {
-    QString resourcePath = getResourcePath(skinId, resourceName);
-    QFile file(resourcePath);
-
-    if (!file.open(QIODevice::ReadOnly))
+    if (m_resourcePaths.isEmpty())
     {
-        qWarning() << "Failed to open resource file:" << resourcePath;
         return QByteArray();
     }
 
+    QString fullPath = getResourcePath(resourceName);
+    QFile file(":" + fullPath);
+
+    if (!file.open(QIODevice::ReadOnly))
+    {
+        qWarning() << "Failed to open resource file:" << fullPath;
+        return QByteArray();
+    }
     return file.readAll();
 }
 
-QString SkinResource::getComponentStyleContent(const QString& skinId, const QString& componentClassName) const
+QString SkinResource::getComponentStyleContent(const QString& componentClassName) const
 {
-    // 支持灵活的QSS文件查找，不再限制固定路径
-    QStringList qssFiles = findAllQssFiles(skinId);
-
-    // 优先查找完全匹配的文件名
-    for (const QString& filePath : qssFiles)
+    if (m_resourcePaths.isEmpty())
     {
-        QFileInfo fileInfo(filePath);
-        if (fileInfo.baseName().compare(componentClassName, Qt::CaseInsensitive) == 0)
+        return QString();
+    }
+    // 遍历所有已注册的资源路径
+    for (const QString& resourcePath : m_resourcePaths)
+    {
+        QString qssFileName = componentClassName + ".qss";
+        QString qrcPath = resourcePath + "/" + qssFileName;
+        QFile file(qrcPath);
+        if (file.open(QIODevice::ReadOnly | QIODevice::Text))
         {
-            QFile file(filePath);
-            if (file.open(QIODevice::ReadOnly | QIODevice::Text))
-            {
-                return file.readAll();
-            }
+            return file.readAll();
         }
     }
 
     return QString();
 }
 
-QString SkinResource::getStyleContentFromQrc(const QString& skinId, const QString& fileName) const
+QString SkinResource::getStyleContentFromQrc(const QString& fileName) const
 {
-    if (!m_resourcePaths.contains(skinId))
+    if (m_resourcePaths.isEmpty())
     {
         return QString();
     }
 
-    QString resourceBase = QString(":/%1").arg(skinId);
-
-    // 直接查找指定文件名的QSS文件
-    QString targetFile = fileName;
-    if (!targetFile.endsWith(".qss", Qt::CaseInsensitive))
+    QString resourcePath = m_resourcePaths.first();
+    QString actualFileName = fileName;
+    if (!actualFileName.endsWith(".qss", Qt::CaseInsensitive))
     {
-        targetFile += ".qss";
+        actualFileName += ".qss";
     }
 
-    QStringList allFiles = findAllQssFiles(skinId);
-    for (const QString& filePath : allFiles)
+    QString qrcPath = ":" + resourcePath + "/" + actualFileName;
+    QFile file(qrcPath);
+    if (file.open(QIODevice::ReadOnly | QIODevice::Text))
     {
-        QFileInfo fileInfo(filePath);
-        if (fileInfo.fileName().compare(targetFile, Qt::CaseInsensitive) == 0)
-        {
-            QFile file(filePath);
-            if (file.open(QIODevice::ReadOnly | QIODevice::Text))
-            {
-                return file.readAll();
-            }
-        }
+        return file.readAll();
     }
 
+    // 尝试直接查找文件名
+    qrcPath = ":" + resourcePath + "/" + fileName;
+    file.setFileName(qrcPath);
+    if (file.open(QIODevice::ReadOnly | QIODevice::Text))
+    {
+        return file.readAll();
+    }
+    
     return QString();
 }
 
-QStringList SkinResource::findAllQssFiles(const QString& skinId) const
+QStringList SkinResource::findAllQssFiles() const
 {
     QStringList qssFiles;
-    
-    // 支持MyCustomUiWidget的qrc资源结构
-    for (const QString& prefix : m_skinPreFix.value(skinId))
+    if (m_resourcePaths.isEmpty())
     {
-        // 使用QDirIterator遍历qrc中的QSS文件
-        QDirIterator it(":" + prefix, QStringList() << "*.qss", QDir::Files, QDirIterator::Subdirectories);
-
-        while (it.hasNext())
-        {
-            qssFiles.append(it.next());
-        }
+        return qssFiles;
     }
+
+    QString resourcePath = m_resourcePaths.first();
+    QString qrcBasePath = ":" + resourcePath;
+
+    // 直接遍历资源路径下的所有QSS文件
+    QDirIterator it(qrcBasePath, QStringList() << "*.qss", QDir::Files, QDirIterator::Subdirectories);
+    while (it.hasNext())
+    {
+        QString filePath = it.next();
+        QString relativePath = filePath;
+        relativePath.remove(qrcBasePath);
+        if (relativePath.startsWith("/"))
+        {
+            relativePath = relativePath.mid(1);
+        }
+        qssFiles.append(relativePath);
+    }
+    
     return qssFiles;
 }
 
 void SkinResource::initializeBuiltinResources()
 {
-    // 注册MyCustomUiWidget的内置资源
-    registerSkinResource("default", "MyCustomUiWidget");
 }

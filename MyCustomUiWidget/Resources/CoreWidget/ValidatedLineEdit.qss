@@ -1,0 +1,82 @@
+/* ValidatedLineEdit 样式定义 */
+
+ValidatedLineEdit {
+    border: 1px solid rgb(@dark_color);
+    border-radius: 4px;
+    padding: 4px 8px;
+    background-color: rgb(@white_color);
+    color: rgb(@dark_color);
+    font-family: "Microsoft YaHei";
+    font-size: 14px;
+    min-height: 24px;
+}
+
+ValidatedLineEdit:hover {
+    border-color: rgb(@info_color);
+    background-color: rgb(@hover_background_color);
+}
+
+ValidatedLineEdit:focus {
+    border-color: rgb(@info_color);
+    background-color: rgb(@white_color);
+    outline: none;
+}
+
+ValidatedLineEdit:disabled {
+    border-color: rgb(@disabled_color);
+    background-color: rgb(@hover_background_color);
+    color: rgb(@disabled_color);
+}
+
+/* 验证状态样式 */
+ValidatedLineEdit[validation-state="validated-lineedit-valid"] {
+    border-color: rgb(@success_color);
+    background-color: rgb(@white_color);
+}
+
+ValidatedLineEdit[validation-state="validated-lineedit-valid"]:hover {
+    border-color: rgb(@success_color);
+}
+
+ValidatedLineEdit[validation-state="validated-lineedit-invalid"] {
+    border-color: rgb(@error_color);
+    background-color: rgb(@white_color);
+}
+
+ValidatedLineEdit[validation-state="validated-lineedit-invalid"]:hover {
+    border-color: rgb(@error_color);
+}
+
+ValidatedLineEdit[validation-state="validated-lineedit-invalid"]:focus {
+    border-color: rgb(@error_color);
+}
+
+ValidatedLineEdit[validation-state="validated-lineedit-empty"] {
+    border-color: rgb(@disabled_color);
+    background-color: rgb(@white_color);
+}
+
+ValidatedLineEdit[validation-state="validated-lineedit-empty"]:hover {
+    border-color: rgb(@info_color);
+}
+
+ValidatedLineEdit[validation-state="validated-lineedit-partial"] {
+    border-color: rgb(@info_color);
+    background-color: rgb(@white_color);
+}
+
+ValidatedLineEdit[validation-state="validated-lineedit-partial"]:hover {
+    border-color: rgb(@info_color);
+}
+
+/* 占位符文本样式 */
+ValidatedLineEdit::placeholder {
+    color: rgb(@disabled_color);
+    font-style: italic;
+}
+
+/* 选中文本样式 */
+ValidatedLineEdit::selection {
+    background-color: rgb(@info_color);
+    color: rgb(@white_color);
+}

@@ -6,7 +6,7 @@
 #include <QMutex>
 #include <QObject>
 #include <QSettings>
-#include "SkinInfo.h"
+#include "SkinVersionInfo.h"
 #include "SkinResource.h"
 #include "StyleSystemGlobal.h"
 
@@ -43,13 +43,20 @@ public:
     bool loadComponentStyle(QWidget* component, const QString& componentClassName = QString(), const QString& skinId = QString());
     
     /// <summary>
-    /// 添加QRC文件路径到皮肤系统
+    /// 添加QRC文件路径到皮肤系统（全局资源，所有皮肤共用）
     /// </summary>
     /// <param name="qrcPath">QRC文件路径</param>
-    /// <param name="skinId">皮肤ID，为空时从文件名提取</param>
     /// <returns></returns>
-    bool addQrcResource(const QString& qrcPath, const QString& skinId = QString());
+    bool addQrcResource(const QString& qrcPath);
     
+    /// <summary>
+    /// 添加皮肤版本信息（JSON配置文件）
+    /// </summary>
+    /// <param name="skinId">皮肤ID</param>
+    /// <param name="jsonPath">JSON配置文件路径</param>
+    /// <returns></returns>
+    bool addSkinVersionInfo(const QString& skinId, const QString& jsonPath);
+
     /// <summary>
     /// 获取颜色变量值
     /// </summary>
@@ -84,7 +91,7 @@ private:
     static QMutex s_mutex;
     QString m_currentSkinId;
     SkinResource* m_skinResource = nullptr;
-    QMap<QString, SkinInfo*> m_skinInfos;
+    QMap<QString, SkinVersionInfo*> m_SkinVersionInfos;
     Q_DISABLE_COPY(SkinManager)
 };
 

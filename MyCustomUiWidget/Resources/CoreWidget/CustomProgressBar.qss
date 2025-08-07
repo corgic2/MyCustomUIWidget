@@ -1,0 +1,92 @@
+/* CustomProgressBar 样式定义 */
+
+CustomProgressBar {
+    border: none;
+    border-radius: 8px;
+    background-color: rgba(@light_color, 0.2);
+    text-align: center;
+    color: rgb(@dark_color);
+    font-family: "Microsoft YaHei";
+    font-size: 12px;
+    font-weight: 500;
+    min-height: 12px;
+    max-height: 12px;
+}
+
+CustomProgressBar::chunk {
+    border-radius: 8px;
+    background-color: qlineargradient(x1: 0, y1: 0, x2: 1, y2: 0,
+        stop: 0 rgb(@info_color),
+        stop: 1 rgb(@success_color));
+    margin: 0px;
+}
+
+CustomProgressBar::chunk:horizontal {
+    background-color: qlineargradient(x1: 0, y1: 0, x2: 1, y2: 0,
+        stop: 0 rgb(@info_color),
+        stop: 0.5 rgb(@primary_color),
+        stop: 1 rgb(@success_color));
+}
+
+CustomProgressBar::chunk:vertical {
+    background-color: qlineargradient(x1: 0, y1: 0, x2: 0, y2: 1,
+        stop: 0 rgb(@info_color),
+        stop: 0.5 rgb(@primary_color),
+        stop: 1 rgb(@success_color));
+}
+
+/* 不同状态的样式 */
+CustomProgressBar[progress-state="progress-normal"] {
+    color: rgb(@dark_color);
+}
+
+CustomProgressBar[progress-state="progress-success"] {
+    color: rgb(@success_color);
+}
+
+CustomProgressBar[progress-state="progress-warning"] {
+    color: rgb(@warning_color);
+}
+
+CustomProgressBar[progress-state="progress-error"] {
+    color: rgb(@error_color);
+}
+
+/* 动画效果样式 */
+CustomProgressBar::chunk:animate {
+    background-color: qlineargradient(x1: 0, y1: 0, x2: 1, y2: 0,
+        stop: 0 rgb(@info_color),
+        stop: 0.5 rgb(@primary_color),
+        stop: 1 rgb(@success_color));
+}
+
+/* 悬停效果 */
+CustomProgressBar:hover {
+    background-color: rgba(@light_color, 0.3);
+}
+
+/* 禁用状态 */
+CustomProgressBar:disabled {
+    background-color: rgba(@disabled_color, 0.1);
+    color: rgb(@disabled_color);
+}
+
+CustomProgressBar:disabled::chunk {
+    background-color: rgba(@disabled_color, 0.3);
+}
+
+/* 圆环进度条样式 */
+CustomProgressBar[circular="true"] {
+    border: 2px solid rgba(@light_color, 0.2);
+    border-radius: 50px;
+    background-color: transparent;
+    min-height: 100px;
+    max-height: 100px;
+    min-width: 100px;
+    max-width: 100px;
+}
+
+CustomProgressBar[circular="true"]::chunk {
+    background-color: transparent;
+    border: 2px solid transparent;
+}

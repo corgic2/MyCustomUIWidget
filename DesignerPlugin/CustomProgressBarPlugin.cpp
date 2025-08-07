@@ -43,48 +43,6 @@ QString CustomProgressBarPlugin::domXml() const
                 <height>25</height>
             </rect>
         </property>
-        <property name="minimum">
-            <number>0</number>
-        </property>
-        <property name="maximum">
-            <number>100</number>
-        </property>
-        <property name="value">
-            <number>50</number>
-        </property>
-        <property name="progressBarStyle">
-            <enum>CustomProgressBar::ProgressBarStyle_Default</enum>
-        </property>
-        <property name="enableGradient">
-            <bool>false</bool>
-        </property>
-        <property name="enableAnimation">
-            <bool>true</bool>
-        </property>
-        <property name="animationDuration">
-            <number>500</number>
-        </property>
-        <property name="textPosition">
-            <enum>CustomProgressBar::TextPosition_Center</enum>
-        </property>
-        <property name="enableShadow">
-            <bool>false</bool>
-        </property>
-        <property name="enableBorder">
-            <bool>false</bool>
-        </property>
-        <property name="borderWidth">
-            <number>1</number>
-        </property>
-        <property name="borderRadius">
-            <number>0</number>
-        </property>
-        <property name="enableStripes">
-            <bool>false</bool>
-        </property>
-        <property name="stripeDirection">
-            <enum>CustomProgressBar::StripeDirection_LeftToRight</enum>
-        </property>
     </widget>
 </ui>
 )");

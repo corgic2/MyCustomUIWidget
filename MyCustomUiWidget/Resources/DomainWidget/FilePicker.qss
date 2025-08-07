@@ -1,0 +1,280 @@
+/* FilePicker 样式定义 */
+
+FilePicker {
+    background-color: rgb(@white_color);
+    border: 1px solid rgba(@light_color, 0.8);
+    border-radius: 8px;
+    font-family: "Microsoft YaHei", "PingFang SC", "Helvetica Neue", Helvetica, Arial, sans-serif;
+    font-size: 14px;
+    color: rgb(@dark_color);
+    outline: none;
+    padding: 4px;
+    min-height: 36px;
+}
+
+FilePicker:focus {
+    border-color: rgb(@info_color);
+    border-width: 2px;
+}
+
+FilePicker:hover {
+    border-color: rgba(@info_color, 0.5);
+}
+
+FilePicker:disabled {
+    background-color: rgba(@white_color, 0.5);
+    border-color: rgba(@light_color, 0.3);
+    color: rgb(@disabled_color);
+}
+
+/* 行编辑框样式 */
+FilePicker QLineEdit {
+    background-color: transparent;
+    border: none;
+    border-radius: 0px;
+    padding: 8px 12px;
+    font-size: 14px;
+    color: rgb(@dark_color);
+    selection-background-color: rgb(@info_color);
+    selection-color: rgb(@white_color);
+}
+
+FilePicker QLineEdit:focus {
+    background-color: rgba(@info_color, 0.05);
+}
+
+FilePicker QLineEdit:disabled {
+    color: rgb(@disabled_color);
+    background-color: transparent;
+}
+
+FilePicker QLineEdit::placeholder {
+    color: rgba(@light_color, 0.7);
+}
+
+/* 浏览按钮样式 */
+FilePicker QToolButton {
+    background-color: rgb(@info_color);
+    border: none;
+    border-radius: 4px;
+    padding: 8px 16px;
+    margin: 2px;
+    color: rgb(@white_color);
+    font-size: 13px;
+    font-weight: 500;
+    min-width: 80px;
+}
+
+FilePicker QToolButton:hover {
+    background-color: rgba(@info_color, 0.8);
+}
+
+FilePicker QToolButton:pressed {
+    background-color: rgba(@info_color, 0.6);
+}
+
+FilePicker QToolButton:disabled {
+    background-color: rgba(@light_color, 0.5);
+    color: rgb(@disabled_color);
+}
+
+/* 清除按钮样式 */
+FilePicker QToolButton#clearButton {
+    background-color: transparent;
+    border: none;
+    border-radius: 50%;
+    padding: 4px;
+    margin: 0px;
+    color: rgb(@light_color);
+    font-size: 12px;
+    min-width: 20px;
+    max-width: 20px;
+    min-height: 20px;
+    max-height: 20px;
+}
+
+FilePicker QToolButton#clearButton:hover {
+    background-color: rgba(@error_color, 0.1);
+    color: rgb(@error_color);
+}
+
+FilePicker QToolButton#clearButton:pressed {
+    background-color: rgba(@error_color, 0.2);
+}
+
+/* 模式选择下拉框样式 */
+FilePicker QComboBox {
+    background-color: transparent;
+    border: 1px solid rgba(@light_color, 0.5);
+    border-radius: 4px;
+    padding: 4px 8px;
+    font-size: 12px;
+    color: rgb(@dark_color);
+    min-width: 100px;
+}
+
+FilePicker QComboBox:hover {
+    border-color: rgb(@info_color);
+}
+
+FilePicker QComboBox:focus {
+    border-color: rgb(@info_color);
+    border-width: 2px;
+}
+
+FilePicker QComboBox:disabled {
+    border-color: rgba(@light_color, 0.3);
+    color: rgb(@disabled_color);
+}
+
+FilePicker QComboBox::drop-down {
+    border: none;
+    width: 20px;
+}
+
+FilePicker QComboBox::down-arrow {
+    image: none;
+    border-left: 4px solid transparent;
+    border-right: 4px solid transparent;
+    border-top: 6px solid rgb(@dark_color);
+    width: 0px;
+    height: 0px;
+}
+
+FilePicker QComboBox::down-arrow:disabled {
+    border-top-color: rgb(@disabled_color);
+}
+
+/* 文件过滤器下拉框样式 */
+FilePicker QComboBox#filterComboBox {
+    background-color: rgba(@white_color, 0.8);
+    border: 1px solid rgba(@light_color, 0.6);
+    border-radius: 4px;
+    padding: 4px 8px;
+    font-size: 12px;
+    color: rgb(@dark_color);
+    min-width: 120px;
+}
+
+/* 进度条样式（用于文件夹扫描） */
+FilePicker QProgressBar {
+    background-color: rgba(@light_color, 0.3);
+    border: none;
+    border-radius: 2px;
+    height: 4px;
+    text-align: center;
+    color: transparent;
+}
+
+FilePicker QProgressBar::chunk {
+    background-color: rgb(@info_color);
+    border-radius: 2px;
+}
+
+/* 状态标签样式 */
+FilePicker QLabel#statusLabel {
+    background-color: transparent;
+    border: none;
+    padding: 2px 4px;
+    font-size: 11px;
+    color: rgb(@light_color);
+}
+
+FilePicker QLabel#statusLabel[status="error"] {
+    color: rgb(@error_color);
+}
+
+FilePicker QLabel#statusLabel[status="warning"] {
+    color: rgb(@warning_color);
+}
+
+FilePicker QLabel#statusLabel[status="success"] {
+    color: rgb(@success_color);
+}
+
+/* 紧凑模式 */
+FilePicker[compact="true"] {
+    min-height: 28px;
+    padding: 2px;
+}
+
+FilePicker[compact="true"] QLineEdit {
+    padding: 4px 8px;
+    font-size: 13px;
+}
+
+FilePicker[compact="true"] QToolButton {
+    padding: 4px 12px;
+    font-size: 12px;
+    min-width: 60px;
+}
+
+/* 扩展模式 */
+FilePicker[expanded="true"] {
+    min-height: 48px;
+    padding: 8px;
+}
+
+FilePicker[expanded="true"] QLineEdit {
+    padding: 12px 16px;
+    font-size: 15px;
+}
+
+FilePicker[expanded="true"] QToolButton {
+    padding: 12px 20px;
+    font-size: 14px;
+    min-width: 100px;
+}
+
+/* 深色主题 */
+FilePicker[theme="dark"] {
+    background-color: rgb(@dark_color);
+    border-color: rgba(@white_color, 0.2);
+    color: rgb(@white_color);
+}
+
+FilePicker[theme="dark"] QLineEdit {
+    color: rgb(@white_color);
+}
+
+FilePicker[theme="dark"] QLineEdit::placeholder {
+    color: rgba(@white_color, 0.5);
+}
+
+FilePicker[theme="dark"] QComboBox {
+    color: rgb(@white_color);
+    border-color: rgba(@white_color, 0.3);
+}
+
+FilePicker[theme="dark"] QComboBox::down-arrow {
+    border-top-color: rgb(@white_color);
+}
+
+FilePicker[theme="dark"] QToolButton#clearButton {
+    color: rgba(@white_color, 0.7);
+}
+
+/* 动画效果 */
+FilePicker, FilePicker * {
+    transition: all 200ms ease;
+}
+
+FilePicker QToolButton {
+    transition: background-color 150ms ease, color 150ms ease;
+}
+
+FilePicker QLineEdit {
+    transition: background-color 150ms ease;
+}
+
+/* 拖拽区域样式 */
+FilePicker[drag="true"] {
+    border-color: rgb(@info_color);
+    border-width: 2px;
+    border-style: dashed;
+    background-color: rgba(@info_color, 0.05);
+}
+
+FilePicker[drag="true"] QLineEdit {
+    background-color: rgba(@info_color, 0.1);
+}

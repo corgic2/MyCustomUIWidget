@@ -14,13 +14,12 @@ QMutex SkinManager::s_mutex;
 SkinManager::SkinManager(QObject* parent)
     : QObject(parent), m_currentSkinId(DEFAULT_SKIN_ID), m_skinResource(new SkinResource(this))
 {
-
 }
 
 SkinManager::~SkinManager()
 {
-    qDeleteAll(m_skinInfos);
-    m_skinInfos.clear();
+    qDeleteAll(m_SkinVersionInfos);
+    m_SkinVersionInfos.clear();
 }
 
 SkinManager* SkinManager::instance()
@@ -63,7 +62,7 @@ void SkinManager::setCurrentSkinId(const QString& skinId)
 
 QStringList SkinManager::availableSkins() const
 {
-    return m_skinResource->scanAvailableSkins();
+    return m_SkinVersionInfos.keys();
 }
 
 QString SkinManager::parseStyleSheet(const QString& styleSheet, const QString& skinId) const
@@ -71,11 +70,11 @@ QString SkinManager::parseStyleSheet(const QString& styleSheet, const QString& s
     QString result = styleSheet;
 
     // 获取皮肤信息
-    SkinInfo* skinInfo = m_skinInfos.value(skinId);
-    if (skinInfo)
+    SkinVersionInfo* SkinVersionInfo = m_SkinVersionInfos.value(skinId);
+    if (SkinVersionInfo)
     {
         // 替换颜色变量
-        result = replaceColorVariables(result, skinInfo->colorVariables());
+        result = replaceColorVariables(result, SkinVersionInfo->colorVariables());
     }
 
     return result;
@@ -93,9 +92,9 @@ bool SkinManager::loadComponentStyle(QWidget* component, const QString& componen
     if (targetClassName.isEmpty()) {
         targetClassName = component->metaObject()->className();
     }
-    
-    // 获取组件样式内容
-    QString styleContent = m_skinResource->getComponentStyleContent(targetSkinId, targetClassName);
+
+    // 获取组件样式内容（统一从default资源获取）
+    QString styleContent = m_skinResource->getComponentStyleContent(targetClassName);
     if (styleContent.isEmpty()) {
         qWarning() << "No style found for component:" << targetClassName << "in skin:" << targetSkinId;
         return false;
@@ -110,40 +109,77 @@ bool SkinManager::loadComponentStyle(QWidget* component, const QString& componen
     return true;
 }
 
-bool SkinManager::addQrcResource(const QString& qrcPath, const QString& skinId)
+bool SkinManager::addQrcResource(const QString& qrcPath)
 {
     if (qrcPath.isEmpty()) {
         return false;
     }
-    
-    QFileInfo fileInfo(qrcPath);
+    // 注册QRC资源（全局资源，不绑定皮肤ID）
+    return m_skinResource->registerResource(qrcPath);
+}
+
+bool SkinManager::addSkinVersionInfo(const QString& skinId, const QString& jsonPath)
+{
+    if (skinId.isEmpty() || jsonPath.isEmpty())
+    {
+        return false;
+    }
+
+    QFileInfo fileInfo(jsonPath);
     if (!fileInfo.exists())
     {
         return false;
     }
 
-    QString targetSkinId = skinId.isEmpty() ? fileInfo.baseName() : skinId;
-
-    // 注册QRC资源
-    if (!m_skinResource->registerSkinResource(targetSkinId, qrcPath)) {
+    QFile jsonFile(jsonPath);
+    if (!jsonFile.open(QIODevice::ReadOnly | QIODevice::Text))
+    {
+        qWarning() << "Failed to open skin config file:" << jsonPath;
         return false;
     }
+
+    QByteArray jsonData = jsonFile.readAll();
+    QJsonDocument jsonDoc = QJsonDocument::fromJson(jsonData);
+    if (jsonDoc.isNull())
+    {
+        qWarning() << "Invalid JSON format:" << jsonPath;
+        return false;
+    }
+
+    auto versionInfo = new SkinVersionInfo(skinId, this);
+    if (!versionInfo->fromVariantMap(jsonDoc.object().toVariantMap()))
+    {
+        delete versionInfo;
+        return false;
+    }
+
+    // 移除旧版本信息
+    if (m_SkinVersionInfos.contains(skinId))
+    {
+        delete m_SkinVersionInfos.take(skinId);
+    }
+
+    // 添加新版本信息
+    m_SkinVersionInfos.insert(skinId, versionInfo);
     
     // 如果是第一个添加的皮肤，设置为默认
-    if (m_currentSkinId.isEmpty() || m_currentSkinId == DEFAULT_SKIN_ID) {
-        setCurrentSkinId(targetSkinId);
+    if (m_currentSkinId.isEmpty() || m_currentSkinId == DEFAULT_SKIN_ID)
+    {
+        setCurrentSkinId(skinId);
     }
-    
+
+    emit availableSkinsChanged(availableSkins());
     return true;
 }
 
 QString SkinManager::getColorVariable(const QString& colorKey, const QString& skinId) const
 {
     QString targetSkinId = skinId.isEmpty() ? m_currentSkinId : skinId;
-    SkinInfo* skinInfo = m_skinInfos.value(targetSkinId);
-    
-    if (skinInfo) {
-        return skinInfo->getColorVariable(colorKey);
+    SkinVersionInfo* SkinVersionInfo = m_SkinVersionInfos.value(targetSkinId);
+
+    if (SkinVersionInfo)
+    {
+        return SkinVersionInfo->getColorVariable(colorKey);
     }
     
     return QString();
@@ -152,7 +188,7 @@ QString SkinManager::getColorVariable(const QString& colorKey, const QString& sk
 QString SkinManager::getStyleContent(const QString& fileName, const QString& skinId) const
 {
     QString targetSkinId = skinId.isEmpty() ? m_currentSkinId : skinId;
-    return m_skinResource->getStyleContentFromQrc(targetSkinId, fileName);
+    return m_skinResource->getStyleContentFromQrc(fileName);
 }
 
 QString SkinManager::replaceColorVariables(const QString& styleSheet, const QMap<QString, QString>& variables) const

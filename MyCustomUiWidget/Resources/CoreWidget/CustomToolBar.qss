@@ -1,0 +1,235 @@
+/* CustomToolBar 样式定义 */
+
+CustomToolBar {
+    background-color: rgb(@white_color);
+    border: 1px solid rgba(@light_color, 0.8);
+    border-radius: 6px;
+    spacing: 2px;
+    padding: 4px;
+}
+
+CustomToolBar:hover {
+    background-color: rgb(@hover_background_color);
+}
+
+/* 水平工具栏 */
+CustomToolBar[orientation="horizontal"] {
+    border-top: none;
+    border-left: none;
+    border-right: none;
+    border-radius: 0px 0px 6px 6px;
+}
+
+/* 垂直工具栏 */
+CustomToolBar[orientation="vertical"] {
+    border-top: none;
+    border-bottom: none;
+    border-right: none;
+    border-radius: 0px 6px 6px 0px;
+}
+
+/* 无边框工具栏 */
+CustomToolBar[style="flat"] {
+    border: none;
+    background-color: transparent;
+    spacing: 1px;
+    padding: 2px;
+}
+
+/* 浮动工具栏 */
+CustomToolBar[style="floating"] {
+    background-color: rgb(@white_color);
+    border: 1px solid rgba(@light_color, 0.8);
+    border-radius: 8px;
+    box-shadow: 0 2px 8px rgba(0, 0, 0, 0.15);
+    padding: 8px;
+    spacing: 4px;
+}
+
+/* 深色主题工具栏 */
+CustomToolBar[theme="dark"] {
+    background-color: rgb(@dark_color);
+    border-color: rgba(@light_color, 0.3);
+    color: rgb(@white_color);
+}
+
+CustomToolBar[theme="dark"]:hover {
+    background-color: lighten(rgb(@dark_color), 10%);
+}
+
+/* 工具栏分隔符 */
+CustomToolBar::separator {
+    background-color: rgba(@light_color, 0.8);
+    width: 1px;
+    height: 20px;
+    margin: 2px 4px;
+}
+
+CustomToolBar[orientation="vertical"]::separator {
+    width: 20px;
+    height: 1px;
+    margin: 4px 2px;
+}
+
+/* 工具栏手柄 */
+CustomToolBar::handle {
+    background-color: rgba(@light_color, 0.5);
+    border: none;
+    border-radius: 2px;
+    width: 4px;
+    height: 20px;
+    margin: 2px;
+}
+
+CustomToolBar[orientation="vertical"]::handle {
+    width: 20px;
+    height: 4px;
+    margin: 2px;
+}
+
+/* 工具栏按钮容器 */
+CustomToolBar QToolButton {
+    border: none;
+    background-color: transparent;
+    border-radius: 4px;
+    padding: 6px;
+    margin: 1px;
+}
+
+CustomToolBar QToolButton:hover {
+    background-color: rgba(@light_color, 0.3);
+}
+
+CustomToolBar QToolButton:pressed {
+    background-color: rgba(@light_color, 0.5);
+}
+
+CustomToolBar QToolButton:checked {
+    background-color: rgb(@info_color);
+    color: rgb(@white_color);
+}
+
+CustomToolBar QToolButton:disabled {
+    background-color: transparent;
+    color: rgb(@disabled_color);
+}
+
+/* 工具栏按钮变体 */
+CustomToolBar[button-style="icon"] QToolButton {
+    border-radius: 50%;
+    padding: 8px;
+}
+
+CustomToolBar[button-style="text"] QToolButton {
+    padding: 8px 12px;
+    font-weight: 500;
+}
+
+CustomToolBar[button-style="both"] QToolButton {
+    padding: 6px 12px 6px 8px;
+    text-align: left;
+}
+
+/* 紧凑模式 */
+CustomToolBar[compact="true"] {
+    spacing: 1px;
+    padding: 2px;
+}
+
+CustomToolBar[compact="true"] QToolButton {
+    padding: 4px;
+    margin: 0px;
+}
+
+/* 扩展模式 */
+CustomToolBar[expanded="true"] {
+    spacing: 4px;
+    padding: 8px;
+}
+
+CustomToolBar[expanded="true"] QToolButton {
+    padding: 10px;
+    margin: 2px;
+}
+
+/* 工具栏标题 */
+CustomToolBar QLabel {
+    background-color: transparent;
+    color: rgb(@dark_color);
+    font-weight: bold;
+    padding: 4px 8px;
+    margin: 2px;
+}
+
+CustomToolBar[theme="dark"] QLabel {
+    color: rgb(@white_color);
+}
+
+/* 工具栏搜索框 */
+CustomToolBar QLineEdit {
+    border: 1px solid rgba(@light_color, 0.8);
+    border-radius: 4px;
+    padding: 4px 8px;
+    background-color: rgb(@white_color);
+    color: rgb(@dark_color);
+    min-width: 120px;
+}
+
+CustomToolBar[theme="dark"] QLineEdit {
+    background-color: rgba(@white_color, 0.1);
+    border-color: rgba(@white_color, 0.2);
+    color: rgb(@white_color);
+}
+
+CustomToolBar QLineEdit:focus {
+    border-color: rgb(@info_color);
+}
+
+/* 工具栏组合框 */
+CustomToolBar QComboBox {
+    border: 1px solid rgba(@light_color, 0.8);
+    border-radius: 4px;
+    padding: 2px 4px;
+    background-color: rgb(@white_color);
+    color: rgb(@dark_color);
+    min-width: 80px;
+}
+
+CustomToolBar[theme="dark"] QComboBox {
+    background-color: rgba(@white_color, 0.1);
+    border-color: rgba(@white_color, 0.2);
+    color: rgb(@white_color);
+}
+
+/* 动画效果 */
+CustomToolBar QToolButton {
+    transition: background-color 200ms ease;
+}
+
+/* 可移动工具栏 */
+CustomToolBar[movable="true"] {
+    border: 1px dashed rgba(@info_color, 0.3);
+    background-color: rgba(@info_color, 0.05);
+}
+
+CustomToolBar[movable="true"]:hover {
+    border-color: rgba(@info_color, 0.5);
+    background-color: rgba(@info_color, 0.1);
+}
+
+/* 工具栏组 */
+CustomToolBar[group="start"] {
+    border-top-right-radius: 0px;
+    border-bottom-right-radius: 0px;
+}
+
+CustomToolBar[group="middle"] {
+    border-radius: 0px;
+    border-left: none;
+    border-right: none;
+}
+
+CustomToolBar[group="end"] {
+    border-top-left-radius: 0px;
+    border-bottom-left-radius: 0px;
+}
