@@ -33,17 +33,17 @@ QString FilePathIconListWidgetPlugin::includeFile() const
 QString FilePathIconListWidgetPlugin::domXml() const
 {
     return QLatin1String(R"(
-<ui language="c++">
-    <widget class="FilePathIconListWidget" name="filePathIconListWidget">
-        <property name="geometry">
-            <rect>
-                <x>0</x>
-                <y>0</y>
-                <width>300</width>
-                <height>600</height>
-            </rect>
-        </property>
-    </widget>
-</ui>
+    <ui language="c++">
+        <widget class="FilePathIconListWidget" name="filePathIconListWidget">
+            <property name="geometry">
+                <rect>
+                    <x>0</x>
+                    <y>0</y>
+                    <width>300</width>
+                    <height>600</height>
+                </rect>
+            </property>
+        </widget>
+    </ui>
 )");
 } 

@@ -44,12 +44,6 @@ QString CustomToolBarPlugin::domXml() const
                                             <height>40</height>
                                         </rect>
                                     </property>
-                                    <property name="iconSize">
-                                        <number>24</number>
-                                    </property>
-                                    <property name="spacing">
-                                        <number>8</number>
-                                    </property>
                                 </widget>
                             </ui>
                             )");

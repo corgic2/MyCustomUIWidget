@@ -33,17 +33,17 @@ QString CustomLabelPlugin::includeFile() const
 QString CustomLabelPlugin::domXml() const
 {
     return QLatin1String(R"(
-<ui language="c++">
-    <widget class="CustomLabel" name="customLabel">
-        <property name="geometry">
-            <rect>
-                <x>0</x>
-                <y>0</y>
-                <width>100</width>
-                <height>30</height>
-            </rect>
-        </property>
-    </widget>
-</ui>
+    <ui language="c++">
+        <widget class="CustomLabel" name="customLabel">
+            <property name="geometry">
+                <rect>
+                    <x>0</x>
+                    <y>0</y>
+                    <width>100</width>
+                    <height>30</height>
+                </rect>
+            </property>
+        </widget>
+    </ui>
 )");
 } 

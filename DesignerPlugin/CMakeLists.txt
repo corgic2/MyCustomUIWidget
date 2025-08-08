@@ -79,16 +79,3 @@ endif()
 
 # VS过滤器
 source_group_by_dir(PLUGIN_SRC)
-
-# 复制插件和依赖到Qt Designer插件目录
-add_custom_command(TARGET ${PROJECT_NAME} POST_BUILD
-    # 复制插件DLL到Qt插件目录
-    COMMAND ${CMAKE_COMMAND} -E copy_if_different
-        $<TARGET_FILE:${PROJECT_NAME}>
-        "${QT_PLUGINS_DIR}/designer/$<TARGET_FILE_NAME:${PROJECT_NAME}>"
-    
-    # 复制主库DLL到Qt bin目录
-    COMMAND ${CMAKE_COMMAND} -E copy_if_different
-        $<TARGET_FILE:MyCustomUiWidget>
-        "${QT_BIN_DIR}/$<TARGET_FILE_NAME:MyCustomUiWidget>"
-)

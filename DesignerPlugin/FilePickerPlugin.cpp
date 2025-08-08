@@ -27,7 +27,7 @@ QString FilePickerPlugin::domXml() const
 
 QString FilePickerPlugin::includeFile() const
 {
-    return QLatin1String("CoreWidget/FilePicker.h");
+    return QLatin1String("DomainWidget/FilePicker.h");
 }
 
 QString FilePickerPlugin::name() const

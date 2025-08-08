@@ -1,4 +1,5 @@
 set "SDKDIR=D:\WorkSpace\MySdk"
+set "QtDIR=D:\Qt\5.15.2\msvc2019_64"
 
 xcopy "%SDKDIR%\include\*.h" "%~dp0include\" /E /I /Y
 xcopy "%SDKDIR%\x64\Release\*" "%~dp0x64\Release\" /E /I /Y
@@ -10,12 +11,8 @@ cd build
 cmake -DCMAKE_CONFIGURATION_TYPES=Release .. -G "Visual Studio 17 2022"
 cmake --build . --config Release
 
-@REM windeployqt
-if defined QT_DIR (
-    set QTDIR=%QT_DIR%
-) else (
-    set QTDIR=D:/Qt/5.15.2/msvc2019_64
-)
 xcopy "%SDKDIR%\x64\Release\*" "%QTDIR%\bin" /E /I /Y
+xcopy "%~dp0x64\Release\StyleSystem.dll" "%QTDIR%\plugins\designer"  /E /I /Y
+xcopy "%~dp0x64\Release\CustomWidgetPlugin.dll" "%QTDIR%\plugins\designer"  /E /I /Y
 
 pause

@@ -33,17 +33,17 @@ QString CustomComboBoxPlugin::includeFile() const
 QString CustomComboBoxPlugin::domXml() const
 {
     return QLatin1String(R"(
-<ui language="c++">
-    <widget class="CustomComboBox" name="customComboBox">
-        <property name="geometry">
-            <rect>
-                <x>0</x>
-                <y>0</y>
-                <width>200</width>
-                <height>30</height>
-            </rect>
-        </property>
-    </widget>
-</ui>
+    <ui language="c++">
+        <widget class="CustomComboBox" name="customComboBox">
+            <property name="geometry">
+                <rect>
+                    <x>0</x>
+                    <y>0</y>
+                    <width>200</width>
+                    <height>30</height>
+                </rect>
+            </property>
+        </widget>
+    </ui>
 )");
 }

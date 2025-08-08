@@ -33,17 +33,17 @@ QString CustomProgressBarPlugin::includeFile() const
 QString CustomProgressBarPlugin::domXml() const
 {
     return QLatin1String(R"(
-<ui language="c++">
-    <widget class="CustomProgressBar" name="customProgressBar">
-        <property name="geometry">
-            <rect>
-                <x>0</x>
-                <y>0</y>
-                <width>200</width>
-                <height>25</height>
-            </rect>
-        </property>
-    </widget>
-</ui>
+    <ui language="c++">
+        <widget class="CustomProgressBar" name="customProgressBar">
+            <property name="geometry">
+                <rect>
+                    <x>0</x>
+                    <y>0</y>
+                    <width>200</width>
+                    <height>25</height>
+                </rect>
+            </property>
+        </widget>
+    </ui>
 )");
 } 

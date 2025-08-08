@@ -33,18 +33,17 @@ QString CustomToolButtonPlugin::includeFile() const
 QString CustomToolButtonPlugin::domXml() const
 {
     return QLatin1String(R"(
-<ui language="c++">
-    <widget class="CustomToolButton" name="customToolButton">
-        <property name="geometry">
-            <rect>
-                <x>0</x>
-                <y>0</y>
-                <width>32</width>
-                <height>32</height>
-            </rect>
-        </property>
-
-    </widget>
-</ui>
+    <ui language="c++">
+        <widget class="CustomToolButton" name="customToolButton">
+            <property name="geometry">
+                <rect>
+                    <x>0</x>
+                    <y>0</y>
+                    <width>32</width>
+                    <height>32</height>
+                </rect>
+            </property>
+        </widget>
+    </ui>
 )");
 } 
