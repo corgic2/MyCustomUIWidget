@@ -55,6 +55,12 @@ QString CustomFramePlugin::domXml() const
             <property name="midLineWidth">
                 <number>0</number>
             </property>
+            <property name="EM_FrameFormat">
+                <enum>CustomFrame::EM_Normal</enum>
+            </property>
+            <property name="frameFormat">
+                <string>EM_Normal</string>
+            </property>
         </widget>
     </ui>
     )");

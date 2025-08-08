@@ -4,7 +4,7 @@
 #include <QWidget>
 #include "../CommonDefine/UIWidgetColorDefine.h"
 #include "../CommonDefine/UIWidgetGlobal.h"
-#include "BaseDefine/BaseStyleWidgetInterface.h"
+#include "../CommonDefine/BaseDefine/BaseStyleWidgetInterface.h"
 
 
 /// <summary>
@@ -60,9 +60,18 @@ public:
     /// </summary>
     /// <param name="format">格式枚举值</param>
     void SetLabelFormat(EM_CustomLabelFormat format);
+    /// <summary>
+    /// 基类函数修改样式
+    /// </summary>
     void ApplyFormatStyle() override;
 protected:
+    /// <summary>
+    /// 信号槽连接
+    /// </summary>
     void Connectionals() override;
+    /// <summary>
+    /// 初始化
+    /// </summary>
     void Initilize() override;
 private:
     EM_CustomLabelFormat m_labelFormat;  ///< 当前标签格式

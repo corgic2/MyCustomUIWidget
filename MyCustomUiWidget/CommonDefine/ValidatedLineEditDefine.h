@@ -2,6 +2,7 @@
 
 #include <QString>
 #include <QRegularExpression>
+#include <climits>
 
 /// <summary>
 /// 验证状态枚举
@@ -38,7 +39,11 @@ struct ST_ValidationRule
     bool m_isEnabled;                      // 是否启用
     
     ST_ValidationRule() : 
+        m_ruleName(),
+        m_regularExpression(),
         m_validationMode(EM_ValidationMode::EM_ValidationMode_ExactMatch),
+        m_errorMessage(),
+        m_successMessage(),
         m_isEnabled(true)
     {}
     
@@ -66,6 +71,7 @@ struct ST_ValidationResult
     
     ST_ValidationResult() : 
         m_validationState(EM_ValidationState::EM_ValidationState_Invalid),
+        m_message(),
         m_matchPosition(-1),
         m_matchLength(0)
     {}
@@ -91,7 +97,9 @@ struct ST_InputRange
     
     ST_InputRange() : 
         m_minLength(0),
-        m_maxLength(INT_MAX)
+        m_maxLength(INT_MAX),
+        m_allowedChars(),
+        m_forbiddenChars()
     {}
     
     ST_InputRange(int minLen, int maxLen, const QString& allowed = QString(), const QString& forbidden = QString()) :

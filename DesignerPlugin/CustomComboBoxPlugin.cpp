@@ -1,4 +1,4 @@
-﻿#include "CustomComboBoxPlugin.h"
+#include "CustomComboBoxPlugin.h"
 
 CustomComboBoxPlugin::CustomComboBoxPlugin(QObject* parent)
     : CustomWidgetPlugin(parent)
@@ -42,6 +42,12 @@ QString CustomComboBoxPlugin::domXml() const
                     <width>200</width>
                     <height>30</height>
                 </rect>
+            </property>
+            <property name="EM_ComboBoxFormat">
+                <enum>CustomComboBox::EM_Normal</enum>
+            </property>
+            <property name="comboBoxFormat">
+                <string>EM_Normal</string>
             </property>
         </widget>
     </ui>

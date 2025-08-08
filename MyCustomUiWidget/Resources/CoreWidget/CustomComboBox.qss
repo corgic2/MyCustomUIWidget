@@ -28,10 +28,69 @@ CustomComboBox:disabled {
     color: rgb(@disabled_color);
 }
 
+/* 格式样式定义 */
+/* 普通格式 */
+CustomComboBox[comboBoxFormat="EM_Normal"] {
+    border: 1px solid rgb(@dark_color);
+    background-color: rgb(@white_color);
+    color: rgb(@dark_color);
+}
+
+/* 主要格式 */
+CustomComboBox[comboBoxFormat="EM_Primary"] {
+    border: 1px solid rgb(@info_color);
+    background-color: rgb(@white_color);
+    color: rgb(@info_color);
+}
+
+/* 成功格式 */
+CustomComboBox[comboBoxFormat="EM_Success"] {
+    border: 1px solid rgb(@success_color);
+    background-color: rgb(@white_color);
+    color: rgb(@success_color);
+}
+
+/* 警告格式 */
+CustomComboBox[comboBoxFormat="EM_Warning"] {
+    border: 1px solid rgb(@warning_color);
+    background-color: rgb(@white_color);
+    color: rgb(@warning_color);
+}
+
+/* 错误格式 */
+CustomComboBox[comboBoxFormat="EM_Error"] {
+    border: 1px solid rgb(@error_color);
+    background-color: rgb(@white_color);
+    color: rgb(@error_color);
+}
+
+/* 信息格式 */
+CustomComboBox[comboBoxFormat="EM_Info"] {
+    border: 1px solid rgb(@info_color);
+    background-color: rgba(@info_color, 0.1);
+    color: rgb(@info_color);
+}
+
+/* 链接格式 */
+CustomComboBox[comboBoxFormat="EM_Link"] {
+    border: 1px solid transparent;
+    background-color: transparent;
+    color: rgb(@link_color);
+    text-decoration: underline;
+}
+
+/* 禁用格式 */
+CustomComboBox[comboBoxFormat="EM_Disabled"] {
+    border: 1px solid rgb(@disabled_color);
+    background-color: rgba(@disabled_color, 0.1);
+    color: rgb(@disabled_color);
+}
+
 CustomComboBox::drop-down {
     border: none;
-    width: 20px;
-    background-color: transparent;
+    width: 10px;
+    height: 10px;
+    background-color: rgb(@dark_color,0.2);
 }
 
 CustomComboBox::down-arrow {
@@ -39,9 +98,9 @@ CustomComboBox::down-arrow {
     border: none;
     width: 0;
     height: 0;
-    border-left: 4px solid transparent;
-    border-right: 4px solid transparent;
-    border-top: 6px solid rgb(@dark_color);
+    border-left: 1px solid rgb(@dark_color,0.2);
+    border-right: 1px solid rgb(@dark_color,0.2);
+    border-top: 1px solid rgb(@dark_color,0.2);
     margin-right: 4px;
 }
 
@@ -51,7 +110,7 @@ CustomComboBox::down-arrow:disabled {
 
 /* 下拉列表样式 */
 CustomComboBox QAbstractItemView {
-    border: 1px solid rgb(@light_color);
+    border: 1px solid rgb(@dark_color);
     border-radius: 6px;
     background-color: rgb(@white_color);
     selection-background-color: rgb(@info_color);
@@ -76,100 +135,4 @@ CustomComboBox QAbstractItemView::item:hover {
 CustomComboBox QAbstractItemView::item:selected {
     background-color: rgb(@info_color);
     color: rgb(@white_color);
-}
-
-/* 不同尺寸变体 */
-CustomComboBox[size="small"] {
-    padding: 2px 6px;
-    font-size: 12px;
-    min-height: 20px;
-}
-
-CustomComboBox[size="large"] {
-    padding: 8px 12px;
-    font-size: 16px;
-    min-height: 32px;
-}
-
-/* 圆角变体 */
-CustomComboBox[corner="none"] {
-    border-radius: 0px;
-}
-
-CustomComboBox[corner="small"] {
-    border-radius: 4px;
-}
-
-CustomComboBox[corner="large"] {
-    border-radius: 12px;
-}
-
-/* 边框颜色变体 */
-CustomComboBox[border-color="primary"] {
-    border-color: rgb(@info_color);
-}
-
-CustomComboBox[border-color="success"] {
-    border-color: rgb(@success_color);
-}
-
-CustomComboBox[border-color="warning"] {
-    border-color: rgb(@warning_color);
-}
-
-CustomComboBox[border-color="error"] {
-    border-color: rgb(@error_color);
-}
-
-/* 背景色变体 */
-CustomComboBox[background="transparent"] {
-    background-color: transparent;
-    border: none;
-}
-
-CustomComboBox[background="light"] {
-    background-color: rgb(@hover_background_color);
-}
-
-/* 只读状态 */
-CustomComboBox[read-only="true"] {
-    background-color: rgba(@light_color, 0.5);
-    border-color: rgb(@light_color);
-}
-
-/* 错误状态 */
-CustomComboBox[state="error"] {
-    border-color: rgb(@error_color);
-    background-color: rgba(@error_color, 0.1);
-}
-
-CustomComboBox[state="error"]:hover {
-    border-color: rgb(@error_color);
-}
-
-/* 成功状态 */
-CustomComboBox[state="success"] {
-    border-color: rgb(@success_color);
-    background-color: rgba(@success_color, 0.1);
-}
-
-/* 警告状态 */
-CustomComboBox[state="warning"] {
-    border-color: rgb(@warning_color);
-    background-color: rgba(@warning_color, 0.1);
-}
-
-/* 自定义箭头样式 */
-CustomComboBox[arrow="chevron"]::down-arrow {
-    border-left: 2px solid transparent;
-    border-right: 2px solid transparent;
-    border-top: 3px solid rgb(@dark_color);
-}
-
-CustomComboBox[arrow="filled"]::down-arrow {
-    background-color: rgb(@info_color);
-    border: none;
-    border-radius: 2px;
-    width: 12px;
-    height: 12px;
 }
