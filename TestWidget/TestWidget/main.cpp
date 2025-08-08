@@ -2,6 +2,7 @@
 #include <QDir>
 #include "StyleSystem/SkinManager.h"
 #include "TestWidget.h"
+#pragma execution_character_set("utf-8")
 
 int main(int argc, char* argv[])
 {

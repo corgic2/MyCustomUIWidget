@@ -17,4 +17,7 @@ if defined QT_DIR (
     set QTDIR=D:/Qt/5.15.2/msvc2019_64
 )
 
+cd /d "%~dp0TestWidget"
+call BuildVSProject_Debug.bat
+cd /d "%~dp0"
 pause

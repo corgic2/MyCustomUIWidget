@@ -1,0 +1,399 @@
+<?xml version="1.0" encoding="UTF-8"?>
+<ui version="4.0">
+ <class>TestWidgetClass</class>
+ <widget class="QWidget" name="TestWidgetClass">
+  <property name="geometry">
+   <rect>
+    <x>0</x>
+    <y>0</y>
+    <width>800</width>
+    <height>981</height>
+   </rect>
+  </property>
+  <property name="windowTitle">
+   <string>Custom Widget Test</string>
+  </property>
+  <layout class="QVBoxLayout" name="verticalLayout">
+   <item>
+    <widget class="CustomLabel" name="customLabel_2">
+     <property name="text">
+      <string>Custom Label</string>
+     </property>
+     <property name="EM_LabelFormat" stdset="0">
+      <enum>CustomLabel::EM_Normal</enum>
+     </property>
+     <property name="labelFormat" stdset="0">
+      <string>EM_Normal</string>
+     </property>
+    </widget>
+   </item>
+   <item>
+    <widget class="CustomLabel" name="customLabel">
+     <property name="text">
+      <string>Custom Label</string>
+     </property>
+     <property name="EM_LabelFormat" stdset="0">
+      <enum>CustomLabel::EM_Title</enum>
+     </property>
+     <property name="labelFormat" stdset="0">
+      <string>EM_Title</string>
+     </property>
+    </widget>
+   </item>
+   <item>
+    <widget class="CustomLabel" name="customLabel_4">
+     <property name="text">
+      <string>Custom Label</string>
+     </property>
+     <property name="EM_LabelFormat" stdset="0">
+      <enum>CustomLabel::EM_SubTitle</enum>
+     </property>
+     <property name="labelFormat" stdset="0">
+      <string>EM_SubTitle</string>
+     </property>
+    </widget>
+   </item>
+   <item>
+    <widget class="CustomLabel" name="customLabel_5">
+     <property name="text">
+      <string>Custom Label</string>
+     </property>
+     <property name="EM_LabelFormat" stdset="0">
+      <enum>CustomLabel::EM_Description</enum>
+     </property>
+     <property name="labelFormat" stdset="0">
+      <string>EM_Description</string>
+     </property>
+    </widget>
+   </item>
+   <item>
+    <widget class="CustomLabel" name="customLabel_3">
+     <property name="text">
+      <string>Custom Label</string>
+     </property>
+     <property name="EM_LabelFormat" stdset="0">
+      <enum>CustomLabel::EM_Warning</enum>
+     </property>
+     <property name="labelFormat" stdset="0">
+      <string>EM_Warning</string>
+     </property>
+    </widget>
+   </item>
+   <item>
+    <widget class="CustomLabel" name="customLabel_6">
+     <property name="text">
+      <string>Custom Label</string>
+     </property>
+     <property name="EM_LabelFormat" stdset="0">
+      <enum>CustomLabel::EM_Error</enum>
+     </property>
+     <property name="labelFormat" stdset="0">
+      <string>EM_Error</string>
+     </property>
+    </widget>
+   </item>
+   <item>
+    <widget class="CustomLabel" name="customLabel_7">
+     <property name="text">
+      <string>Custom Label</string>
+     </property>
+     <property name="EM_LabelFormat" stdset="0">
+      <enum>CustomLabel::EM_Success</enum>
+     </property>
+     <property name="labelFormat" stdset="0">
+      <string>EM_Success</string>
+     </property>
+    </widget>
+   </item>
+   <item>
+    <widget class="CustomLabel" name="customLabel_8">
+     <property name="text">
+      <string>Custom Label</string>
+     </property>
+     <property name="EM_LabelFormat" stdset="0">
+      <enum>CustomLabel::EM_Info</enum>
+     </property>
+     <property name="labelFormat" stdset="0">
+      <string>EM_Info</string>
+     </property>
+    </widget>
+   </item>
+   <item>
+    <widget class="CustomFrame" name="customFrame">
+     <property name="frameShape">
+      <enum>QFrame::StyledPanel</enum>
+     </property>
+     <property name="frameShadow">
+      <enum>QFrame::Raised</enum>
+     </property>
+     <property name="lineWidth">
+      <number>1</number>
+     </property>
+     <property name="midLineWidth">
+      <number>0</number>
+     </property>
+     <property name="EM_FrameFormat" stdset="0">
+      <enum>CustomFrame::EM_Normal</enum>
+     </property>
+     <property name="frameFormat" stdset="0">
+      <string>EM_Normal</string>
+     </property>
+    </widget>
+   </item>
+   <item>
+    <widget class="CustomFrame" name="customFrame_2">
+     <property name="frameShape">
+      <enum>QFrame::StyledPanel</enum>
+     </property>
+     <property name="frameShadow">
+      <enum>QFrame::Raised</enum>
+     </property>
+     <property name="lineWidth">
+      <number>1</number>
+     </property>
+     <property name="midLineWidth">
+      <number>0</number>
+     </property>
+     <property name="EM_FrameFormat" stdset="0">
+      <enum>CustomFrame::EM_Card</enum>
+     </property>
+     <property name="frameFormat" stdset="0">
+      <string>EM_Card</string>
+     </property>
+    </widget>
+   </item>
+   <item>
+    <widget class="CustomFrame" name="customFrame_3">
+     <property name="frameShape">
+      <enum>QFrame::StyledPanel</enum>
+     </property>
+     <property name="frameShadow">
+      <enum>QFrame::Raised</enum>
+     </property>
+     <property name="lineWidth">
+      <number>1</number>
+     </property>
+     <property name="midLineWidth">
+      <number>0</number>
+     </property>
+     <property name="EM_FrameFormat" stdset="0">
+      <enum>CustomFrame::EM_Panel</enum>
+     </property>
+     <property name="frameFormat" stdset="0">
+      <string>EM_Panel</string>
+     </property>
+    </widget>
+   </item>
+   <item>
+    <widget class="CustomFrame" name="customFrame_4">
+     <property name="frameShape">
+      <enum>QFrame::StyledPanel</enum>
+     </property>
+     <property name="frameShadow">
+      <enum>QFrame::Raised</enum>
+     </property>
+     <property name="lineWidth">
+      <number>1</number>
+     </property>
+     <property name="midLineWidth">
+      <number>0</number>
+     </property>
+     <property name="EM_FrameFormat" stdset="0">
+      <enum>CustomFrame::EM_Shadow</enum>
+     </property>
+     <property name="frameFormat" stdset="0">
+      <string>EM_Shadow</string>
+     </property>
+    </widget>
+   </item>
+   <item>
+    <widget class="CustomFrame" name="customFrame_5">
+     <property name="frameShape">
+      <enum>QFrame::StyledPanel</enum>
+     </property>
+     <property name="frameShadow">
+      <enum>QFrame::Raised</enum>
+     </property>
+     <property name="lineWidth">
+      <number>1</number>
+     </property>
+     <property name="midLineWidth">
+      <number>0</number>
+     </property>
+     <property name="EM_FrameFormat" stdset="0">
+      <enum>CustomFrame::EM_Raised</enum>
+     </property>
+     <property name="frameFormat" stdset="0">
+      <string>EM_Raised</string>
+     </property>
+    </widget>
+   </item>
+   <item>
+    <widget class="CustomFrame" name="customFrame_6">
+     <property name="frameShape">
+      <enum>QFrame::StyledPanel</enum>
+     </property>
+     <property name="frameShadow">
+      <enum>QFrame::Raised</enum>
+     </property>
+     <property name="lineWidth">
+      <number>1</number>
+     </property>
+     <property name="midLineWidth">
+      <number>0</number>
+     </property>
+     <property name="EM_FrameFormat" stdset="0">
+      <enum>CustomFrame::EM_Sunken</enum>
+     </property>
+     <property name="frameFormat" stdset="0">
+      <string>EM_Sunken</string>
+     </property>
+    </widget>
+   </item>
+   <item>
+    <widget class="CustomFrame" name="customFrame_7">
+     <property name="frameShape">
+      <enum>QFrame::StyledPanel</enum>
+     </property>
+     <property name="frameShadow">
+      <enum>QFrame::Raised</enum>
+     </property>
+     <property name="lineWidth">
+      <number>1</number>
+     </property>
+     <property name="midLineWidth">
+      <number>0</number>
+     </property>
+     <property name="EM_FrameFormat" stdset="0">
+      <enum>CustomFrame::EM_Line</enum>
+     </property>
+     <property name="frameFormat" stdset="0">
+      <string>EM_Line</string>
+     </property>
+    </widget>
+   </item>
+   <item>
+    <widget class="CustomFrame" name="customFrame_8">
+     <property name="frameShape">
+      <enum>QFrame::StyledPanel</enum>
+     </property>
+     <property name="frameShadow">
+      <enum>QFrame::Raised</enum>
+     </property>
+     <property name="lineWidth">
+      <number>1</number>
+     </property>
+     <property name="midLineWidth">
+      <number>0</number>
+     </property>
+     <property name="EM_FrameFormat" stdset="0">
+      <enum>CustomFrame::EM_None</enum>
+     </property>
+     <property name="frameFormat" stdset="0">
+      <string>EM_None</string>
+     </property>
+    </widget>
+   </item>
+   <item>
+    <widget class="CustomComboBox" name="customComboBox">
+     <property name="EM_ComboBoxFormat" stdset="0">
+      <enum>CustomComboBox::EM_Normal</enum>
+     </property>
+     <property name="comboBoxFormat" stdset="0">
+      <string>EM_Normal</string>
+     </property>
+    </widget>
+   </item>
+   <item>
+    <widget class="CustomComboBox" name="customComboBox_2">
+     <property name="EM_ComboBoxFormat" stdset="0">
+      <enum>CustomComboBox::EM_Primary</enum>
+     </property>
+     <property name="comboBoxFormat" stdset="0">
+      <string>EM_Primary</string>
+     </property>
+    </widget>
+   </item>
+   <item>
+    <widget class="CustomComboBox" name="customComboBox_3">
+     <property name="EM_ComboBoxFormat" stdset="0">
+      <enum>CustomComboBox::EM_Success</enum>
+     </property>
+     <property name="comboBoxFormat" stdset="0">
+      <string>EM_Success</string>
+     </property>
+    </widget>
+   </item>
+   <item>
+    <widget class="CustomComboBox" name="customComboBox_4">
+     <property name="EM_ComboBoxFormat" stdset="0">
+      <enum>CustomComboBox::EM_Warning</enum>
+     </property>
+     <property name="comboBoxFormat" stdset="0">
+      <string>EM_Warning</string>
+     </property>
+    </widget>
+   </item>
+   <item>
+    <widget class="CustomComboBox" name="customComboBox_5">
+     <property name="EM_ComboBoxFormat" stdset="0">
+      <enum>CustomComboBox::EM_Error</enum>
+     </property>
+     <property name="comboBoxFormat" stdset="0">
+      <string>EM_Error</string>
+     </property>
+    </widget>
+   </item>
+   <item>
+    <widget class="CustomComboBox" name="customComboBox_6">
+     <property name="EM_ComboBoxFormat" stdset="0">
+      <enum>CustomComboBox::EM_Info</enum>
+     </property>
+     <property name="comboBoxFormat" stdset="0">
+      <string>EM_Info</string>
+     </property>
+    </widget>
+   </item>
+   <item>
+    <widget class="CustomComboBox" name="customComboBox_7">
+     <property name="EM_ComboBoxFormat" stdset="0">
+      <enum>CustomComboBox::EM_Link</enum>
+     </property>
+     <property name="comboBoxFormat" stdset="0">
+      <string>EM_Link</string>
+     </property>
+    </widget>
+   </item>
+   <item>
+    <widget class="CustomComboBox" name="customComboBox_8">
+     <property name="EM_ComboBoxFormat" stdset="0">
+      <enum>CustomComboBox::EM_Disabled</enum>
+     </property>
+     <property name="comboBoxFormat" stdset="0">
+      <string>EM_Disabled</string>
+     </property>
+    </widget>
+   </item>
+  </layout>
+ </widget>
+ <layoutdefault spacing="6" margin="11"/>
+ <customwidgets>
+  <customwidget>
+   <class>CustomComboBox</class>
+   <extends>QComboBox</extends>
+   <header>CoreWidget/CustomComboBox.h</header>
+  </customwidget>
+  <customwidget>
+   <class>CustomFrame</class>
+   <extends>QFrame</extends>
+   <header>CoreWidget/CustomFrame.h</header>
+  </customwidget>
+  <customwidget>
+   <class>CustomLabel</class>
+   <extends>QLabel</extends>
+   <header>CoreWidget/CustomLabel.h</header>
+  </customwidget>
+ </customwidgets>
+ <resources/>
+ <connections/>
+</ui>

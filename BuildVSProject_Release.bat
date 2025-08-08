@@ -17,4 +17,7 @@ xcopy "%~dp0x64\Release\DesignerPlugin.dll" "%QTDIR%\plugins\designer"  /E /I /Y
 xcopy "%~dp0x64\Release\MyCustomUiWidget.dll" "%QTDIR%\bin"  /E /I /Y
 xcopy "%~dp0x64\Release\SDK.dll" "%QTDIR%\bin"  /E /I /Y
 xcopy "%~dp0x64\Release\StyleSystem.dll" "%QTDIR%\bin"  /E /I /Y
+cd /d "%~dp0TestWidget"
+call BuildVSProject_Release.bat
+cd /d "%~dp0"
 pause

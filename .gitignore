@@ -2,3 +2,5 @@ build
 x64
 include
 .trae
+TestWidget/build
+TestWidget/x64
