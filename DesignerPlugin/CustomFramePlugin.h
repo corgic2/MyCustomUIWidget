@@ -1,4 +1,4 @@
-﻿#pragma once
+#pragma once
 
 #include <QObject>
 #include <QtUiPlugin/QDesignerCustomWidgetInterface>
@@ -48,4 +48,9 @@ public:
     /// 获取控件的XML描述
     /// </summary>
     QString domXml() const override;
+    
+    /// <summary>
+    /// 是否为容器控件
+    /// </summary>
+    bool isContainer() const override;
 };

@@ -5,6 +5,11 @@ CustomFramePlugin::CustomFramePlugin(QObject* parent)
 {
 }
 
+bool CustomFramePlugin::isContainer() const
+{
+    return true;
+}
+
 QWidget* CustomFramePlugin::createWidget(QWidget* parent)
 {
     return new CustomFrame(parent);
@@ -61,6 +66,26 @@ QString CustomFramePlugin::domXml() const
             <property name="frameFormat">
                 <string>EM_Normal</string>
             </property>
+            <property name="layoutType">
+                <string>Vertical</string>
+            </property>
+            <layout class="QVBoxLayout" name="verticalLayout">
+                <property name="spacing">
+                    <number>2</number>
+                </property>
+                <property name="leftMargin">
+                    <number>4</number>
+                </property>
+                <property name="topMargin">
+                    <number>4</number>
+                </property>
+                <property name="rightMargin">
+                    <number>4</number>
+                </property>
+                <property name="bottomMargin">
+                    <number>4</number>
+                </property>
+            </layout>
         </widget>
     </ui>
     )");

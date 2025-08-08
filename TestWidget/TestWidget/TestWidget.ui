@@ -387,6 +387,7 @@
    <class>CustomFrame</class>
    <extends>QFrame</extends>
    <header>CoreWidget/CustomFrame.h</header>
+   <container>1</container>
   </customwidget>
   <customwidget>
    <class>CustomLabel</class>

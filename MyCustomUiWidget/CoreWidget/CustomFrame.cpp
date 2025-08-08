@@ -2,14 +2,22 @@
 #include <QGraphicsDropShadowEffect>
 #include <QPainter>
 #include <QStyleOption>
+#include <QVBoxLayout>
+#include <QHBoxLayout>
+#include <QGridLayout>
+#include <QFormLayout>
+#include <QStackedLayout>
 #include "StyleSystem/SkinStyleLoader.h"
 
 CustomFrame::CustomFrame(QWidget* parent)
-    : QFrame(parent), m_frameFormat(EM_CustomFrameFormat::EM_Normal)
+    : QFrame(parent), m_frameFormat(EM_CustomFrameFormat::EM_Normal), m_layoutManager(nullptr)
 {
     AUTO_LOAD_SKIN_STYLE();
     Initilize();
     Connectionals();
+    // 确保可以作为容器使用
+    setAttribute(Qt::WA_StyledBackground, true);
+    setAutoFillBackground(false);
 }
 
 CustomFrame::~CustomFrame()
@@ -36,6 +44,73 @@ void CustomFrame::Connectionals()
 
 void CustomFrame::Initilize()
 {
+    // 确保CustomFrame可以作为容器使用
+    this->setAcceptDrops(true);
+    
+    // 创建布局管理器
+    m_layoutManager = new CustomFrameLayoutManager(this);
+    
+    // 设置默认布局为垂直布局
+    if (!this->layout()) {
+        m_layoutManager->SetLayoutType(CustomFrameLayoutManager::EM_Vertical);
+    }
+}
+
+void CustomFrame::SetVerticalLayout()
+{
+    if (m_layoutManager) {
+        m_layoutManager->SetLayoutType(CustomFrameLayoutManager::EM_Vertical);
+    }
+}
+
+void CustomFrame::SetHorizontalLayout()
+{
+    if (m_layoutManager) {
+        m_layoutManager->SetLayoutType(CustomFrameLayoutManager::EM_Horizontal);
+    }
+}
+
+void CustomFrame::SetGridLayout()
+{
+    if (m_layoutManager) {
+        m_layoutManager->SetLayoutType(CustomFrameLayoutManager::EM_Grid);
+    }
+}
+
+void CustomFrame::SetFormLayout()
+{
+    if (m_layoutManager) {
+        m_layoutManager->SetLayoutType(CustomFrameLayoutManager::EM_Form);
+    }
+}
+
+void CustomFrame::SetStackedLayout()
+{
+    if (m_layoutManager) {
+        m_layoutManager->SetLayoutType(CustomFrameLayoutManager::EM_Stacked);
+    }
+}
+
+QString CustomFrame::GetLayoutType() const
+{
+    if (m_layoutManager) {
+        return CustomFrameLayoutManager::LayoutTypeToString(m_layoutManager->GetLayoutType());
+    }
+    return "None";
+}
+
+QString CustomFrame::GetLayoutTypeString() const
+{
+    return GetLayoutType();
+}
+
+void CustomFrame::SetLayoutTypeString(const QString& type)
+{
+    if (m_layoutManager) {
+        CustomFrameLayoutManager::EM_LayoutType layoutType = 
+            CustomFrameLayoutManager::StringToLayoutType(type);
+        m_layoutManager->SetLayoutType(layoutType);
+    }
 }
 
 void CustomFrame::ApplyFormatStyle()
