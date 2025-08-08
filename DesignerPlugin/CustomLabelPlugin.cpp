@@ -1,4 +1,4 @@
-﻿#include "CustomLabelPlugin.h"
+#include "CustomLabelPlugin.h"
 
 CustomLabelPlugin::CustomLabelPlugin(QObject* parent)
     : CustomWidgetPlugin(parent)
@@ -43,7 +43,16 @@ QString CustomLabelPlugin::domXml() const
                     <height>30</height>
                 </rect>
             </property>
+            <property name="text">
+                <string>Custom Label</string>
+            </property>
+            <property name="EM_LabelFormat">
+                <enum>CustomLabel::EM_Normal</enum>
+            </property>
+            <property name="labelFormat">
+                <string>EM_Normal</string>
+            </property>
         </widget>
     </ui>
-)");
-} 
+    )");
+}

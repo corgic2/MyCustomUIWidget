@@ -13,6 +13,8 @@ cmake --build . --config Release
 
 xcopy "%SDKDIR%\x64\Release\*" "%QTDIR%\bin" /E /I /Y
 xcopy "%~dp0x64\Release\StyleSystem.dll" "%QTDIR%\plugins\designer"  /E /I /Y
-xcopy "%~dp0x64\Release\CustomWidgetPlugin.dll" "%QTDIR%\plugins\designer"  /E /I /Y
-
+xcopy "%~dp0x64\Release\DesignerPlugin.dll" "%QTDIR%\plugins\designer"  /E /I /Y
+xcopy "%~dp0x64\Release\MyCustomUiWidget.dll" "%QTDIR%\bin"  /E /I /Y
+xcopy "%~dp0x64\Release\SDK.dll" "%QTDIR%\bin"  /E /I /Y
+xcopy "%~dp0x64\Release\StyleSystem.dll" "%QTDIR%\bin"  /E /I /Y
 pause

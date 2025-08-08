@@ -1,11 +1,79 @@
 /* CustomLabel 样式定义 */
 
+/* 基础样式 */
 CustomLabel {
-    color: rgb(@dark_color,0.8);
+    color: rgba(@dark_color,0.8);
     font-family: "Microsoft YaHei";
     font-size: 12px;
     background: transparent;
     border: none;
     padding: 0px;
+}
+
+/* 普通格式样式 */
+CustomLabel[labelFormat="EM_Normal"] {
+    color: rgba(@dark_color,0.8);
+    font-size: 12px;
+    font-weight: normal;
+}
+
+/* 标题格式样式 */
+CustomLabel[labelFormat="EM_Title"] {
+    color: rgba(@dark_color,1.0);
+    font-size: 18px;
+    font-weight: bold;
+    padding: 8px 0px;
+}
+
+/* 副标题格式样式 */
+CustomLabel[labelFormat="EM_SubTitle"] {
+    color: rgba(@dark_color,0.8);
+    font-size: 14px;
+    font-weight: bold;
+    padding: 4px 0px;
+}
+
+/* 描述格式样式 */
+CustomLabel[labelFormat="EM_Description"] {
+    color: rgba(@dark_color,0.6);
+    font-size: 11px;
+    font-weight: normal;
+    line-height: 1.4;
+}
+
+/* 警告格式样式 */
+CustomLabel[labelFormat="EM_Warning"] {
+    color: rgba(@warning_color,1.0);
+    font-size: 12px;
+    font-weight: bold;
+    padding: 4px 8px;
+    border-radius: 4px;
+}
+
+/* 错误格式样式 */
+CustomLabel[labelFormat="EM_Error"] {
+    color: rgba(@error_color,1.0);
+    font-size: 12px;
+    font-weight: bold;
+    padding: 4px 8px;
+    border-radius: 4px;
+}
+
+/* 成功格式样式 */
+CustomLabel[labelFormat="EM_Success"] {
+    color: rgba(@success_color,1.0);
+    font-size: 12px;
+    font-weight: bold;
+    padding: 4px 8px;
+    border-radius: 4px;
+}
+
+/* 信息格式样式 */
+CustomLabel[labelFormat="EM_Info"] {
+    color: rgba(@info_color,1.0);
+    font-size: 12px;
+    font-weight: bold;
+    padding: 4px 8px;
+    border-radius: 4px;
 }
 

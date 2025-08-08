@@ -1,4 +1,4 @@
-﻿#include "CustomFramePlugin.h"
+#include "CustomFramePlugin.h"
 
 CustomFramePlugin::CustomFramePlugin(QObject* parent)
     : CustomWidgetPlugin(parent)
@@ -42,6 +42,18 @@ QString CustomFramePlugin::domXml() const
                     <width>200</width>
                     <height>150</height>
                 </rect>
+            </property>
+            <property name="frameShape">
+                <enum>QFrame::StyledPanel</enum>
+            </property>
+            <property name="frameShadow">
+                <enum>QFrame::Raised</enum>
+            </property>
+            <property name="lineWidth">
+                <number>1</number>
+            </property>
+            <property name="midLineWidth">
+                <number>0</number>
             </property>
         </widget>
     </ui>

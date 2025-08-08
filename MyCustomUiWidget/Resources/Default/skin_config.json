@@ -14,6 +14,7 @@
     "@success_color": "92, 184, 92",
     "@tooltips_info_color": "236, 246, 255",
     "@tooltips_normal_color": "197, 245, 251",
-    "@white_color": "255, 255, 255"
+    "@white_color": "255, 255, 255",
+    "@warning_color":"242, 165, 80"
   }
 }
