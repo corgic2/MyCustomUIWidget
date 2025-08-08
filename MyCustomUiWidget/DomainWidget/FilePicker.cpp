@@ -8,7 +8,7 @@
 #include <QTimer>
 #include <QUrl>
 #include <QVBoxLayout>
-#include "SkinStyleLoader.h"
+#include "StyleSystem/SkinStyleLoader.h"
 
 FilePicker::FilePicker(QWidget* parent)
     : QWidget(parent), m_pathEdit(nullptr), m_browseButton(nullptr), m_clearButton(nullptr), m_filterCombo(nullptr), m_progressBar(nullptr), m_statusLabel(nullptr), m_filePickerMode(EM_FilePickerMode::EM_FileMode), m_currentPath(""), m_defaultDirectory(""), m_dialogTitle("选择文件"), m_showClearButton(true), m_showFilterCombo(true), m_dragDropEnabled(true), m_isScanning(false), m_scanTimer(nullptr), m_dirIterator(nullptr), m_totalFiles(0), m_scannedFiles(0)

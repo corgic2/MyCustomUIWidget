@@ -2,7 +2,7 @@
 #include <QGraphicsDropShadowEffect>
 #include <QPainter>
 #include <QStyleOption>
-#include "SkinStyleLoader.h"
+#include "StyleSystem/SkinStyleLoader.h"
 
 CustomFrame::CustomFrame(QWidget* parent)
     : QFrame(parent)

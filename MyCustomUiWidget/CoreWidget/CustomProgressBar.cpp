@@ -7,7 +7,7 @@
 #include <QPainter>
 #include <QStyleOption>
 #include <QDebug>
-#include "SkinStyleLoader.h"
+#include "StyleSystem/SkinStyleLoader.h"
 
 CustomProgressBar::CustomProgressBar(QWidget* parent)
     : QProgressBar(parent)
@@ -82,7 +82,7 @@ void CustomProgressBar::SetProgressState(EM_ProgressState state)
     }
 }
 
-EM_ProgressState CustomProgressBar::GetProgressState() const
+CustomProgressBar::EM_ProgressState CustomProgressBar::GetProgressState() const
 {
     return m_progressState;
 }
@@ -111,7 +111,7 @@ void CustomProgressBar::SetAnimationConfig(const ST_AnimationConfig& config)
     }
 }
 
-ST_AnimationConfig CustomProgressBar::GetAnimationConfig() const
+CustomProgressBar::ST_AnimationConfig CustomProgressBar::GetAnimationConfig() const
 {
     return m_animationConfig;
 }

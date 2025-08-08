@@ -1,7 +1,7 @@
 #include "FilePathIconListWidgetItem.h"
 #include <QFileInfo>
 #include <QPainter>
-#include "SkinStyleLoader.h"
+#include "StyleSystem/SkinStyleLoader.h"
 
 FilePathIconListWidgetItem::FilePathIconListWidgetItem(QListWidget* parent)
     : QListWidgetItem(parent)

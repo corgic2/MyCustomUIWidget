@@ -15,7 +15,7 @@
 #include <QProcess>
 #include <QUrl>
 #include <QVBoxLayout>
-#include "SkinStyleLoader.h"
+#include "StyleSystem/SkinStyleLoader.h"
 #include "FileSystem/FileSystem.h"
 #include "SDKCommonDefine/SDKCommonDefine.h"
 

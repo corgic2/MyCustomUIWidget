@@ -2,7 +2,7 @@
 #include <QPainter>
 #include <QStyleOption>
 #include <QResizeEvent>
-#include "SkinStyleLoader.h"
+#include "StyleSystem/SkinStyleLoader.h"
 
 CustomToolBar::CustomToolBar(QWidget* parent)
     : QToolBar(parent)

@@ -2,7 +2,7 @@
 #include <QEvent>
 #include <QPainter>
 #include <QPen>
-#include "SkinStyleLoader.h"
+#include "StyleSystem/SkinStyleLoader.h"
 #include "SDKCommonDefine/SDKCommonDefine.h"
 
 CustomToolButton::CustomToolButton(QWidget* parent)

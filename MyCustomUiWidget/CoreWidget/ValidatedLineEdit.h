@@ -1,11 +1,11 @@
 #pragma once
 
 #include <QLineEdit>
-#include <QRegularExpression>
 #include <QMap>
-#include "../CommonDefine/UIWidgetGlobal.h"
-#include "../CommonDefine/UIWidgetColorDefine.h"
+#include <QRegularExpression>
 #include "../CommonDefine/RegexDefine.h"
+#include "../CommonDefine/UIWidgetColorDefine.h"
+#include "../CommonDefine/UIWidgetGlobal.h"
 #include "../CommonDefine/ValidatedLineEditDefine.h"
 
 /// <summary>
@@ -14,10 +14,6 @@
 class CustomUIGlobal_API ValidatedLineEdit : public QLineEdit
 {
     Q_OBJECT
-    Q_PROPERTY(QString currentRuleName READ GetCurrentRuleName WRITE SetCurrentRuleName)
-    Q_PROPERTY(bool autoValidationEnabled READ IsAutoValidationEnabled WRITE SetAutoValidationEnabled)
-    Q_PROPERTY(bool showToolTips READ IsShowToolTipsEnabled WRITE SetShowToolTipsEnabled)
-
 public:
     /// <summary>
     /// 构造函数
@@ -28,7 +24,7 @@ public:
     /// <summary>
     /// 析构函数
     /// </summary>
-    ~ValidatedLineEdit();
+    ~ValidatedLineEdit() override;
 
     // 规则管理
     void AddValidationRule(const ST_ValidationRule& rule);
@@ -36,26 +32,26 @@ public:
     void ClearAllRules();
     ST_ValidationRule GetValidationRule(const QString& ruleName) const;
     QStringList GetAllRuleNames() const;
-    
+
     // 当前规则设置
     void SetCurrentRuleName(const QString& ruleName);
     QString GetCurrentRuleName() const;
-    
+
     // 验证功能
     ST_ValidationResult ValidateInput(const QString& input) const;
     ST_ValidationResult ValidateCurrentInput() const;
-    
+
     // 范围限制
     void SetInputRange(const ST_InputRange& range);
     ST_InputRange GetInputRange() const;
-    
+
     // 配置选项
     void SetAutoValidationEnabled(bool enabled);
     bool IsAutoValidationEnabled() const;
-    
+
     void SetShowToolTipsEnabled(bool enabled);
     bool IsShowToolTipsEnabled() const;
-    
+
     // 快速设置常用验证
     void SetEmailValidation();
     void SetPhoneValidation();
@@ -68,7 +64,7 @@ signals:
     void SigInputAccepted(const QString& text);
     void SigInputRejected(const QString& text, const QString& reason);
 
-private slots:
+protected slots:
     void SlotOnTextChanged(const QString& text);
     void SlotOnEditingFinished();
 
@@ -76,7 +72,7 @@ private:
     void InitializeDefaultRules();
     void UpdateVisualState(const ST_ValidationResult& result);
     bool CheckInputRange(const QString& input) const;
-    
+
 private:
     QMap<QString, ST_ValidationRule> m_validationRules;
     QString m_currentRuleName;

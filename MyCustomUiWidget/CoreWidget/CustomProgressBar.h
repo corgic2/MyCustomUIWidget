@@ -1,5 +1,4 @@
 #pragma once
-
 #include <QProgressBar>
 #include <QPropertyAnimation>
 #include <QTimer>
@@ -8,34 +7,30 @@
 #include "../CommonDefine/UIWidgetGlobal.h"
 
 /// <summary>
-/// 进度条状态枚举
-/// </summary>
-enum class EM_ProgressState {
-    EM_PROGRESS_NORMAL = 0,
-    EM_PROGRESS_SUCCESS,
-    EM_PROGRESS_WARNING,
-    EM_PROGRESS_ERROR
-};
-
-/// <summary>
-/// 进度条动画配置结构体
-/// </summary>
-struct ST_AnimationConfig {
-    bool m_enableAnimation = true;
-    int m_animationDuration = 500;
-    QEasingCurve::Type m_easingType = QEasingCurve::OutCubic;
-};
-
-/// <summary>
 /// 自定义进度条控件类，提供丰富的样式和动画效果
 /// </summary>
 class CustomUIGlobal_API CustomProgressBar : public QProgressBar
 {
-    Q_OBJECT
-    Q_PROPERTY(int animatedValue READ GetAnimatedValue WRITE SetAnimatedValue)
-    Q_PROPERTY(EM_ProgressState progressState READ GetProgressState WRITE SetProgressState)
-    Q_PROPERTY(bool circular READ GetCircular WRITE SetCircular)
+    /// <summary>
+    /// 进度条状态枚举
+    /// </summary>
+    enum EM_ProgressState {
+        EM_PROGRESS_NORMAL = 0,
+        EM_PROGRESS_SUCCESS,
+        EM_PROGRESS_WARNING,
+        EM_PROGRESS_ERROR
+    };
 
+    /// <summary>
+        /// 进度条动画配置结构体
+        /// </summary>
+    struct ST_AnimationConfig {
+        bool m_enableAnimation = true;
+        int m_animationDuration = 500;
+        QEasingCurve::Type m_easingType = QEasingCurve::OutCubic;
+    };
+
+    Q_OBJECT
 public:
     /// <summary>
     /// 构造函数
@@ -113,7 +108,6 @@ public:
     /// </summary>
     /// <param name="value">目标值</param>
     void SetValueImmediately(int value);
-
 signals:
     /// <summary>
     /// 进度值改变信号
@@ -131,12 +125,11 @@ signals:
     /// </summary>
     /// <param name="state">新的状态</param>
     void SigProgressStateChanged(EM_ProgressState state);
-
 protected:
     void paintEvent(QPaintEvent* event) override;
     void resizeEvent(QResizeEvent* event) override;
 
-private slots:
+protected slots:
     void SlotOnAnimationFinished();
 
 private:

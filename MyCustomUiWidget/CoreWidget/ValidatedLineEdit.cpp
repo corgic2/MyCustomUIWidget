@@ -1,28 +1,26 @@
 #include "ValidatedLineEdit.h"
-#include <QFocusEvent>
-#include <QToolTip>
 #include <QDebug>
+#include <QFocusEvent>
 #include <QStyle>
-#include "SkinStyleLoader.h"
+#include <QToolTip>
+#include "StyleSystem/SkinStyleLoader.h"
 
 ValidatedLineEdit::ValidatedLineEdit(QWidget* parent)
-    : QLineEdit(parent),
-      m_autoValidationEnabled(true),
-      m_showToolTipsEnabled(true),
-      m_isValid(false)
+    : QLineEdit(parent), m_autoValidationEnabled(true), m_showToolTipsEnabled(true), m_isValid(false)
 {
     AUTO_LOAD_SKIN_STYLE();
     InitializeDefaultRules();
-    
+
     // 设置默认输入范围
     m_inputRange = ST_InputRange(0, INT_MAX);
-    
+
     // 连接信号槽
     connect(this, &QLineEdit::textChanged, this, &ValidatedLineEdit::SlotOnTextChanged);
     connect(this, &QLineEdit::editingFinished, this, &ValidatedLineEdit::SlotOnEditingFinished);
-    
+
     // 设置默认验证规则
-    if (!m_validationRules.isEmpty()) {
+    if (!m_validationRules.isEmpty())
+    {
         m_currentRuleName = m_validationRules.keys().first();
     }
 }
@@ -42,7 +40,7 @@ void ValidatedLineEdit::InitializeDefaultRules()
     emailRule.m_successMessage = "邮箱格式正确";
     emailRule.m_isEnabled = true;
     m_validationRules.insert("Email", emailRule);
-    
+
     // 手机号验证规则
     ST_ValidationRule phoneRule;
     phoneRule.m_ruleName = "Phone";
@@ -52,7 +50,7 @@ void ValidatedLineEdit::InitializeDefaultRules()
     phoneRule.m_successMessage = "手机号格式正确";
     phoneRule.m_isEnabled = true;
     m_validationRules.insert("Phone", phoneRule);
-    
+
     // 数字验证规则
     ST_ValidationRule numberRule;
     numberRule.m_ruleName = "Number";
@@ -62,7 +60,7 @@ void ValidatedLineEdit::InitializeDefaultRules()
     numberRule.m_successMessage = "数字格式正确";
     numberRule.m_isEnabled = true;
     m_validationRules.insert("Number", numberRule);
-    
+
     // URL验证规则
     ST_ValidationRule urlRule;
     urlRule.m_ruleName = "Url";
@@ -72,7 +70,7 @@ void ValidatedLineEdit::InitializeDefaultRules()
     urlRule.m_successMessage = "网址格式正确";
     urlRule.m_isEnabled = true;
     m_validationRules.insert("Url", urlRule);
-    
+
     // 密码验证规则
     ST_ValidationRule passwordRule;
     passwordRule.m_ruleName = "Password";
@@ -87,7 +85,8 @@ void ValidatedLineEdit::InitializeDefaultRules()
 void ValidatedLineEdit::AddValidationRule(const ST_ValidationRule& rule)
 {
     m_validationRules.insert(rule.m_ruleName, rule);
-    if (m_currentRuleName.isEmpty()) {
+    if (m_currentRuleName.isEmpty())
+    {
         m_currentRuleName = rule.m_ruleName;
     }
 }
@@ -95,7 +94,8 @@ void ValidatedLineEdit::AddValidationRule(const ST_ValidationRule& rule)
 void ValidatedLineEdit::RemoveValidationRule(const QString& ruleName)
 {
     m_validationRules.remove(ruleName);
-    if (m_currentRuleName == ruleName) {
+    if (m_currentRuleName == ruleName)
+    {
         m_currentRuleName = m_validationRules.isEmpty() ? QString() : m_validationRules.keys().first();
     }
 }
@@ -118,7 +118,8 @@ QStringList ValidatedLineEdit::GetAllRuleNames() const
 
 void ValidatedLineEdit::SetCurrentRuleName(const QString& ruleName)
 {
-    if (m_validationRules.contains(ruleName)) {
+    if (m_validationRules.contains(ruleName))
+    {
         m_currentRuleName = ruleName;
         // 立即验证当前输入
         SlotOnTextChanged(text());
@@ -132,58 +133,61 @@ QString ValidatedLineEdit::GetCurrentRuleName() const
 
 ST_ValidationResult ValidatedLineEdit::ValidateInput(const QString& input) const
 {
-    if (input.isEmpty()) {
+    if (input.isEmpty())
+    {
         return ST_ValidationResult(EM_ValidationState::EM_ValidationState_Empty, "输入不能为空");
     }
-    
+
     // 检查输入范围
-    if (!CheckInputRange(input)) {
-        return ST_ValidationResult(EM_ValidationState::EM_ValidationState_Invalid, 
-                                   QString("输入长度应在%1-%2之间").arg(m_inputRange.m_minLength).arg(m_inputRange.m_maxLength));
+    if (!CheckInputRange(input))
+    {
+        return ST_ValidationResult(EM_ValidationState::EM_ValidationState_Invalid, QString("输入长度应在%1-%2之间").arg(m_inputRange.m_minLength).arg(m_inputRange.m_maxLength));
     }
-    
-    if (m_currentRuleName.isEmpty() || !m_validationRules.contains(m_currentRuleName)) {
+
+    if (m_currentRuleName.isEmpty() || !m_validationRules.contains(m_currentRuleName))
+    {
         return ST_ValidationResult(EM_ValidationState::EM_ValidationState_Valid, "无验证规则");
     }
-    
+
     const ST_ValidationRule& rule = m_validationRules.value(m_currentRuleName);
-    if (!rule.m_isEnabled) {
+    if (!rule.m_isEnabled)
+    {
         return ST_ValidationResult(EM_ValidationState::EM_ValidationState_Valid, "规则已禁用");
     }
-    
+
     QRegularExpressionMatch match = rule.m_regularExpression.match(input);
-    
-    switch (rule.m_validationMode) {
+
+    switch (rule.m_validationMode)
+    {
         case EM_ValidationMode::EM_ValidationMode_ExactMatch:
-            if (match.hasMatch() && match.capturedLength() == input.length()) {
-                return ST_ValidationResult(EM_ValidationState::EM_ValidationState_Valid, 
-                                           rule.m_successMessage, match.capturedStart(), match.capturedLength());
+            if (match.hasMatch() && match.capturedLength() == input.length())
+            {
+                return ST_ValidationResult(EM_ValidationState::EM_ValidationState_Valid, rule.m_successMessage, match.capturedStart(), match.capturedLength());
             }
             break;
-            
+
         case EM_ValidationMode::EM_ValidationMode_Contains:
-            if (match.hasMatch()) {
-                return ST_ValidationResult(EM_ValidationState::EM_ValidationState_Valid, 
-                                           rule.m_successMessage, match.capturedStart(), match.capturedLength());
+            if (match.hasMatch())
+            {
+                return ST_ValidationResult(EM_ValidationState::EM_ValidationState_Valid, rule.m_successMessage, match.capturedStart(), match.capturedLength());
             }
             break;
-            
+
         case EM_ValidationMode::EM_ValidationMode_StartWith:
-            if (match.hasMatch() && match.capturedStart() == 0) {
-                return ST_ValidationResult(EM_ValidationState::EM_ValidationState_Valid, 
-                                           rule.m_successMessage, 0, match.capturedLength());
+            if (match.hasMatch() && match.capturedStart() == 0)
+            {
+                return ST_ValidationResult(EM_ValidationState::EM_ValidationState_Valid, rule.m_successMessage, 0, match.capturedLength());
             }
             break;
-            
+
         case EM_ValidationMode::EM_ValidationMode_EndWith:
-            if (match.hasMatch() && 
-                (match.capturedStart() + match.capturedLength()) == input.length()) {
-                return ST_ValidationResult(EM_ValidationState::EM_ValidationState_Valid, 
-                                           rule.m_successMessage, match.capturedStart(), match.capturedLength());
+            if (match.hasMatch() && (match.capturedStart() + match.capturedLength()) == input.length())
+            {
+                return ST_ValidationResult(EM_ValidationState::EM_ValidationState_Valid, rule.m_successMessage, match.capturedStart(), match.capturedLength());
             }
             break;
     }
-    
+
     return ST_ValidationResult(EM_ValidationState::EM_ValidationState_Invalid, rule.m_errorMessage);
 }
 
@@ -255,38 +259,46 @@ void ValidatedLineEdit::SetPasswordValidation(int minLength)
 bool ValidatedLineEdit::CheckInputRange(const QString& input) const
 {
     int length = input.length();
-    if (length < m_inputRange.m_minLength || length > m_inputRange.m_maxLength) {
+    if (length < m_inputRange.m_minLength || length > m_inputRange.m_maxLength)
+    {
         return false;
     }
-    
+
     // 检查允许的字符
-    if (!m_inputRange.m_allowedChars.isEmpty()) {
-        for (const QChar& ch : input) {
-            if (!m_inputRange.m_allowedChars.contains(ch)) {
+    if (!m_inputRange.m_allowedChars.isEmpty())
+    {
+        for (const QChar& ch : input)
+        {
+            if (!m_inputRange.m_allowedChars.contains(ch))
+            {
                 return false;
             }
         }
     }
-    
+
     // 检查禁止的字符
-    if (!m_inputRange.m_forbiddenChars.isEmpty()) {
-        for (const QChar& ch : input) {
-            if (m_inputRange.m_forbiddenChars.contains(ch)) {
+    if (!m_inputRange.m_forbiddenChars.isEmpty())
+    {
+        for (const QChar& ch : input)
+        {
+            if (m_inputRange.m_forbiddenChars.contains(ch))
+            {
                 return false;
             }
         }
     }
-    
+
     return true;
 }
 
 void ValidatedLineEdit::UpdateVisualState(const ST_ValidationResult& result)
 {
     m_isValid = (result.m_validationState == EM_ValidationState::EM_ValidationState_Valid);
-    
+
     // 更新样式类
     QString styleClass = "validated-lineedit-";
-    switch (result.m_validationState) {
+    switch (result.m_validationState)
+    {
         case EM_ValidationState::EM_ValidationState_Valid:
             styleClass += "valid";
             break;
@@ -300,23 +312,25 @@ void ValidatedLineEdit::UpdateVisualState(const ST_ValidationResult& result)
             styleClass += "partial";
             break;
     }
-    
+
     setProperty("validation-state", styleClass);
     style()->unpolish(this);
     style()->polish(this);
-    
+
     // 显示提示信息
-    if (m_showToolTipsEnabled && !result.m_message.isEmpty()) {
+    if (m_showToolTipsEnabled && !result.m_message.isEmpty())
+    {
         QToolTip::showText(mapToGlobal(rect().bottomLeft()), result.m_message, this);
     }
 }
 
 void ValidatedLineEdit::SlotOnTextChanged(const QString& text)
 {
-    if (!m_autoValidationEnabled) {
+    if (!m_autoValidationEnabled)
+    {
         return;
     }
-    
+
     ST_ValidationResult result = ValidateInput(text);
     UpdateVisualState(result);
     emit SigValidationStateChanged(result);
@@ -325,11 +339,13 @@ void ValidatedLineEdit::SlotOnTextChanged(const QString& text)
 void ValidatedLineEdit::SlotOnEditingFinished()
 {
     ST_ValidationResult result = ValidateCurrentInput();
-    
-    if (result.m_validationState == EM_ValidationState::EM_ValidationState_Valid) {
+
+    if (result.m_validationState == EM_ValidationState::EM_ValidationState_Valid)
+    {
         emit SigInputAccepted(text());
-    } else {
+    }
+    else
+    {
         emit SigInputRejected(text(), result.m_message);
     }
 }
-

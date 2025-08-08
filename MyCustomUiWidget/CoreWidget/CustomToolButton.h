@@ -9,7 +9,8 @@
 /// </summary>
 class CustomUIGlobal_API CustomToolButton : public QToolButton
 {
-    Q_OBJECT public:
+    Q_OBJECT
+public:
     /// <summary>
     /// 构造函数
     /// </summary>

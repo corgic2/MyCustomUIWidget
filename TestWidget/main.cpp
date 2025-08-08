@@ -1,6 +1,6 @@
 #include <QApplication>
 #include <QDir>
-#include "SkinManager.h"
+#include "StyleSystem/SkinManager.h"
 #include "TestWidget.h"
 
 int main(int argc, char* argv[])

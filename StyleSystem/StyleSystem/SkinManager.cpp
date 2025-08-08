@@ -65,12 +65,12 @@ QStringList SkinManager::availableSkins() const
     return m_SkinVersionInfos.keys();
 }
 
-QString SkinManager::parseStyleSheet(const QString& styleSheet, const QString& skinId) const
+QString SkinManager::parseStyleSheet(const QString& styleSheet) const
 {
     QString result = styleSheet;
 
     // 获取皮肤信息
-    SkinVersionInfo* SkinVersionInfo = m_SkinVersionInfos.value(skinId);
+    SkinVersionInfo* SkinVersionInfo = m_SkinVersionInfos.value(m_currentSkinId);
     if (SkinVersionInfo)
     {
         // 替换颜色变量
@@ -80,13 +80,36 @@ QString SkinManager::parseStyleSheet(const QString& styleSheet, const QString& s
     return result;
 }
 
-bool SkinManager::loadComponentStyle(QWidget* component, const QString& componentClassName, const QString& skinId)
+QColor SkinManager::parseColorSheet(const QString& color) const
+{
+    QString result;
+
+    // 获取皮肤信息
+    SkinVersionInfo* SkinVersionInfo = m_SkinVersionInfos.value(m_currentSkinId);
+    if (SkinVersionInfo)
+    {
+        // 替换颜色变量
+        result = replaceColorVariables(color, SkinVersionInfo->colorVariables());
+    }
+    QStringList str = result.split(',');
+    if (str.size() == 3)
+    {
+        return QColor(str[0].toInt(), str[1].toInt(), str[2].toInt());
+    }
+    else if (str.size() == 4)
+    {
+        return QColor(str[0].toInt(), str[1].toInt(), str[2].toInt(), str[3].toDouble());
+    }
+    return QColor();
+}
+
+bool SkinManager::loadComponentStyle(QWidget* component, const QString& componentClassName)
 {
     if (!component) {
         return false;
     }
 
-    QString targetSkinId = skinId.isEmpty() ? m_currentSkinId : skinId;
+    QString targetSkinId = m_currentSkinId;
     QString targetClassName = componentClassName;
     
     if (targetClassName.isEmpty()) {
@@ -101,7 +124,7 @@ bool SkinManager::loadComponentStyle(QWidget* component, const QString& componen
     }
     
     // 解析样式表（替换颜色变量等）
-    QString parsedStyle = parseStyleSheet(styleContent, targetSkinId);
+    QString parsedStyle = parseStyleSheet(styleContent);
     
     // 应用样式到组件
     component->setStyleSheet(parsedStyle);

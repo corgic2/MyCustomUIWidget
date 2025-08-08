@@ -40,7 +40,7 @@ public:
     /// <param name="componentClassName">组件类名，为空时自动获取</param>
     /// <param name="skinId">皮肤ID，为空时使用当前皮肤</param>
     /// <returns></returns>
-    bool loadComponentStyle(QWidget* component, const QString& componentClassName = QString(), const QString& skinId = QString());
+    bool loadComponentStyle(QWidget* component, const QString& componentClassName = QString());
     
     /// <summary>
     /// 添加QRC文件路径到皮肤系统（全局资源，所有皮肤共用）
@@ -71,6 +71,18 @@ public:
     /// <param name="skinId">皮肤ID，为空时使用当前皮肤</param>
     /// <returns>QSS内容字符串</returns>
     QString getStyleContent(const QString& fileName, const QString& skinId = QString()) const;
+    /// <summary>
+    /// 替换颜色变量
+    /// </summary>
+    /// <param name="styleSheet"></param>
+    /// <returns></returns>
+    QString parseStyleSheet(const QString& styleSheet) const;
+    /// <summary>
+    /// 替换颜色变量
+    /// </summary>
+    /// <param name="color">如 @dark_color</param>
+    /// <returns></returns>
+    QColor parseColorSheet(const QString& color) const;
 signals:
     void currentSkinIdChanged(const QString& skinId);
     void availableSkinsChanged(const QStringList& skins);
@@ -78,13 +90,7 @@ signals:
 private:
     explicit SkinManager(QObject* parent = nullptr);
     ~SkinManager() override;
-    /// <summary>
-    /// 替换颜色变量
-    /// </summary>
-    /// <param name="styleSheet"></param>
-    /// <param name="skinId"></param>
-    /// <returns></returns>
-    QString parseStyleSheet(const QString& styleSheet, const QString& skinId) const;
+
     QString replaceColorVariables(const QString& styleSheet, const QMap<QString, QString>& variables) const;
 private:
     static SkinManager* s_instance;

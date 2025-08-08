@@ -35,6 +35,6 @@ if(MSVC)
 endif()
 
 # VS过滤器
-source_group("Header Files" FILES ${STYLE_SYSTEM_SOURCES})
+source_group("StyleSystem" FILES ${STYLE_SYSTEM_SOURCES})
 source_group("Generated Files" FILES ${RESOURCE_SOURCES})
 

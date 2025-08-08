@@ -1,4 +1,4 @@
-﻿# MyCustomUiWidget 项目配置
+# MyCustomUiWidget 项目配置
 project(MyCustomUiWidget)
 # 收集源文件
 file(GLOB_RECURSE UI_SRC 

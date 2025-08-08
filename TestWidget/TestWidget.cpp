@@ -4,7 +4,7 @@
 #include <QMessageBox>
 #include <QPushButton>
 #include <QStandardPaths>
-#include "SkinStyleLoader.h"
+#include "StyleSystem/SkinStyleLoader.h"
 
 TestWidget::TestWidget(QWidget* parent)
     : QWidget(parent), ui(new Ui::TestWidgetClass()), m_fileListWidget(nullptr)

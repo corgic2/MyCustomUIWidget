@@ -1,4 +1,4 @@
-﻿#ifndef STYLESYSTEMGLOBAL_H
+#ifndef STYLESYSTEMGLOBAL_H
 #define STYLESYSTEMGLOBAL_H
 
 #include <QtCore/qglobal.h>
@@ -6,7 +6,7 @@
 #if defined(STYLESYSTEM_LIBRARY)
 #  define STYLESYSTEM_EXPORT Q_DECL_EXPORT
 #else
-#  define STYLESYSTEM_EXPORT Q_DECL_IMPORT
+#  define STYLESYSTEM_EXPORT 
 #endif
 
 // 皮肤系统版本信息
@@ -30,4 +30,4 @@ enum class SkinError {
     InvalidSkinStructure
 };
 
-#endif // STYLESYSTEMGLOBAL_H 
+#endif // STYLESYSTEMGLOBAL_H

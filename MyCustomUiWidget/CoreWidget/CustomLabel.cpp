@@ -1,6 +1,6 @@
 #include "CustomLabel.h"
 #include <QGraphicsDropShadowEffect>
-#include "SkinStyleLoader.h"
+#include "StyleSystem/SkinStyleLoader.h"
 
 CustomLabel::CustomLabel(QWidget* parent)
     : QLabel(parent)

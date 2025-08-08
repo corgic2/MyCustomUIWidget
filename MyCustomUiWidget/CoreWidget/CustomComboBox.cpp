@@ -1,7 +1,7 @@
 #include "CustomComboBox.h"
 #include <QPainter>
 #include <QStyleOption>
-#include "SkinStyleLoader.h"
+#include "StyleSystem/SkinStyleLoader.h"
 
 CustomComboBox::CustomComboBox(QWidget* parent)
     : QComboBox(parent)
