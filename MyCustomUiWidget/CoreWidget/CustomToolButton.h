@@ -16,7 +16,7 @@ public:
     /// </summary>
     /// <param name="parent">父窗口指针</param>
     explicit CustomToolButton(QWidget* parent = nullptr);
-
+    CustomToolButton(const QString& text, QWidget* parent = nullptr);
     /// <summary>
     /// 析构函数
     /// </summary>

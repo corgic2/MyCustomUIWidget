@@ -2,27 +2,18 @@
 
 FilePathIconListWidget {
     background-color: rgb(@white_color);
-    border: 1px solid rgba(@light_color, 0.8);
-    border-radius: 8px;
+    border: 1px solid rgba(@dark_color, 0.4);
+    border-radius: 4px;
     font-family: "Microsoft YaHei", "PingFang SC", "Helvetica Neue", Helvetica, Arial, sans-serif;
-    font-size: 14px;
+    font-size: 12px;
     color: rgb(@dark_color);
     outline: none;
-    padding: 4px;
-}
-
-FilePathIconListWidget:focus {
-    border-color: rgb(@info_color);
-    border-width: 2px;
-}
-
-FilePathIconListWidget:hover {
-    border-color: rgba(@info_color, 0.5);
+    padding: 1px 1px 1px 1px;
 }
 
 FilePathIconListWidget:disabled {
     background-color: rgba(@white_color, 0.5);
-    border-color: rgba(@light_color, 0.3);
+    border-color: rgba(@disabled_color, 0.4);
     color: rgb(@disabled_color);
 }
 
@@ -30,22 +21,22 @@ FilePathIconListWidget:disabled {
 FilePathIconListWidget::item {
     background-color: transparent;
     border: 1px solid transparent;
-    border-radius: 6px;
-    padding: 8px 12px;
-    margin: 2px 4px;
-    min-height: 32px;
+    border-radius: 4px;
+    padding: 4px 6px 4px 4px;
+    margin: 1px 2px;
+    min-height: 24px;
     color: rgb(@dark_color);
 }
 
 FilePathIconListWidget::item:hover {
-    background-color: rgba(@hover_background_color, 0.7);
-    border-color: rgba(@light_color, 0.5);
+    background-color: rgba(@hover_background_color, 0.8);
+    border-color: rgba(@info_color, 0.6);
 }
 
 FilePathIconListWidget::item:selected {
     background-color: rgba(@info_color, 0.1);
-    border-color: rgb(@info_color);
-    color: rgb(@info_color);
+    border-color: rgb(@info_color, 0.6);
+    color: rgb(@info_color,0.8);
 }
 
 FilePathIconListWidget::item:selected:active {
@@ -115,123 +106,3 @@ FilePathIconListWidget QScrollBar::handle:horizontal:pressed {
     background-color: rgb(@info_color);
 }
 
-/* 不同状态类型的列表项 */
-FilePathIconListWidget::item[type="folder"] {
-    background-color: rgba(@success_color, 0.05);
-    border-left: 3px solid rgb(@success_color);
-}
-
-FilePathIconListWidget::item[type="folder"]:hover {
-    background-color: rgba(@success_color, 0.1);
-}
-
-FilePathIconListWidget::item[type="folder"]:selected {
-    background-color: rgba(@success_color, 0.15);
-    border-color: rgb(@success_color);
-}
-
-FilePathIconListWidget::item[type="file"] {
-    background-color: rgba(@info_color, 0.05);
-    border-left: 3px solid rgb(@info_color);
-}
-
-FilePathIconListWidget::item[type="file"]:hover {
-    background-color: rgba(@info_color, 0.1);
-}
-
-FilePathIconListWidget::item[type="file"]:selected {
-    background-color: rgba(@info_color, 0.15);
-    border-color: rgb(@info_color);
-}
-
-FilePathIconListWidget::item[type="warning"] {
-    background-color: rgba(@warning_color, 0.05);
-    border-left: 3px solid rgb(@warning_color);
-}
-
-FilePathIconListWidget::item[type="warning"]:hover {
-    background-color: rgba(@warning_color, 0.1);
-}
-
-FilePathIconListWidget::item[type="warning"]:selected {
-    background-color: rgba(@warning_color, 0.15);
-    border-color: rgb(@warning_color);
-}
-
-FilePathIconListWidget::item[type="error"] {
-    background-color: rgba(@error_color, 0.05);
-    border-left: 3px solid rgb(@error_color);
-}
-
-FilePathIconListWidget::item[type="error"]:hover {
-    background-color: rgba(@error_color, 0.1);
-}
-
-FilePathIconListWidget::item[type="error"]:selected {
-    background-color: rgba(@error_color, 0.15);
-    border-color: rgb(@error_color);
-}
-
-/* 紧凑模式 */
-FilePathIconListWidget[compact="true"] {
-    padding: 2px;
-}
-
-FilePathIconListWidget[compact="true"]::item {
-    padding: 4px 8px;
-    margin: 1px 2px;
-    min-height: 24px;
-}
-
-/* 扩展模式 */
-FilePathIconListWidget[expanded="true"] {
-    padding: 8px;
-}
-
-FilePathIconListWidget[expanded="true"]::item {
-    padding: 12px 16px;
-    margin: 4px 6px;
-    min-height: 40px;
-}
-
-/* 深色主题 */
-FilePathIconListWidget[theme="dark"] {
-    background-color: rgb(@dark_color);
-    border-color: rgba(@white_color, 0.2);
-    color: rgb(@white_color);
-}
-
-FilePathIconListWidget[theme="dark"]::item {
-    color: rgb(@white_color);
-}
-
-FilePathIconListWidget[theme="dark"]::item:hover {
-    background-color: rgba(@white_color, 0.1);
-    border-color: rgba(@white_color, 0.3);
-}
-
-FilePathIconListWidget[theme="dark"]::item:selected {
-    background-color: rgba(@info_color, 0.2);
-    border-color: rgb(@info_color);
-}
-
-FilePathIconListWidget[theme="dark"] QScrollBar::handle:vertical {
-    background-color: rgba(@white_color, 0.3);
-}
-
-FilePathIconListWidget[theme="dark"] QScrollBar::handle:vertical:hover {
-    background-color: rgba(@white_color, 0.5);
-}
-
-/* 动画效果 */
-FilePathIconListWidget::item {
-    transition: all 200ms ease;
-}
-
-FilePathIconListWidget QScrollBar::handle:vertical {
-    transition: background-color 150ms ease;
-}
-
-FilePathIconListWidget QScrollBar::handle:horizontal {
-    transition: background-color 150ms ease;
-}

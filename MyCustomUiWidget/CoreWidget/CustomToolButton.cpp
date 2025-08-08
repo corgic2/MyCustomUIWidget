@@ -11,6 +11,11 @@ CustomToolButton::CustomToolButton(QWidget* parent)
     AUTO_LOAD_SKIN_STYLE();
 }
 
+CustomToolButton::CustomToolButton(const QString& text, QWidget* parent) : CustomToolButton(parent)
+{
+    setText(text);
+}
+
 CustomToolButton::~CustomToolButton()
 {
 }

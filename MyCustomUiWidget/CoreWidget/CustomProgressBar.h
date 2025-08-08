@@ -1,36 +1,39 @@
 #pragma once
 #include <QProgressBar>
 #include <QPropertyAnimation>
-#include <QTimer>
-#include <QWidget>
+#include <memory>
 #include "../CommonDefine/UIWidgetColorDefine.h"
 #include "../CommonDefine/UIWidgetGlobal.h"
 
+class ProgressBarPainter;
+class LinearProgressPainter;
+class CircularProgressPainter;
+
+/// <summary>
+/// 进度条状态枚举
+/// </summary>
+enum class EM_ProgressState {
+    EM_PROGRESS_NORMAL = 0,
+    EM_PROGRESS_SUCCESS,
+    EM_PROGRESS_WARNING,
+    EM_PROGRESS_ERROR
+};
+
+/// <summary>
+/// 进度条动画配置结构体
+/// </summary>
+struct ST_AnimationConfig {
+    bool m_enableAnimation = true;
+    int m_animationDuration = 500;
+    QEasingCurve::Type m_easingType = QEasingCurve::OutCubic;
+};
 /// <summary>
 /// 自定义进度条控件类，提供丰富的样式和动画效果
 /// </summary>
 class CustomUIGlobal_API CustomProgressBar : public QProgressBar
 {
-    /// <summary>
-    /// 进度条状态枚举
-    /// </summary>
-    enum EM_ProgressState {
-        EM_PROGRESS_NORMAL = 0,
-        EM_PROGRESS_SUCCESS,
-        EM_PROGRESS_WARNING,
-        EM_PROGRESS_ERROR
-    };
-
-    /// <summary>
-        /// 进度条动画配置结构体
-        /// </summary>
-    struct ST_AnimationConfig {
-        bool m_enableAnimation = true;
-        int m_animationDuration = 500;
-        QEasingCurve::Type m_easingType = QEasingCurve::OutCubic;
-    };
-
     Q_OBJECT
+    Q_PROPERTY(int animatedValue READ GetAnimatedValue WRITE SetAnimatedValue)
 public:
     /// <summary>
     /// 构造函数
@@ -44,6 +47,12 @@ public:
     ~CustomProgressBar() override;
 
     /// <summary>
+    /// 禁用拷贝构造函数和赋值运算符
+    /// </summary>
+    CustomProgressBar(const CustomProgressBar&) = delete;
+    CustomProgressBar& operator=(const CustomProgressBar&) = delete;
+
+    /// <summary>
     /// 设置进度值（带动画效果）
     /// </summary>
     /// <param name="value">进度值（0-100）</param>
@@ -53,7 +62,7 @@ public:
     /// 获取当前动画值
     /// </summary>
     /// <returns>当前动画值</returns>
-    int GetAnimatedValue() const;
+    int GetAnimatedValue() const { return m_animatedValue; }
 
     /// <summary>
     /// 设置动画值（内部使用）
@@ -71,7 +80,7 @@ public:
     /// 获取进度条状态
     /// </summary>
     /// <returns>当前状态</returns>
-    EM_ProgressState GetProgressState() const;
+    EM_ProgressState GetProgressState() const { return m_progressState; }
 
     /// <summary>
     /// 设置是否为圆环进度条
@@ -83,7 +92,19 @@ public:
     /// 获取是否为圆环进度条
     /// </summary>
     /// <returns>是否为圆环</returns>
-    bool GetCircular() const;
+    bool GetCircular() const { return m_circular; }
+
+    /// <summary>
+    /// 设置是否显示进度环
+    /// </summary>
+    /// <param name="show">是否显示</param>
+    void SetShowCircularRing(bool show);
+
+    /// <summary>
+    /// 获取是否显示进度环
+    /// </summary>
+    /// <returns>是否显示</returns>
+    bool GetShowCircularRing() const { return m_showCircularRing; }
 
     /// <summary>
     /// 设置动画配置
@@ -95,7 +116,7 @@ public:
     /// 获取动画配置
     /// </summary>
     /// <returns>当前动画配置</returns>
-    ST_AnimationConfig GetAnimationConfig() const;
+    ST_AnimationConfig GetAnimationConfig() const { return m_animationConfig; }
 
     /// <summary>
     /// 启用/禁用动画效果
@@ -108,6 +129,7 @@ public:
     /// </summary>
     /// <param name="value">目标值</param>
     void SetValueImmediately(int value);
+
 signals:
     /// <summary>
     /// 进度值改变信号
@@ -125,27 +147,27 @@ signals:
     /// </summary>
     /// <param name="state">新的状态</param>
     void SigProgressStateChanged(EM_ProgressState state);
+
 protected:
     void paintEvent(QPaintEvent* event) override;
     void resizeEvent(QResizeEvent* event) override;
 
-protected slots:
+private slots:
     void SlotOnAnimationFinished();
 
 private:
     void InitializeAnimation();
     void UpdateProgressStyle();
-    void DrawLinearProgress(QPainter& painter, const QRect& rect);
-    void DrawCircularProgress(QPainter& painter, const QRect& rect);
+    void SwitchPainter();
 
 private:
     int m_animatedValue = 0;
     int m_targetValue = 0;
     EM_ProgressState m_progressState = EM_ProgressState::EM_PROGRESS_NORMAL;
     bool m_circular = false;
+    bool m_showCircularRing = false;
     bool m_animationEnabled = true;
     ST_AnimationConfig m_animationConfig;
-    QPropertyAnimation* m_progressAnimation = nullptr;
-    QTimer* m_pulseTimer = nullptr;
-    int m_pulseValue = 0;
+    std::unique_ptr<QPropertyAnimation> m_progressAnimation;
+    std::unique_ptr<ProgressBarPainter> m_painter;
 };

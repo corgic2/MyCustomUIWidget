@@ -6,5 +6,5 @@
 #if defined(CUSTOMUIGLOBAL_LIBRARY)
 #  define CustomUIGlobal_API Q_DECL_EXPORT
 #else
-#  define CustomUIGlobal_API
+#  define CustomUIGlobal_API 
 #endif

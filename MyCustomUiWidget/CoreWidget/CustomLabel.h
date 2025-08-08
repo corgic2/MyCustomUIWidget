@@ -16,6 +16,12 @@ class CustomUIGlobal_API CustomLabel : public QLabel
     /// </summary>
     /// <param name="parent">父窗口指针</param>
     explicit CustomLabel(QWidget* parent = nullptr);
+    /// <summary>
+    /// 委托构造
+    /// </summary>
+    /// <param name="text"></param>
+    /// <param name="parent"></param>
+    CustomLabel(const QString& text, QWidget* parent);
 
     /// <summary>
     /// 析构函数

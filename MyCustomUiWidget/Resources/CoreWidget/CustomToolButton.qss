@@ -1,252 +1,36 @@
 /* CustomToolButton 样式定义 */
 
 CustomToolButton {
-    border: 1px solid transparent;
-    border-radius: 6px;
+    border: 1px solid rgba(@dark_color, 0.4);
+    border-radius: 4px;
     background-color: transparent;
     color: rgb(@dark_color);
     font-family: "Microsoft YaHei";
-    font-size: 14px;
-    padding: 6px 12px;
+    font-size: 12px;
+    padding: 2px 2px;
     min-width: 24px;
-    min-height: 24px;
+    min-height: 30px;
 }
 
 CustomToolButton:hover {
-    background-color: rgba(@info_color, 0.1);
-    border-color: rgba(@info_color, 0.3);
+    background-color: rgba(@hover_background_color, 0.8);
+    border: 1px solid rgba(@info_color, 0.8);
 }
 
 CustomToolButton:pressed {
     background-color: rgba(@info_color, 0.2);
-    border-color: rgba(@info_color, 0.5);
+    border-color: rgba(@info_color, 0.4);
 }
 
 CustomToolButton:checked {
     background-color: rgb(@info_color);
     color: rgb(@white_color);
-    border-color: rgb(@info_color);
+    border-color: rgba(@dark_color, 0.4);
 }
 
 CustomToolButton:disabled {
     background-color: transparent;
     color: rgb(@disabled_color);
-    border-color: transparent;
+    border: 1px solid rgba(@dark_color, 0.4);
 }
 
-/* 图标按钮样式 */
-CustomToolButton[button-type="icon"] {
-    border: none;
-    background-color: transparent;
-    padding: 4px;
-    border-radius: 50%;
-}
-
-CustomToolButton[button-type="icon"]:hover {
-    background-color: rgba(@light_color, 0.5);
-}
-
-CustomToolButton[button-type="icon"]:pressed {
-    background-color: rgba(@light_color, 0.8);
-}
-
-CustomToolButton[button-type="icon"]:checked {
-    background-color: rgb(@info_color);
-    color: rgb(@white_color);
-}
-
-/* 文字按钮样式 */
-CustomToolButton[button-type="text"] {
-    border: none;
-    background-color: transparent;
-    text-decoration: underline;
-    color: rgb(@info_color);
-}
-
-CustomToolButton[button-type="text"]:hover {
-    color: rgb(@primary_color);
-}
-
-CustomToolButton[button-type="text"]:pressed {
-    color: rgb(@dark_color);
-}
-
-/* 填充按钮样式 */
-CustomToolButton[button-type="filled"] {
-    background-color: rgb(@info_color);
-    color: rgb(@white_color);
-    border: 1px solid rgb(@info_color);
-}
-
-CustomToolButton[button-type="filled"]:hover {
-    background-color: rgb(@primary_color);
-    border-color: rgb(@primary_color);
-}
-
-CustomToolButton[button-type="filled"]:pressed {
-    background-color: rgb(@dark_color);
-    border-color: rgb(@dark_color);
-}
-
-/* 轮廓按钮样式 */
-CustomToolButton[button-type="outline"] {
-    background-color: transparent;
-    color: rgb(@info_color);
-    border: 1px solid rgb(@info_color);
-}
-
-CustomToolButton[button-type="outline"]:hover {
-    background-color: rgb(@info_color);
-    color: rgb(@white_color);
-}
-
-CustomToolButton[button-type="outline"]:pressed {
-    background-color: rgb(@primary_color);
-    border-color: rgb(@primary_color);
-}
-
-/* 不同尺寸变体 */
-CustomToolButton[size="small"] {
-    padding: 4px 8px;
-    font-size: 12px;
-    min-width: 20px;
-    min-height: 20px;
-}
-
-CustomToolButton[size="large"] {
-    padding: 10px 16px;
-    font-size: 16px;
-    min-width: 32px;
-    min-height: 32px;
-}
-
-/* 圆角变体 */
-CustomToolButton[corner="none"] {
-    border-radius: 0px;
-}
-
-CustomToolButton[corner="small"] {
-    border-radius: 4px;
-}
-
-CustomToolButton[corner="large"] {
-    border-radius: 12px;
-}
-
-CustomToolButton[corner="round"] {
-    border-radius: 50px;
-}
-
-/* 颜色主题变体 */
-CustomToolButton[theme="primary"] {
-    background-color: rgb(@info_color);
-    color: rgb(@white_color);
-    border-color: rgb(@info_color);
-}
-
-CustomToolButton[theme="success"] {
-    background-color: rgb(@success_color);
-    color: rgb(@white_color);
-    border-color: rgb(@success_color);
-}
-
-CustomToolButton[theme="warning"] {
-    background-color: rgb(@warning_color);
-    color: rgb(@white_color);
-    border-color: rgb(@warning_color);
-}
-
-CustomToolButton[theme="error"] {
-    background-color: rgb(@error_color);
-    color: rgb(@white_color);
-    border-color: rgb(@error_color);
-}
-
-/* 工具栏按钮样式 */
-CustomToolButton[toolbar="true"] {
-    border: none;
-    background-color: transparent;
-    padding: 8px;
-    margin: 1px;
-}
-
-CustomToolButton[toolbar="true"]:hover {
-    background-color: rgba(@light_color, 0.3);
-    border-radius: 4px;
-}
-
-CustomToolButton[toolbar="true"]:pressed {
-    background-color: rgba(@light_color, 0.5);
-    border-radius: 4px;
-}
-
-CustomToolButton[toolbar="true"]:checked {
-    background-color: rgba(@info_color, 0.2);
-    border-radius: 4px;
-}
-
-/* 菜单按钮样式 */
-CustomToolButton[menu="true"] {
-    padding-right: 20px;
-}
-
-CustomToolButton[menu="true"]::menu-indicator {
-    image: none;
-    subcontrol-origin: padding;
-    subcontrol-position: right center;
-    width: 12px;
-    height: 12px;
-    right: 6px;
-}
-
-CustomToolButton[menu="true"]::menu-indicator:pressed {
-    position: relative;
-    top: 1px;
-    left: 1px;
-}
-
-/* 箭头按钮样式 */
-CustomToolButton[arrow="up"] {
-    background-color: rgb(@info_color);
-    color: rgb(@white_color);
-    border-radius: 4px 4px 0px 0px;
-}
-
-CustomToolButton[arrow="down"] {
-    background-color: rgb(@info_color);
-    color: rgb(@white_color);
-    border-radius: 0px 0px 4px 4px;
-}
-
-CustomToolButton[arrow="left"] {
-    background-color: rgb(@info_color);
-    color: rgb(@white_color);
-    border-radius: 4px 0px 0px 4px;
-}
-
-CustomToolButton[arrow="right"] {
-    background-color: rgb(@info_color);
-    color: rgb(@white_color);
-    border-radius: 0px 4px 4px 0px;
-}
-
-/* 禁用状态变体 */
-CustomToolButton[theme="primary"]:disabled {
-    background-color: rgba(@info_color, 0.5);
-    border-color: rgba(@info_color, 0.5);
-}
-
-CustomToolButton[theme="success"]:disabled {
-    background-color: rgba(@success_color, 0.5);
-    border-color: rgba(@success_color, 0.5);
-}
-
-CustomToolButton[theme="warning"]:disabled {
-    background-color: rgba(@warning_color, 0.5);
-    border-color: rgba(@warning_color, 0.5);
-}
-
-CustomToolButton[theme="error"]:disabled {
-    background-color: rgba(@error_color, 0.5);
-    border-color: rgba(@error_color, 0.5);
-}

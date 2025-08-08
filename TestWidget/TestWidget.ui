@@ -13,67 +13,7 @@
   <property name="windowTitle">
    <string>Custom Widget Test</string>
   </property>
-  <layout class="QHBoxLayout" name="horizontalLayout">
-   <item>
-    <widget class="QScrollArea" name="scrollArea">
-     <property name="widgetResizable">
-      <bool>true</bool>
-     </property>
-     <widget class="QWidget" name="scrollAreaWidgetContents">
-      <layout class="QHBoxLayout" name="horizontalLayout_2">
-       <item>
-        <layout class="QVBoxLayout" name="testControlsLayout">
-         <item>
-          <widget class="QGroupBox" name="labelTestGroup">
-           <property name="title">
-            <string>CustomLabel Tests</string>
-           </property>
-           <layout class="QVBoxLayout" name="labelTestLayout"/>
-          </widget>
-         </item>
-         <item>
-          <widget class="QGroupBox" name="comboBoxTestGroup">
-           <property name="title">
-            <string>CustomComboBox Tests</string>
-           </property>
-           <layout class="QVBoxLayout" name="comboBoxTestLayout"/>
-          </widget>
-         </item>
-         <item>
-          <widget class="QGroupBox" name="tipsTestGroup">
-           <property name="title">
-            <string>CustomToolTips Tests</string>
-           </property>
-           <layout class="QVBoxLayout" name="tipsTestLayout"/>
-          </widget>
-         </item>
-         <item>
-          <widget class="QGroupBox" name="fileListTestGroup">
-           <property name="title">
-            <string>FilePathIconListWidget Tests</string>
-           </property>
-           <layout class="QVBoxLayout" name="fileListTestLayout"/>
-          </widget>
-         </item>
-        </layout>
-       </item>
-       <item>
-        <layout class="QVBoxLayout" name="testDisplayLayout">
-         <item>
-          <widget class="QGroupBox" name="displayGroup">
-           <property name="title">
-            <string>Test Display Area</string>
-           </property>
-           <layout class="QVBoxLayout" name="displayLayout"/>
-          </widget>
-         </item>
-        </layout>
-       </item>
-      </layout>
-     </widget>
-    </widget>
-   </item>
-  </layout>
+  <layout class="QHBoxLayout" name="horizontalLayout"/>
  </widget>
  <layoutdefault spacing="6" margin="11"/>
  <resources/>

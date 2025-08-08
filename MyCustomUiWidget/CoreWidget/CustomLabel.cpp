@@ -7,7 +7,11 @@ CustomLabel::CustomLabel(QWidget* parent)
 {
     AUTO_LOAD_SKIN_STYLE();
 }
-
+CustomLabel::CustomLabel(const QString& text, QWidget* parent)
+    : QLabel(text, parent)
+{
+    AUTO_LOAD_SKIN_STYLE();
+}
 CustomLabel::~CustomLabel()
 {
 }

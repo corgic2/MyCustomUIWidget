@@ -16,7 +16,8 @@ QT_END_NAMESPACE
 /// </summary>
 class CustomUIGlobal_API FilePathIconListWidget : public QListWidget
 {
-    Q_OBJECT public:
+    Q_OBJECT
+public:
     /// <summary>
     /// 构造函数
     /// </summary>
