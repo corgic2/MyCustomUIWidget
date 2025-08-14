@@ -53,6 +53,7 @@ target_include_directories(${PROJECT_NAME} PUBLIC
     ${CMAKE_CURRENT_BINARY_DIR}
     "${CMAKE_SOURCE_DIR}/include"
     "${CMAKE_SOURCE_DIR}/StyleSystem"
+    ${Boost_INCLUDE_DIRS}
 )
 
 # 链接Qt库和SDK库
@@ -62,6 +63,7 @@ target_link_libraries(${PROJECT_NAME} PUBLIC
     Qt5::Widgets
     StyleSystem
     "${PublishDir}/SDK.lib"
+    ${Boost_LIBRARIES}
 )
 
 # 定义导出宏

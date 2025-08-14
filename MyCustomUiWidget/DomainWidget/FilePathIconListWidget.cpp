@@ -1,4 +1,4 @@
-#include "FilePathIconListWidget.h"
+﻿#include "FilePathIconListWidget.h"
 #include <QApplication>
 #include <QClipboard>
 #include <QContextMenuEvent>
@@ -6,9 +6,6 @@
 #include <QDir>
 #include <QFileDialog>
 #include <QFileInfo>
-#include <QJsonArray>
-#include <QJsonDocument>
-#include <QJsonObject>
 #include <QMessageBox>
 #include <QPainter>
 #include <QPen>
@@ -17,6 +14,7 @@
 #include <QVBoxLayout>
 #include "StyleSystem/SkinStyleLoader.h"
 #include "FileSystem/FileSystem.h"
+#include "JsonUtils/JsonUtils.h"
 #include "SDKCommonDefine/SDKCommonDefine.h"
 
 FilePathIconListWidget::FilePathIconListWidget(QWidget* parent)
@@ -384,37 +382,46 @@ bool FilePathIconListWidget::LoadFileListFromJson()
     {
         return false;
     }
+    
+    // 确保文件存在
     if (!my_sdk::FileSystem::Exists(m_jsonFilePath.toStdString()))
     {
-        my_sdk::FileSystem::WriteStringToFile(m_jsonFilePath.toStdString(), "");
+        my_sdk::FileSystem::WriteStringToFile(m_jsonFilePath.toStdString(), "{}");
     }
-    std::string jsonStr;
-    my_sdk::EM_JsonOperationResult result = my_sdk::FileSystem::ReadJsonFromFile(m_jsonFilePath.toStdString(), jsonStr);
-
-    if (result == my_sdk::EM_JsonOperationResult::Success && my_sdk::FileSystem::ValidateJsonString(jsonStr))
+    
+    // 使用新的JsonUtils读取JSON文件
+    my_sdk::pt::ptree rootTree;
+    my_sdk::EM_JsonOperationResult result = my_sdk::JsonUtils::ReadJsonTreeFromFile(m_jsonFilePath.toStdString(), rootTree);
+    
+    if (result == my_sdk::EM_JsonOperationResult::Success)
     {
-        // 使用Qt的JSON解析功能解析数据
-        QJsonDocument document = QJsonDocument::fromJson(QString::fromStdString(jsonStr).toUtf8());
-        if (document.isObject())
+        try
         {
-            QJsonObject rootObject = document.object();
-            // 遍历根对象的所有子对象
-            for (auto it = rootObject.begin(); it != rootObject.end(); ++it)
+            // 清空现有列表
+            Clear();
+            
+            // 遍历JSON树
+            for (const auto& item : rootTree)
             {
-                QJsonObject fileObject = it.value().toObject();
-                if (!fileObject.isEmpty())
+                const auto& fileObject = item.second;
+                
+                std::string filePath = fileObject.get<std::string>("filePath", "");
+                std::string displayName = fileObject.get<std::string>("displayName", "");
+                std::string iconPath = fileObject.get<std::string>("iconPath", "");
+                
+                if (!filePath.empty())
                 {
-                    std::string filePath = my_sdk::FileSystem::QtPathToStdPath(fileObject["filePath"].toString().toStdString());
-                    QString qtFilePath = QString::fromStdString(my_sdk::FileSystem::StdPathToQtPath(filePath));
-
-                    // 使用FileSystem API检查文件是否存在
+                    // 标准化路径
+                    filePath = my_sdk::FileSystem::NormalizePath(filePath);
+                    
+                    // 检查文件是否存在
                     if (my_sdk::FileSystem::Exists(filePath))
                     {
                         FilePathIconListWidgetItem::ST_NodeInfo nodeInfo;
-                        nodeInfo.filePath = qtFilePath;
-                        nodeInfo.displayName = fileObject["displayName"].toString();
-                        nodeInfo.iconPath = fileObject["iconPath"].toString();
-
+                        nodeInfo.filePath = QString::fromStdString(filePath);
+                        nodeInfo.displayName = QString::fromStdString(displayName);
+                        nodeInfo.iconPath = QString::fromStdString(iconPath);
+                        
                         // 添加到列表
                         AddFileItem(nodeInfo);
                     }
@@ -422,6 +429,10 @@ bool FilePathIconListWidget::LoadFileListFromJson()
             }
             emit SigFileListLoaded();
             return true;
+        }
+        catch (const std::exception&)
+        {
+            return false;
         }
     }
     return false;
@@ -434,28 +445,26 @@ bool FilePathIconListWidget::SaveFileListToJson()
         return false;
     }
 
-    QJsonObject rootObject;
+    my_sdk::pt::ptree rootTree;
 
     for (int i = 0; i < count(); ++i)
     {
         auto fileItem = dynamic_cast<FilePathIconListWidgetItem*>(item(i));
         if (fileItem)
         {
-            QJsonObject fileObject;
-            fileObject["filePath"] = fileItem->GetNodeInfo().filePath;
-            fileObject["displayName"] = fileItem->GetNodeInfo().displayName;
-            fileObject["iconPath"] = fileItem->GetNodeInfo().iconPath;
-
-            rootObject[QString::number(i)] = fileObject;
+            my_sdk::pt::ptree fileTree;
+            const auto& nodeInfo = fileItem->GetNodeInfo();
+            
+            fileTree.put("filePath", nodeInfo.filePath.toStdString());
+            fileTree.put("displayName", nodeInfo.displayName.toStdString());
+            fileTree.put("iconPath", nodeInfo.iconPath.toStdString());
+            
+            rootTree.add_child(std::to_string(i), fileTree);
         }
     }
 
-    QJsonDocument doc(rootObject);
-    QString jsonQStr = doc.toJson(QJsonDocument::Indented);
-    std::string jsonStr = jsonQStr.toUtf8().constData();
-
-    // 使用FileSystem API保存JSON
-    my_sdk::EM_JsonOperationResult result = my_sdk::FileSystem::WriteJsonToFile(m_jsonFilePath.toStdString(), jsonStr, true);
+    // 使用新的JsonUtils保存JSON
+    my_sdk::EM_JsonOperationResult result = my_sdk::JsonUtils::WriteJsonTreeToFile(m_jsonFilePath.toStdString(), rootTree, true);
 
     if (result == my_sdk::EM_JsonOperationResult::Success)
     {

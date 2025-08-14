@@ -1,4 +1,4 @@
-#pragma once
+﻿#pragma once
 #include <QString>
 static bool BaseWidgetSkinManagerInit = false;
 class BaseStyleWidgetInterface

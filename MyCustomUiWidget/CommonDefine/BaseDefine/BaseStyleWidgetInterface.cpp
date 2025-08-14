@@ -1,4 +1,4 @@
-#include "BaseStyleWidgetInterface.h"
+ï»¿#include "BaseStyleWidgetInterface.h"
 #include "StyleSystem/SkinManager.h"
 BaseStyleWidgetInterface::BaseStyleWidgetInterface()
 {
@@ -14,12 +14,12 @@ BaseStyleWidgetInterface::~BaseStyleWidgetInterface()
 
 void BaseStyleWidgetInterface::InitSkinManager()
 {
-    // Ìí¼ÓÆ¤·ôÅäÖÃ
+    // æ·»åŠ çš®è‚¤é…ç½®
     SkinManager::instance()->addSkinVersionInfo("default", ":/Config/Default/skin_config.json");
     SkinManager::instance()->addQrcResource(":/CustomUiWidget/CoreWidget");
     SkinManager::instance()->addQrcResource(":/CustomUiWidget/DomainWidget");
     SkinManager::instance()->addQrcResource(":/Config/Default");
-    // ÉèÖÃÄ¬ÈÏÆ¤·ô
+    // è®¾ç½®é»˜è®¤çš®è‚¤
     SkinManager::instance()->setCurrentSkinId("default");
 }
 

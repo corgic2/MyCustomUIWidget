@@ -61,6 +61,32 @@ macro(source_group_by_dir source_files)
     endif(MSVC)
 endmacro(source_group_by_dir)
 
+# 设置Boost库的根目录（应指向 Boost 的安装根目录）
+set(BOOST_ROOT "D:/WorkSpace/boost_1_88_0")
+
+# 禁用搜索系统路径
+set(Boost_NO_SYSTEM_PATHS ON) # 非常重要，否则会导致找不到 Boost 库
+
+# 查找Boost库，指定需要的组件
+set(SDKThirdPartylib "${CMAKE_SOURCE_DIR}/SDKThirdPartylib.txt")
+file(STRINGS ${SDKThirdPartylib} LIBRARIES)
+
+# 设置Boost组件
+set(BOOST_COMPONENTS ${LIBRARIES})
+
+# 查找Boost库
+find_package(Boost REQUIRED COMPONENTS ${BOOST_COMPONENTS})
+
+if(Boost_FOUND)
+    # 输出 Boost 的相关信息
+    message(STATUS "Boost version: ${Boost_VERSION}")
+    message(STATUS "Boost_INCLUDE_DIRS: ${Boost_INCLUDE_DIRS}")
+    message(STATUS "Boost_LIBRARY_DIRS: ${Boost_LIBRARY_DIRS}")
+    message(STATUS "Boost_LIBRARIES: ${Boost_LIBRARIES}")
+else()
+    message(FATAL_ERROR "Boost not found!")
+endif()
+
 # 包含各项目的CMake配置
 add_subdirectory(StyleSystem)
 add_subdirectory(MyCustomUiWidget)

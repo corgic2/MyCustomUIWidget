@@ -1,7 +1,7 @@
 set "CustomWidget=D:\WorkSpace\MyCustomUIWidget"
 set "QtDIR=D:\Qt\5.15.2\msvc2019_64"
 
-xcopy "%CustomWidget%\x64\Debug\*." "%~dp0x64\Debug\" /E /I /Y
+xcopy "%CustomWidget%\x64\Debug\*" "%~dp0x64\Debug\" /E /I /Y
 xcopy "%CustomWidget%\MyCustomUiWidget\*.h" "%~dp0include\" /E /I /Y
 xcopy "%CustomWidget%\MyCustomUiWidget\*.ui" "%~dp0include\" /E /I /Y
 xcopy "%CustomWidget%\StyleSystem\*.h" "%~dp0include\" /E /I /Y
