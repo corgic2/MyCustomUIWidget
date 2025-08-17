@@ -12,8 +12,8 @@
 class CustomUIGlobal_API MusicProgressBar : public QWidget, public BaseStyleWidgetInterface
 {
     Q_OBJECT
-    Q_PROPERTY(int progress READ GetProgress WRITE SetProgress NOTIFY SigProgressChanged)
-    Q_PROPERTY(int bufferProgress READ GetBufferProgress WRITE SetBufferProgress)
+    Q_PROPERTY(qint64 position READ GetPosition WRITE SetPosition NOTIFY SigPositionChanged)
+    Q_PROPERTY(qint64 bufferPosition READ GetBufferPosition WRITE SetBufferPosition)
     Q_PROPERTY(qint64 duration READ GetDuration WRITE SetDuration)
     Q_PROPERTY(bool clickJumpEnabled READ IsClickJumpEnabled WRITE EnableClickJump)
     Q_PROPERTY(bool showMilliseconds READ IsShowMilliseconds WRITE SetTimeFormat)
@@ -31,14 +31,14 @@ public:
     ~MusicProgressBar() override;
 
     /// <summary>
-    /// 获取当前进度值（0-100）
+    /// 获取当前位置（毫秒）
     /// </summary>
-    int GetProgress() const { return m_progress; }
+    qint64 GetPosition() const { return m_position; }
 
     /// <summary>
-    /// 获取缓冲进度值（0-100）
+    /// 获取缓冲位置（毫秒）
     /// </summary>
-    int GetBufferProgress() const { return m_bufferProgress; }
+    qint64 GetBufferPosition() const { return m_bufferPosition; }
 
     /// <summary>
     /// 获取总时长（毫秒）
@@ -62,16 +62,16 @@ public:
 
 public slots:
     /// <summary>
-    /// 设置当前进度值（0-100）
+    /// 设置当前位置（毫秒）
     /// </summary>
-    /// <param name="value">进度值</param>
-    void SetProgress(int value);
+    /// <param name="position">位置值（毫秒）</param>
+    void SetPosition(qint64 position);
 
     /// <summary>
-    /// 设置缓冲进度值（0-100）
+    /// 设置缓冲位置（毫秒）
     /// </summary>
-    /// <param name="value">缓冲进度值</param>
-    void SetBufferProgress(int value);
+    /// <param name="position">缓冲位置值（毫秒）</param>
+    void SetBufferPosition(qint64 position);
 
     /// <summary>
     /// 设置总时长（毫秒）
@@ -87,10 +87,16 @@ public slots:
 
 signals:
     /// <summary>
-    /// 进度改变信号
+    /// 位置改变信号
     /// </summary>
-    /// <param name="value">新的进度值（0-100）</param>
-    void SigProgressChanged(int value);
+    /// <param name="position">新的位置值（毫秒）</param>
+    void SigPositionChanged(qint64 position);
+
+    /// <summary>
+    /// 寻求位置信号
+    /// </summary>
+    /// <param name="position">寻求的位置值（毫秒）</param>
+    void SigSeekRequested(qint64 position);
 
     /// <summary>
     /// 开始交互信号
@@ -129,10 +135,10 @@ protected:
 
 private:
     /// <summary>
-    /// 计算进度值（根据鼠标位置）
+    /// 计算进度百分比（根据鼠标位置）
     /// </summary>
     /// <param name="pos">鼠标位置</param>
-    /// <returns>进度值（0-100）</returns>
+    /// <returns>进度百分比（0-100）</returns>
     int CalculateProgress(const QPoint& pos) const;
 
     /// <summary>
@@ -173,8 +179,8 @@ private:
     void UpdateTooltipPosition(const QPoint& pos);
 
 private:
-    int m_progress = 0;              ///< 当前进度值（0-100）
-    int m_bufferProgress = 0;        ///< 缓冲进度值（0-100）
+    qint64 m_position = 0;              ///< 当前位置（毫秒）
+    qint64 m_bufferPosition = 0;        ///< 缓冲位置（毫秒）
     qint64 m_duration = 0;           ///< 总时长（毫秒）
     bool m_clickJumpEnabled = true;  ///< 是否启用点击跳转
     bool m_showMilliseconds = false; ///< 是否显示毫秒
