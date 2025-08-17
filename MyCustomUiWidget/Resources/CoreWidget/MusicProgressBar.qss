@@ -1,0 +1,23 @@
+/* MusicProgressBar 样式定义 */
+
+MusicProgressBar {
+    background: transparent;
+    border: none;
+    font-family: "Microsoft YaHei";
+    font-size: 9px;
+}
+
+/* 悬停时滑块放大效果 */
+MusicProgressBar:hover {
+    /* 滑块会在绘制时自动放大 */
+}
+
+/* 拖动时滑块颜色变化 */
+MusicProgressBar:pressed {
+    /* 滑块会在绘制时自动改变颜色 */
+}
+
+/* 禁用状态灰度显示 */
+MusicProgressBar:disabled {
+    opacity: 0.5;
+}

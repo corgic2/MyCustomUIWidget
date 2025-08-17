@@ -1,8 +1,11 @@
-﻿#pragma once
+#pragma once
 
 #include <QtUiPlugin/QDesignerCustomWidgetCollectionInterface>
 #include <QObject>
 #include <QList>
+
+// 前置声明新插件类
+class MusicProgressBarPlugin;
 
 /// <summary>
 /// 自定义控件集合类，用于管理所有自定义控件插件
@@ -27,4 +30,5 @@ public:
 
 private:
     QList<QDesignerCustomWidgetInterface*> m_widgets; /// 控件列表
-}; 
+    MusicProgressBarPlugin* m_musicProgressBarPlugin; /// 音乐进度条插件
+};

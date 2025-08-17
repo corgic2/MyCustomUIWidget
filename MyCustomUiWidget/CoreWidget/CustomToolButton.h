@@ -1,4 +1,4 @@
-#pragma once
+﻿#pragma once
 
 #include <QtWidgets/QToolButton>
 #include "../CommonDefine/UIWidgetColorDefine.h"
@@ -16,7 +16,17 @@ public:
     /// </summary>
     /// <param name="parent">父窗口指针</param>
     explicit CustomToolButton(QWidget* parent = nullptr);
+    /// <summary>
+    /// 构造函数
+    /// </summary>
+    /// <param name="text"></param>
+    /// <param name="parent"></param>
     CustomToolButton(const QString& text, QWidget* parent = nullptr);
+    /// <summary>
+    /// 设置图片
+    /// </summary>
+    /// <param name="pixmapFilePath"></param>
+    void SetPixMapFilePath(const QString& pixmapFilePath);
     /// <summary>
     /// 析构函数
     /// </summary>

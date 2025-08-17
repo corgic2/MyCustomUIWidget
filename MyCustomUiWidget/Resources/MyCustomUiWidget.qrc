@@ -6,6 +6,7 @@
         <file>CoreWidget/CustomProgressBar.qss</file>
         <file>CoreWidget/CustomToolBar.qss</file>
         <file>CoreWidget/CustomToolButton.qss</file>
+        <file>CoreWidget/MusicProgressBar.qss</file>
         <file>CoreWidget/ValidatedLineEdit.qss</file>
         <file>DomainWidget/FilePathIconListWidget.qss</file>
         <file>DomainWidget/FilePathIconListWidgetItem.qss</file>

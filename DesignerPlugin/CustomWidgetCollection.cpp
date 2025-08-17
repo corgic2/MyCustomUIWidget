@@ -1,4 +1,4 @@
-﻿#include "CustomWidgetCollection.h"
+#include "CustomWidgetCollection.h"
 #include <QtPlugin>
 #include <QtDesigner/QExtensionManager>
 #include <QtUiPlugin/QDesignerCustomWidgetInterface>
@@ -11,9 +11,11 @@
 #include "FilePathIconListWidgetPlugin.h"
 #include "ValidatedLineEditPlugin.h"
 #include "FilePickerPlugin.h"
+#include "MusicProgressBarPlugin.h"
 
 CustomWidgetCollection::CustomWidgetCollection(QObject* parent)
     : QObject(parent)
+    , m_musicProgressBarPlugin(new MusicProgressBarPlugin(this))
 {
     m_widgets.append(new CustomComboBoxPlugin(this));
     m_widgets.append(new CustomFramePlugin(this));
@@ -24,6 +26,7 @@ CustomWidgetCollection::CustomWidgetCollection(QObject* parent)
     m_widgets.append(new FilePathIconListWidgetPlugin(this));
     m_widgets.append(new ValidatedLineEditPlugin(this));
     m_widgets.append(new FilePickerPlugin(this));
+    m_widgets.append(m_musicProgressBarPlugin);
 }
 
 QList<QDesignerCustomWidgetInterface*> CustomWidgetCollection::customWidgets() const

@@ -1,4 +1,4 @@
-#include "CustomToolButton.h"
+﻿#include "CustomToolButton.h"
 #include <QEvent>
 #include <QPainter>
 #include <QPen>
@@ -14,6 +14,12 @@ CustomToolButton::CustomToolButton(QWidget* parent)
 CustomToolButton::CustomToolButton(const QString& text, QWidget* parent) : CustomToolButton(parent)
 {
     setText(text);
+}
+
+void CustomToolButton::SetPixMapFilePath(const QString& pixmapFilePath)
+{
+    setIcon(QPixmap(pixmapFilePath));
+    setIconSize(size());
 }
 
 CustomToolButton::~CustomToolButton()
